@@ -69,7 +69,7 @@ final class SellerTest extends TestCase
     #[Test]
     public function nullPhoneIsHandled(): void
     {
-        $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: new Ulid(), phone: null);
+        $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: new Ulid());
 
         self::assertNull($seller->getPhone());
     }

@@ -11,7 +11,6 @@ final readonly class PaginationFactory
 {
     /**
      * @template T of object
-     * @param QueryBuilder $queryBuilder
      * @return PaginatedResult<T>
      */
     public function createPaginatedResult(QueryBuilder $queryBuilder, int $page, int $maxPerPage): PaginatedResult

@@ -98,7 +98,7 @@ final class SellerRepositoryTest extends KernelTestCase
 
         $sellers = $this->repository->findByOwnerIdPaginated($owner->getId(), 1, 2)->items;
 
-        $names = array_map(fn($s) => $s->getName(), $sellers);
+        $names = array_map(fn(Seller $s): string => $s->getName(), $sellers);
         self::assertContains('Active Seller', $names);
         self::assertNotContains('Deleted Seller', $names);
     }

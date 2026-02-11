@@ -33,7 +33,7 @@ final class EmailVerificationService implements EmailVerificationServiceInterfac
         );
 
         // TODO: Refactor email sending into its own service.
-        $email = (new TemplatedEmail())
+        $email = new TemplatedEmail()
             ->to(new Address($user->getEmail(), $user->getDisplayName()))
             ->subject('Please verify your email address')
             ->htmlTemplate('emails/verify_email.html.twig')

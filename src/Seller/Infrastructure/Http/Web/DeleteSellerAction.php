@@ -6,8 +6,8 @@ use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Command\DeleteSellerCommand;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
@@ -21,7 +21,7 @@ final class DeleteSellerAction extends AbstractController
     }
 
     #[Route('/sellers/{id}/delete', name: 'seller_delete', methods: ['POST'], requirements: ['id' => '[0-9A-Z]{26}'])]
-    public function __invoke(Request $request, string $id): Response
+    public function __invoke(Request $request, string $id): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('delete-seller-' . $id, $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token.');

@@ -16,7 +16,7 @@ final class ConfigurationTest extends TestCase
      */
     private function processConfig(array ...$configs): array
     {
-        return (new Processor())->processConfiguration(new Configuration(), $configs);
+        return new Processor()->processConfiguration(new Configuration(), $configs);
     }
 
     #[Test]

@@ -41,7 +41,7 @@ final class EnvConfigLoaderTest extends TestCase
 
     private function buildTree(): \Symfony\Component\Config\Definition\NodeInterface
     {
-        return (new Configuration())->getConfigTreeBuilder()->buildTree();
+        return new Configuration()->getConfigTreeBuilder()->buildTree();
     }
 
     private function createLoader(): EnvConfigLoader

@@ -13,20 +13,18 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GenericResourceOwner;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Uid\Ulid;
 
 final class OidcAuthenticator extends AbstractAuthenticator
 {
-    private const LINK_REQUIRED_SENTINEL = '__LINK_REQUIRED__';
+    private const string LINK_REQUIRED_SENTINEL = '__LINK_REQUIRED__';
 
     public function __construct(
         private readonly ClientRegistry $clientRegistry,
@@ -37,7 +35,7 @@ final class OidcAuthenticator extends AbstractAuthenticator
     ) {
     }
 
-    public function supports(Request $request): ?bool
+    public function supports(Request $request): bool
     {
         if (empty($this->oidcClientId)) {
             return false;
@@ -46,7 +44,7 @@ final class OidcAuthenticator extends AbstractAuthenticator
         return $request->attributes->get('_route') === 'app_oidc_check';
     }
 
-    public function authenticate(Request $request): Passport
+    public function authenticate(Request $request): SelfValidatingPassport
     {
         $client = $this->clientRegistry->getClient('oidc');
 
@@ -97,12 +95,12 @@ final class OidcAuthenticator extends AbstractAuthenticator
         return new SelfValidatingPassport(new UserBadge($email));
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
     {
         return new RedirectResponse($this->router->generate('app_dashboard'));
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
         if ($exception->getMessage() === self::LINK_REQUIRED_SENTINEL) {
             return new RedirectResponse($this->router->generate('app_link_account'));

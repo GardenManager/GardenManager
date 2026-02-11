@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\NodeInterface;
 
 final class EnvConfigLoader
 {
-    private const NESTING_SEPARATOR = '__';
+    private const string NESTING_SEPARATOR = '__';
 
     /**
      * Reads environment variables matching the given prefix and maps them
@@ -84,7 +84,7 @@ final class EnvConfigLoader
     private function buildEnvironmentVariableName(string $prefix, array $configPath): string
     {
         $uppercasedSegments = array_map(
-            static fn (string $part): string => strtoupper($part),
+            strtoupper(...),
             $configPath,
         );
 

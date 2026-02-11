@@ -3,9 +3,10 @@
 namespace GardenManager\Shared\Domain\ValueObject;
 
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 
 #[ORM\Embeddable]
-final readonly class PhoneNumber
+final readonly class PhoneNumber implements Stringable
 {
     #[ORM\Column(name: 'phone', length: 50, nullable: true)]
     public ?string $value;

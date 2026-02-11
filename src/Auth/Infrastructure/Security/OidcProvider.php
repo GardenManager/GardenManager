@@ -23,20 +23,22 @@ final class OidcProvider extends GenericProvider implements LoggerAwareInterface
             $options['urlAccessToken'] = $discovery['token_endpoint'];
             $options['urlResourceOwnerDetails'] = $discovery['userinfo_endpoint'];
         } else {
-            $options['urlAuthorize'] = $options['urlAuthorize'] ?? '';
-            $options['urlAccessToken'] = $options['urlAccessToken'] ?? '';
-            $options['urlResourceOwnerDetails'] = $options['urlResourceOwnerDetails'] ?? '';
+            $options['urlAuthorize'] ??= '';
+            $options['urlAccessToken'] ??= '';
+            $options['urlResourceOwnerDetails'] ??= '';
         }
 
         parent::__construct($options, $collaborators);
     }
 
+    #[\Override]
     protected function getScopeSeparator(): string
     {
         return ' ';
     }
 
-    protected function checkResponse(ResponseInterface $response, $data)
+    #[\Override]
+    protected function checkResponse(ResponseInterface $response, $data): void
     {
         $response->getBody()->rewind();
         $this->logger?->debug($response->getBody()->getContents());
