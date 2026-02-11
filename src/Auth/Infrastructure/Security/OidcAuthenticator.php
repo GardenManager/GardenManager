@@ -13,6 +13,7 @@ use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GenericResourceOwner;
+use Override;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
