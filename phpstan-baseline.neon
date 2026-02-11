@@ -148,9 +148,3 @@ parameters:
 			identifier: method.templateTypeNotInParameter
 			count: 1
 			path: src/Shared/Infrastructure/Pagination/PaginationFactory.php
-
-		-
-			message: '#^Match expression does not handle remaining value\: string$#'
-			identifier: match.unhandled
-			count: 1
-			path: src/Twig/Components/Button.php

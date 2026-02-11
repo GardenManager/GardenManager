@@ -152,5 +152,8 @@ jobs:
       - name: Run migrations
         run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
+      - name: Build Tailwind CSS
+        run: php bin/console tailwind:build --env=test
+
       - name: Run PHPUnit
         run: php bin/phpunit
