@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\RegisterUserCommand;
@@ -10,9 +12,7 @@ use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
 use GardenManager\Auth\Domain\Exception\AuthException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Uid\Ulid;
 
 final class RegisterUserHandlerTest extends TestCase
@@ -27,7 +27,7 @@ final class RegisterUserHandlerTest extends TestCase
         $repo->method('findByEmail')->willReturn(null);
         $repo->expects(self::once())
             ->method('save')
-            ->willReturnCallback(function (AuthUser $user) use (&$savedUser): void {
+            ->willReturnCallback(static function (AuthUser $user) use (&$savedUser): void {
                 $savedUser = $user;
             });
 

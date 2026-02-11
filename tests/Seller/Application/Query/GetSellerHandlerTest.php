@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Application\Query;
 
 use GardenManager\Seller\Application\Query\GetSellerHandler;
 use GardenManager\Seller\Application\Query\GetSellerQuery;
-use GardenManager\Seller\Application\Query\SellerDetailView;
 use GardenManager\Seller\Domain\Exception\SellerException;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Domain;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use GardenManager\Shared\Domain\SoftDeletable;
 use GardenManager\Shared\Domain\ValueObject\Address;
@@ -38,18 +41,18 @@ final class Seller implements SoftDeletable
     private Ulid $ownerId;
 
     #[ORM\Column]
-    private \DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
     #[ORM\Column]
-    private \DateTimeImmutable $updatedAt;
+    private DateTimeImmutable $updatedAt;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deletedAt = null;
+    private ?DateTimeImmutable $deletedAt = null;
 
     private function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public static function create(
@@ -133,24 +136,24 @@ final class Seller implements SoftDeletable
         return $this->ownerId;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
-    public function getDeletedAt(): ?\DateTimeImmutable
+    public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deletedAt;
     }
 
     public function softDelete(): void
     {
-        $this->deletedAt = new \DateTimeImmutable();
+        $this->deletedAt = new DateTimeImmutable();
     }
 
     public function isDeleted(): bool
@@ -161,7 +164,7 @@ final class Seller implements SoftDeletable
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function isOwnedBy(Ulid $userId): bool

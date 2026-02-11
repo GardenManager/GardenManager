@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Query;
 
+use DateTimeImmutable;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Shared\Application\View\AddressView;
 use Symfony\Component\Uid\Ulid;
@@ -15,8 +18,8 @@ final readonly class SellerDetailView
         public ?string $phone,
         public ?string $description,
         public ?AddressView $address,
-        public \DateTimeImmutable $createdAt,
-        public \DateTimeImmutable $updatedAt,
+        public DateTimeImmutable $createdAt,
+        public DateTimeImmutable $updatedAt,
     ) {
     }
 

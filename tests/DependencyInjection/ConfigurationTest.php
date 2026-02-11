@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\DependencyInjection;
 
 use GardenManager\Shared\Infrastructure\DependencyInjection\Configuration;
@@ -9,16 +11,6 @@ use Symfony\Component\Config\Definition\Processor;
 
 final class ConfigurationTest extends TestCase
 {
-    /**
-     * @param array<string, mixed> ...$configs
-     *
-     * @return array<string, mixed>
-     */
-    private function processConfig(array ...$configs): array
-    {
-        return new Processor()->processConfiguration(new Configuration(), $configs);
-    }
-
     #[Test]
     public function defaultConfigHasExpectedValues(): void
     {
@@ -63,5 +55,15 @@ final class ConfigurationTest extends TestCase
         );
 
         self::assertFalse($config['require_email_verification']);
+    }
+
+    /**
+     * @param array<string, mixed> ...$configs
+     *
+     * @return array<string, mixed>
+     */
+    private function processConfig(array ...$configs): array
+    {
+        return new Processor()->processConfiguration(new Configuration(), $configs);
     }
 }

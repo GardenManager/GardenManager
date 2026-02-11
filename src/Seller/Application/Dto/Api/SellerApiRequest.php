@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Dto\Api;
 
 use Symfony\Component\Validator\Constraints as Assert;

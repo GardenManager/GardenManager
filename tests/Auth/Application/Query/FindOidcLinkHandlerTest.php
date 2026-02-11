@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Auth\Application\Query;
 
 use GardenManager\Auth\Application\Query\FindOidcLinkHandler;

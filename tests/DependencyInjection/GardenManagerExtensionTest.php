@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\DependencyInjection;
 
 use GardenManager\Shared\Infrastructure\DependencyInjection\GardenManagerExtension;
@@ -37,18 +39,6 @@ final class GardenManagerExtensionTest extends TestCase
     {
         $_SERVER = $this->originalServer;
         $_ENV = $this->originalEnv;
-    }
-
-    /**
-     * @param array<string, mixed> $config
-     */
-    private function loadExtension(array $config = []): ContainerBuilder
-    {
-        $container = new ContainerBuilder();
-        $extension = new GardenManagerExtension();
-        $extension->load([$config], $container);
-
-        return $container;
     }
 
     #[Test]
@@ -112,5 +102,17 @@ final class GardenManagerExtensionTest extends TestCase
         $extension = new GardenManagerExtension();
 
         self::assertSame('gm', $extension->getAlias());
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function loadExtension(array $config = []): ContainerBuilder
+    {
+        $container = new ContainerBuilder();
+        $extension = new GardenManagerExtension();
+        $extension->load([$config], $container);
+
+        return $container;
     }
 }

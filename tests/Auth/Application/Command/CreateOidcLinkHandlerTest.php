@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\CreateOidcLinkCommand;
@@ -29,7 +31,7 @@ final class CreateOidcLinkHandlerTest extends TestCase
         $oidcRepo = $this->createMock(AuthOidcRepositoryInterface::class);
         $oidcRepo->expects(self::once())
             ->method('save')
-            ->willReturnCallback(function (AuthOidc $link) use (&$savedLink): void {
+            ->willReturnCallback(static function (AuthOidc $link) use (&$savedLink): void {
                 $savedLink = $link;
             });
 

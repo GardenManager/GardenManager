@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Domain\Pagination;
 
 /**
@@ -44,7 +46,9 @@ final readonly class PaginatedResult
 
     /**
      * @template U
+     *
      * @param callable(T): U $callback
+     *
      * @return self<U>
      */
     public function map(callable $callback): self

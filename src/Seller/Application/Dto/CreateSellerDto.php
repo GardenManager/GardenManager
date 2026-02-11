@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Dto;
 
 use GardenManager\Shared\Application\Dto\AddressData;

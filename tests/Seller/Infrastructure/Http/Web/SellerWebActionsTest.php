@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Infrastructure\Http\Web;
 
 use Doctrine\ORM\EntityManagerInterface;

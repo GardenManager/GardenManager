@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Application\Query;
 
 use GardenManager\Auth\Domain\AuthOidc;

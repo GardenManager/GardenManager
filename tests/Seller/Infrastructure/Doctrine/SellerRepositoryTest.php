@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -7,7 +9,6 @@ use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Domain\Exception\SellerException;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
-use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Domain\ValueObject\Address;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -23,21 +24,6 @@ final class SellerRepositoryTest extends KernelTestCase
         self::bootKernel();
         $this->repository = self::getContainer()->get(SellerRepositoryInterface::class);
         $this->em = self::getContainer()->get(EntityManagerInterface::class);
-    }
-
-    private function createOwner(): AuthUser
-    {
-        $user = AuthUser::createWithPassword(
-            new Ulid(),
-            'owner-' . bin2hex(random_bytes(4)) . '@test.com',
-            'Test Owner',
-            'hashed',
-        );
-
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
     }
 
     #[Test]
@@ -98,7 +84,7 @@ final class SellerRepositoryTest extends KernelTestCase
 
         $sellers = $this->repository->findByOwnerIdPaginated($owner->getId(), 1, 2)->items;
 
-        $names = array_map(fn(Seller $s): string => $s->getName(), $sellers);
+        $names = array_map(static fn (Seller $s): string => $s->getName(), $sellers);
         self::assertContains('Active Seller', $names);
         self::assertNotContains('Deleted Seller', $names);
     }
@@ -145,7 +131,7 @@ final class SellerRepositoryTest extends KernelTestCase
     {
         $owner = $this->createOwner();
 
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 3; ++$i) {
             $seller = Seller::create(
                 name: "Seller $i",
                 email: "seller$i-" . bin2hex(random_bytes(4)) . '@test.com',
@@ -162,5 +148,20 @@ final class SellerRepositoryTest extends KernelTestCase
         self::assertCount(2, $result->items);
         self::assertTrue($result->hasNextPage());
         self::assertFalse($result->hasPreviousPage());
+    }
+
+    private function createOwner(): AuthUser
+    {
+        $user = AuthUser::createWithPassword(
+            new Ulid(),
+            'owner-' . bin2hex(random_bytes(4)) . '@test.com',
+            'Test Owner',
+            'hashed',
+        );
+
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return $user;
     }
 }

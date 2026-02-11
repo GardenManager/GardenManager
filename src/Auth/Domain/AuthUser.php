@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Domain;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -37,10 +40,10 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isVerified = false;
 
     #[ORM\Column]
-    private \DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
     #[ORM\Column]
-    private \DateTimeImmutable $updatedAt;
+    private DateTimeImmutable $updatedAt;
 
     /** @var Collection<int, AuthOidc> */
     #[ORM\OneToMany(targetEntity: AuthOidc::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
@@ -48,8 +51,8 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     private function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
         $this->oidcLinks = new ArrayCollection();
     }
 
@@ -68,9 +71,8 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
         Ulid $id,
         string $email,
         string $displayName,
-        string $hashedPassword
-    ): self
-    {
+        string $hashedPassword,
+    ): self {
         $user = new self();
         $user->id = $id;
         $user->email = $email;
@@ -157,12 +159,12 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = true;
     }
 
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -170,6 +172,6 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updatedAt = new \DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

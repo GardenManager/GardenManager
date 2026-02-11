@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Application\Command\RegisterUserCommand;

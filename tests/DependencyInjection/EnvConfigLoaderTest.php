@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\DependencyInjection;
 
 use GardenManager\Shared\Infrastructure\DependencyInjection\Configuration;
@@ -37,16 +39,6 @@ final class EnvConfigLoaderTest extends TestCase
     {
         $_SERVER = $this->originalServer;
         $_ENV = $this->originalEnv;
-    }
-
-    private function buildTree(): \Symfony\Component\Config\Definition\NodeInterface
-    {
-        return new Configuration()->getConfigTreeBuilder()->buildTree();
-    }
-
-    private function createLoader(): EnvConfigLoader
-    {
-        return new EnvConfigLoader();
     }
 
     #[Test]
@@ -168,5 +160,15 @@ final class EnvConfigLoaderTest extends TestCase
         $result = $this->createLoader()->fromEnvironment('GM', $this->buildTree());
 
         self::assertSame([], $result);
+    }
+
+    private function buildTree(): \Symfony\Component\Config\Definition\NodeInterface
+    {
+        return new Configuration()->getConfigTreeBuilder()->buildTree();
+    }
+
+    private function createLoader(): EnvConfigLoader
+    {
+        return new EnvConfigLoader();
     }
 }

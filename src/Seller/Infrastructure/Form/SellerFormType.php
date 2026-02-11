@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Infrastructure\Form;
 
 use GardenManager\Seller\Application\Dto\CreateSellerDto;

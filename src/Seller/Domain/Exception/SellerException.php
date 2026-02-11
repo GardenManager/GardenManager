@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Domain\Exception;
 
 use GardenManager\Shared\Domain\Exception\CoreException;
@@ -14,7 +16,7 @@ final class SellerException extends CoreException
             [
                 'sellerId' => $sellerId,
             ],
-            404
+            404,
         );
     }
 
@@ -26,7 +28,7 @@ final class SellerException extends CoreException
                 'sellerId' => $sellerId,
                 'requestUserId' => $requestUserId,
             ],
-            404
+            404,
         );
     }
 }

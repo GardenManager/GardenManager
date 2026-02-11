@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Application\Dto;
 
 use GardenManager\Shared\Domain\ValueObject\Address;
@@ -20,7 +22,7 @@ final readonly class AddressData
             $this->street,
             $this->city,
             $this->postalCode,
-            $this->country
+            $this->country,
         );
     }
 

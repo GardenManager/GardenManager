@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Domain\ValueObject;
 
 use Doctrine\ORM\Mapping as ORM;
-use GardenManager\Shared\Application\Dto\AddressData;
 
 #[ORM\Embeddable]
 final readonly class Address

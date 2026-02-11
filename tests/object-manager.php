@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use GardenManager\Kernel;
 use Symfony\Component\Dotenv\Dotenv;
 

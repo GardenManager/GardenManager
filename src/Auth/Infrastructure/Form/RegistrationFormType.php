@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Infrastructure\Form;
 
 use GardenManager\Auth\Application\Dto\RegisterUserDto;

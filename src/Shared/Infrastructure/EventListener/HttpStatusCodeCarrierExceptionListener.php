@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\EventListener;
 
 use GardenManager\Shared\Domain\Exception\Contract\HttpStatusCodeCarrierExceptionInterface;
@@ -26,7 +28,7 @@ final class HttpStatusCodeCarrierExceptionListener
             $httpStatusCodeCarrierException->getMessage(),
             $httpStatusCodeCarrierException,
             [],
-            $httpStatusCodeCarrierException->getCode()
+            $httpStatusCodeCarrierException->getCode(),
         ));
     }
 

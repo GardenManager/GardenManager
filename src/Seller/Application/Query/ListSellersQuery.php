@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Query;
 
-use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Application\PaginatedQueryInterface;
 use GardenManager\Shared\Application\QueryInterface;
+use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use Symfony\Component\Uid\Ulid;
 
 /** @implements QueryInterface<PaginatedResult<SellerDetailView>> */

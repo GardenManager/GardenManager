@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Dto\Api;
 
+use DateTimeInterface;
 use GardenManager\Seller\Application\Query\SellerDetailView;
 use GardenManager\Shared\Application\View\AddressView;
 
@@ -28,8 +31,8 @@ final readonly class SellerApiResponse
             phone: $view->phone,
             description: $view->description,
             address: $view->address,
-            createdAt: $view->createdAt->format(\DateTimeInterface::ATOM),
-            updatedAt: $view->updatedAt->format(\DateTimeInterface::ATOM),
+            createdAt: $view->createdAt->format(DateTimeInterface::ATOM),
+            updatedAt: $view->updatedAt->format(DateTimeInterface::ATOM),
         );
     }
 }

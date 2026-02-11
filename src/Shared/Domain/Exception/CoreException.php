@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Domain\Exception;
 
 use Exception;
@@ -10,7 +12,7 @@ use Throwable;
 abstract class CoreException extends Exception implements ContextCarrierExceptionInterface, HttpStatusCodeCarrierExceptionInterface
 {
     public function __construct(
-        string $message = "",
+        string $message = '',
         private readonly array $context = [],
         private readonly int $httpStatusCode = 500,
         int $code = 0,

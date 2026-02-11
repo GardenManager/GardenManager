@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Query;
 
 use GardenManager\Seller\Domain\SellerRepositoryInterface;

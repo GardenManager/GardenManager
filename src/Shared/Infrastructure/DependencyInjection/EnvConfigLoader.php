@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ArrayNode;
@@ -30,7 +32,7 @@ final class EnvConfigLoader
         foreach ($environmentVariableMap as $envVar => ['path' => $configPath, 'node' => $nodeType]) {
             $value = $_SERVER[$envVar] ?? $_ENV[$envVar] ?? null;
 
-            if (!is_string($value)) {
+            if (!\is_string($value)) {
                 continue;
             }
 

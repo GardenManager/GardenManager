@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Application\Dto;
 
 use GardenManager\Seller\Application\Dto\CreateSellerDto;
@@ -36,7 +38,7 @@ final class CreateSellerDtoTest extends KernelTestCase
 
         $errors = $this->validator->validate($dto);
 
-        self::assertGreaterThan(0, count($errors));
+        self::assertGreaterThan(0, \count($errors));
 
         $fields = [];
         foreach ($errors as $error) {
@@ -56,7 +58,7 @@ final class CreateSellerDtoTest extends KernelTestCase
 
         $errors = $this->validator->validate($dto);
 
-        self::assertGreaterThan(0, count($errors));
+        self::assertGreaterThan(0, \count($errors));
         self::assertSame('email', $errors[0]->getPropertyPath());
     }
 
@@ -69,6 +71,6 @@ final class CreateSellerDtoTest extends KernelTestCase
 
         $errors = $this->validator->validate($dto);
 
-        self::assertGreaterThan(0, count($errors));
+        self::assertGreaterThan(0, \count($errors));
     }
 }

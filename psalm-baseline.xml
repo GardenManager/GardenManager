@@ -75,23 +75,23 @@
   </file>
   <file src="src/Auth/Infrastructure/Security/OidcAuthenticator.php">
     <MissingOverrideAttribute>
-      <code><![CDATA[public function authenticate(Request $request): Passport]]></code>
-      <code><![CDATA[public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response]]></code>
-      <code><![CDATA[public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response]]></code>
-      <code><![CDATA[public function supports(Request $request): ?bool]]></code>
+      <code><![CDATA[#[Override]]]></code>
+      <code><![CDATA[#[Override]]]></code>
+      <code><![CDATA[#[Override]]]></code>
+      <code><![CDATA[#[Override]]]></code>
     </MissingOverrideAttribute>
     <PossiblyNullArgument>
       <code><![CDATA[$name]]></code>
     </PossiblyNullArgument>
+    <UndefinedAttributeClass>
+      <code><![CDATA[Override]]></code>
+      <code><![CDATA[Override]]></code>
+      <code><![CDATA[Override]]></code>
+      <code><![CDATA[Override]]></code>
+    </UndefinedAttributeClass>
     <UndefinedInterfaceMethod>
       <code><![CDATA[getFlashBag]]></code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Auth/Infrastructure/Security/OidcProvider.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[protected function checkResponse(ResponseInterface $response, $data)]]></code>
-      <code><![CDATA[protected function getScopeSeparator(): string]]></code>
-    </MissingOverrideAttribute>
   </file>
   <file src="src/DependencyInjection/Compiler/OidcProviderLoggerPass.php">
     <MissingOverrideAttribute>
@@ -117,7 +117,7 @@
   </file>
   <file src="src/Seller/Domain/Seller.php">
     <MissingOverrideAttribute>
-      <code><![CDATA[public function getDeletedAt(): ?\DateTimeImmutable]]></code>
+      <code><![CDATA[public function getDeletedAt(): ?DateTimeImmutable]]></code>
       <code><![CDATA[public function isDeleted(): bool]]></code>
       <code><![CDATA[public function softDelete(): void]]></code>
     </MissingOverrideAttribute>
@@ -150,6 +150,16 @@
     <MissingOverrideAttribute>
       <code><![CDATA[public function getContext(): array]]></code>
       <code><![CDATA[public function getHttpStatusCode(): int]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Domain/ValueObject/EmailAddress.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function __toString(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Domain/ValueObject/PhoneNumber.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function __toString(): string]]></code>
     </MissingOverrideAttribute>
   </file>
   <file src="src/Shared/Infrastructure/Bus/CommandDispatcher.php">

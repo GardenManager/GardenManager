@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\Http;
 
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
+use JsonSerializable;
 
 /**
  * @template T
  */
-final readonly class PaginatedApiResponse implements \JsonSerializable
+final readonly class PaginatedApiResponse implements JsonSerializable
 {
     /**
      * @param list<T> $data
@@ -21,8 +24,10 @@ final readonly class PaginatedApiResponse implements \JsonSerializable
 
     /**
      * @template U
+     *
      * @param PaginatedResult<mixed> $pager
      * @param list<U> $items
+     *
      * @return self<U>
      */
     public static function fromPaginatedResult(PaginatedResult $pager, array $items): self

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;

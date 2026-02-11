@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Domain\Exception;
 
 use GardenManager\Shared\Domain\Exception\CoreException;
 
-class EmailVerificationException extends CoreException
+final class EmailVerificationException extends CoreException
 {
     public static function missingUserId(): self
     {

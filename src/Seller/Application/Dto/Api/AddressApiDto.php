@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Dto\Api;
 
 use GardenManager\Shared\Application\Dto\AddressData;
@@ -29,7 +31,7 @@ final readonly class AddressApiDto
             $this->street,
             $this->city,
             $this->postalCode,
-            $this->country
+            $this->country,
         );
     }
 }

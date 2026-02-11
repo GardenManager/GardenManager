@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Infrastructure\Security;
 
 use League\OAuth2\Client\Provider\GenericProvider;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 
 final class OidcProvider extends GenericProvider implements LoggerAwareInterface
 {
@@ -31,13 +35,13 @@ final class OidcProvider extends GenericProvider implements LoggerAwareInterface
         parent::__construct($options, $collaborators);
     }
 
-    #[\Override]
+    #[Override]
     protected function getScopeSeparator(): string
     {
         return ' ';
     }
 
-    #[\Override]
+    #[Override]
     protected function checkResponse(ResponseInterface $response, $data): void
     {
         $response->getBody()->rewind();
@@ -52,14 +56,14 @@ final class OidcProvider extends GenericProvider implements LoggerAwareInterface
         $response = file_get_contents($url);
 
         if ($response === false) {
-            throw new \RuntimeException(\sprintf('Failed to fetch OpenID configuration from "%s".', $url));
+            throw new RuntimeException(\sprintf('Failed to fetch OpenID configuration from "%s".', $url));
         }
 
         $data = json_decode($response, true, 512, \JSON_THROW_ON_ERROR);
 
         foreach (['authorization_endpoint', 'token_endpoint', 'userinfo_endpoint'] as $key) {
             if (!isset($data[$key])) {
-                throw new \RuntimeException(\sprintf('Missing "%s" in OpenID configuration.', $key));
+                throw new RuntimeException(\sprintf('Missing "%s" in OpenID configuration.', $key));
             }
         }
 

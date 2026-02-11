@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Infrastructure\Security;
 
 use GardenManager\Auth\Application\Command\CreateOidcLinkCommand;
@@ -35,6 +37,7 @@ final class OidcAuthenticator extends AbstractAuthenticator
     ) {
     }
 
+    #[Override]
     public function supports(Request $request): bool
     {
         if (empty($this->oidcClientId)) {
@@ -44,6 +47,7 @@ final class OidcAuthenticator extends AbstractAuthenticator
         return $request->attributes->get('_route') === 'app_oidc_check';
     }
 
+    #[Override]
     public function authenticate(Request $request): SelfValidatingPassport
     {
         $client = $this->clientRegistry->getClient('oidc');
@@ -95,11 +99,13 @@ final class OidcAuthenticator extends AbstractAuthenticator
         return new SelfValidatingPassport(new UserBadge($email));
     }
 
+    #[Override]
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
     {
         return new RedirectResponse($this->router->generate('app_dashboard'));
     }
 
+    #[Override]
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
         if ($exception->getMessage() === self::LINK_REQUIRED_SENTINEL) {

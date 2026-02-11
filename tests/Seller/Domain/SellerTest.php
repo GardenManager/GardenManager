@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Domain;
 
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Shared\Domain\ValueObject\Address;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
@@ -52,7 +55,7 @@ final class SellerTest extends TestCase
     #[Test]
     public function rejectsInvalidEmail(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         Seller::create(name: 'Test', email: 'not-an-email', ownerId: new Ulid());
     }

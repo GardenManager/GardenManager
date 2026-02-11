@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\Bus;
 
 use GardenManager\Shared\Application\QueryInterface;
@@ -11,13 +13,14 @@ final readonly class QueryDispatcher
 {
     public function __construct(
         private MessageBusInterface $queryBus,
-    )
-    {
+    ) {
     }
 
     /**
      * @template TResult
+     *
      * @param QueryInterface<TResult> $message
+     *
      * @return TResult
      */
     public function query(QueryInterface $message): mixed

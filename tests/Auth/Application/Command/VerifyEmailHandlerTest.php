@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\VerifyEmailCommand;

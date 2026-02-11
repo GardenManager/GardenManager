@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\ProvisionOidcUserCommand;
@@ -25,14 +27,14 @@ final class ProvisionOidcUserHandlerTest extends TestCase
         $userRepo = $this->createMock(AuthUserRepositoryInterface::class);
         $userRepo->expects(self::once())
             ->method('save')
-            ->willReturnCallback(function (AuthUser $user) use (&$savedUser): void {
+            ->willReturnCallback(static function (AuthUser $user) use (&$savedUser): void {
                 $savedUser = $user;
             });
 
         $oidcRepo = $this->createMock(AuthOidcRepositoryInterface::class);
         $oidcRepo->expects(self::once())
             ->method('save')
-            ->willReturnCallback(function (AuthOidc $link) use (&$savedLink): void {
+            ->willReturnCallback(static function (AuthOidc $link) use (&$savedLink): void {
                 $savedLink = $link;
             });
 

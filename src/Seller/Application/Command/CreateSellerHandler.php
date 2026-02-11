@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Command;
 
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
-use GardenManager\Shared\Domain\ValueObject\Address;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Application\View;
 
 use GardenManager\Shared\Domain\ValueObject\Address;

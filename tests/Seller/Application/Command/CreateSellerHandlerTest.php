@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Application\Command;
 
 use GardenManager\Seller\Application\Command\CreateSellerCommand;
@@ -23,7 +25,7 @@ final class CreateSellerHandlerTest extends TestCase
         $repo = $this->createMock(SellerRepositoryInterface::class);
         $repo->expects(self::once())
             ->method('save')
-            ->willReturnCallback(function (Seller $seller) use (&$savedSeller): void {
+            ->willReturnCallback(static function (Seller $seller) use (&$savedSeller): void {
                 $savedSeller = $seller;
             });
 
@@ -57,7 +59,7 @@ final class CreateSellerHandlerTest extends TestCase
         $repo = $this->createMock(SellerRepositoryInterface::class);
         $repo->expects(self::once())
             ->method('save')
-            ->willReturnCallback(function (Seller $seller) use (&$savedSeller): void {
+            ->willReturnCallback(static function (Seller $seller) use (&$savedSeller): void {
                 $savedSeller = $seller;
             });
 

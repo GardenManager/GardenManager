@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\Form;
 
 use GardenManager\Shared\Infrastructure\Form\DataTransformer\AddressTransformer;

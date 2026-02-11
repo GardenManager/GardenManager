@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
@@ -8,7 +10,6 @@ use GardenManager\Seller\Application\Dto\UpdateSellerDto;
 use GardenManager\Seller\Application\Query\GetSellerQuery;
 use GardenManager\Seller\Application\Query\SellerDetailView;
 use GardenManager\Seller\Infrastructure\Form\SellerFormType;
-use GardenManager\Seller\Infrastructure\Form\UpdateSellerFormType;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +46,7 @@ final class EditSellerAction extends AbstractController
             $dto,
             [
                 'data_class' => UpdateSellerDto::class,
-            ]
+            ],
         );
 
         $form->handleRequest($request);

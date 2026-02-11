@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Domain\Exception;
 
 use GardenManager\Shared\Domain\Exception\CoreException;
@@ -14,7 +16,7 @@ final class AuthException extends CoreException
             [
                 'userId' => $userId,
             ],
-            404
+            404,
         );
     }
 
@@ -25,7 +27,7 @@ final class AuthException extends CoreException
             [
                 'email' => $email,
             ],
-            404
+            404,
         );
     }
 
@@ -34,7 +36,7 @@ final class AuthException extends CoreException
         return new self(
             'Invalid password',
             [],
-            401
+            401,
         );
     }
 
@@ -45,7 +47,7 @@ final class AuthException extends CoreException
             [
                 'email' => $email,
             ],
-            409
+            409,
         );
     }
 }

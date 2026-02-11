@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Domain;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
@@ -26,11 +29,11 @@ class AuthOidc
     private string $subject;
 
     #[ORM\Column]
-    private \DateTimeImmutable $linkedAt;
+    private DateTimeImmutable $linkedAt;
 
     private function __construct()
     {
-        $this->linkedAt = new \DateTimeImmutable();
+        $this->linkedAt = new DateTimeImmutable();
     }
 
     public static function create(Ulid $id, AuthUser $user, string $provider, string $subject): self
@@ -64,7 +67,7 @@ class AuthOidc
         return $this->subject;
     }
 
-    public function getLinkedAt(): \DateTimeImmutable
+    public function getLinkedAt(): DateTimeImmutable
     {
         return $this->linkedAt;
     }

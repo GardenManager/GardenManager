@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Tests\Seller\Application\Command;
 
 use GardenManager\Seller\Application\Command\DeleteSellerCommand;

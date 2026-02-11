@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\Bus;
 
 use GardenManager\Shared\Application\CommandInterface;
@@ -10,8 +12,7 @@ final readonly class CommandDispatcher
 {
     public function __construct(
         private MessageBusInterface $commandBus,
-    )
-    {
+    ) {
     }
 
     public function dispatchCommand(CommandInterface $message): void

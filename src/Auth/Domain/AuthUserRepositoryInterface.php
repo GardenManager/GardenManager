@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Auth\Domain;
 
 use Symfony\Component\Uid\Ulid;

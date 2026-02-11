@@ -1,26 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\DependencyInjection;
 
+use Override;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
 final class GardenManagerExtension extends Extension implements PrependExtensionInterface
 {
-    #[\Override]
+    #[Override]
     public function prepend(ContainerBuilder $container): void
     {
         $this->setParameters($container->getExtensionConfig('gm'), $container);
     }
 
-    #[\Override]
+    #[Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $this->setParameters($configs, $container);
     }
 
-    #[\Override]
+    #[Override]
     public function getAlias(): string
     {
         return 'gm';
@@ -49,7 +52,7 @@ final class GardenManagerExtension extends Extension implements PrependExtension
         foreach ($config as $key => $value) {
             $paramName = $prefix . '.' . $key;
 
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $this->flattenToParameters($container, $value, $paramName);
             } else {
                 $container->setParameter($paramName, $value);

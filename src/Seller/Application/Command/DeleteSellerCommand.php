@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Application\Command;
 
 use GardenManager\Shared\Application\CommandInterface;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
@@ -30,8 +32,8 @@ final class CreateSellerAction extends AbstractController
             SellerFormType::class,
             $dto,
             [
-                'data_class' => CreateSellerDto::class
-            ]
+                'data_class' => CreateSellerDto::class,
+            ],
         );
 
         $form->handleRequest($request);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Infrastructure\Pagination;
 
 use Doctrine\ORM\QueryBuilder;
@@ -11,6 +13,7 @@ final readonly class PaginationFactory
 {
     /**
      * @template T of object
+     *
      * @return PaginatedResult<T>
      */
     public function createPaginatedResult(QueryBuilder $queryBuilder, int $page, int $maxPerPage): PaginatedResult
