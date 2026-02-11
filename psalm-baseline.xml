@@ -74,21 +74,9 @@
     </MissingOverrideAttribute>
   </file>
   <file src="src/Auth/Infrastructure/Security/OidcAuthenticator.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[#[Override]]]></code>
-      <code><![CDATA[#[Override]]]></code>
-      <code><![CDATA[#[Override]]]></code>
-      <code><![CDATA[#[Override]]]></code>
-    </MissingOverrideAttribute>
     <PossiblyNullArgument>
       <code><![CDATA[$name]]></code>
     </PossiblyNullArgument>
-    <UndefinedAttributeClass>
-      <code><![CDATA[Override]]></code>
-      <code><![CDATA[Override]]></code>
-      <code><![CDATA[Override]]></code>
-      <code><![CDATA[Override]]></code>
-    </UndefinedAttributeClass>
     <UndefinedInterfaceMethod>
       <code><![CDATA[getFlashBag]]></code>
     </UndefinedInterfaceMethod>
