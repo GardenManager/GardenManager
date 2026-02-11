@@ -1,0 +1,27 @@
+# Application
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+
+# Phpunit
+/phpunit.xml
+/.phpunit.cache/
+
+# Asset mapper
+/public/assets/
+/assets/vendor/
+
+# Docker specific
+.docker.env
+.docker/certs/
+
+# PHP CS Fixer
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+
+# Jetbarins IDE
+.idea/

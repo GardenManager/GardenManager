@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            bool $requireEmailVerification: '%gm.require_email_verification%'
+            string $oidcClientId: '%gm.oidc.client_id%'
+            Symfony\Component\Messenger\MessageBusInterface $commandBus: '@command.bus'
+            Symfony\Component\Messenger\MessageBusInterface $queryBus: '@query.bus'
+
+    GardenManager\:
+        resource: '../src/'
+
+    Symfony\Component\Uid\Command\GenerateUlidCommand: ~
+    Symfony\Component\Uid\Command\GenerateUuidCommand: ~
+    Symfony\Component\Uid\Command\InspectUlidCommand: ~
+    Symfony\Component\Uid\Command\InspectUuidCommand: ~

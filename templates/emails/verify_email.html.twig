@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #16a34a;">Verify your email address</h1>
+
+        <p>Hi {{ user.displayName }},</p>
+
+        <p>Please click the link below to verify your email address:</p>
+
+        <p>
+            <a href="{{ signedUrl }}" style="display: inline-block; background-color: #16a34a; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+                Verify my email
+            </a>
+        </p>
+
+        <p style="color: #666; font-size: 14px;">
+            This link will {{ expiresAtMessageKey|trans(expiresAtMessageData) }}.
+        </p>
+
+        <p style="color: #666; font-size: 14px;">
+            If you did not create an account, you can safely ignore this email.
+        </p>
+    </body>
+</html>

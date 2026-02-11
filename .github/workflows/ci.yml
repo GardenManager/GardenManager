@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  static-analysis:
+    name: Static Analysis (PHPStan + Psalm)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy?serverVersion=17"
+      MESSENGER_TRANSPORT_DSN: "in-memory://"
+      MESSENGER_FAILED_TRANSPORT_DSN: "in-memory://"
+      MAILER_DSN: "null://null"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, pdo_pgsql, redis, zip, sockets
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Warm Symfony cache
+        run: php bin/console cache:warmup --env=dev
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit=512M --no-progress
+
+      - name: Run Psalm
+        run: vendor/bin/psalm --no-progress
+
+  code-style:
+    name: Code Style (PHP-CS-Fixer)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy?serverVersion=17"
+      MESSENGER_TRANSPORT_DSN: "in-memory://"
+      MESSENGER_FAILED_TRANSPORT_DSN: "in-memory://"
+      MAILER_DSN: "null://null"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Check code style
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  rector:
+    name: Rector (dry-run)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy?serverVersion=17"
+      MESSENGER_TRANSPORT_DSN: "in-memory://"
+      MESSENGER_FAILED_TRANSPORT_DSN: "in-memory://"
+      MAILER_DSN: "null://null"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, pdo_pgsql, redis, zip, sockets
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Warm Symfony cache
+        run: php bin/console cache:warmup --env=dev
+
+      - name: Run Rector
+        run: vendor/bin/rector process --dry-run --no-progress-bar
+
+  linting:
+    name: Linting (Twig + YAML + Container + Audit)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy?serverVersion=17"
+      MESSENGER_TRANSPORT_DSN: "in-memory://"
+      MESSENGER_FAILED_TRANSPORT_DSN: "in-memory://"
+      MAILER_DSN: "null://null"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, pdo_pgsql, redis, zip, sockets
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Lint Twig templates
+        run: php bin/console lint:twig templates/
+
+      - name: Lint YAML config
+        run: php bin/console lint:yaml config/ --parse-tags
+
+      - name: Lint DI container
+        run: php bin/console lint:container
+
+      - name: Composer audit
+        run: composer audit
+
+  tests:
+    name: Tests (PHPUnit)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://app:!ChangeMe!@localhost:5432/app_test?serverVersion=17"
+      MESSENGER_TRANSPORT_DSN: "in-memory://"
+      MESSENGER_FAILED_TRANSPORT_DSN: "in-memory://"
+      MAILER_DSN: "null://null"
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: "!ChangeMe!"
+          POSTGRES_DB: app_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U app"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, pdo_pgsql, redis, zip, sockets
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Create database
+        run: php bin/console doctrine:database:create --if-not-exists --env=test
+
+      - name: Run migrations
+        run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
+      - name: Run PHPUnit
+        run: php bin/phpunit

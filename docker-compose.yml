@@ -1,0 +1,107 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+      target: dev
+    restart: unless-stopped
+    env_file:
+      - .docker.env
+    volumes:
+      - .:/srv/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    entrypoint: ["/etc/nginx/entrypoint.sh"]
+    env_file:
+      - .docker.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - '${PWD}/.docker/nginx/default.conf:/etc/nginx/templates/default.conf:ro'
+      - '${PWD}/.docker/nginx/default.ssl.conf:/etc/nginx/templates/default.ssl.conf:ro'
+      - '${PWD}/.docker/nginx/entrypoint.sh:/etc/nginx/entrypoint.sh:ro'
+      - '${PWD}/.docker/certs:/etc/nginx/certs:ro'
+      - .:/srv/app
+    depends_on:
+      php:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate -qO- https://localhost/ || wget -qO- http://localhost/ || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    env_file:
+      - .docker.env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  worker:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+      target: dev
+    restart: unless-stopped
+    env_file:
+      - .docker.env
+    command: ["supervisord", "-c", "/srv/app/.docker/worker/supervisord.conf"]
+    volumes:
+      - .:/srv/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    restart: unless-stopped
+    env_file:
+      - .docker.env
+    volumes:
+      - valkey_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "valkey-cli ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    env_file:
+      - .docker.env
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:
+  valkey_data:

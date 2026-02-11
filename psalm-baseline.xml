@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.15.1@28dc127af1b5aecd52314f6f645bafc10d0e11f9">
+  <file src="src/Auth/Domain/AuthUser.php">
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->email]]></code>
+    </LessSpecificReturnStatement>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getPassword(): ?string]]></code>
+      <code><![CDATA[public function getRoles(): array]]></code>
+      <code><![CDATA[public function getUserIdentifier(): string]]></code>
+    </MissingOverrideAttribute>
+    <MoreSpecificReturnType>
+      <code><![CDATA[string]]></code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/Auth/Infrastructure/Doctrine/AuthOidcRepository.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function findByProviderAndSubject(string $provider, string $subject): ?AuthOidc]]></code>
+      <code><![CDATA[public function save(AuthOidc $link): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Auth/Infrastructure/Doctrine/AuthUserRepository.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function findByEmail(string $email): ?AuthUser]]></code>
+      <code><![CDATA[public function findById(Ulid $id): ?AuthUser]]></code>
+      <code><![CDATA[public function save(AuthUser $user): void]]></code>
+      <code><![CDATA[public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Auth/Infrastructure/Form/AccountLinkFormType.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function buildForm(FormBuilderInterface $builder, array $options): void]]></code>
+      <code><![CDATA[public function configureOptions(OptionsResolver $resolver): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Auth/Infrastructure/Form/RegistrationFormType.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function buildForm(FormBuilderInterface $builder, array $options): void]]></code>
+      <code><![CDATA[public function configureOptions(OptionsResolver $resolver): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Auth/Infrastructure/Http/Web/LinkAccountAction.php">
+    <InvalidNullableReturnType>
+      <code><![CDATA[Response]]></code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement>
+      <code><![CDATA[$this->security->login($user, 'form_login')]]></code>
+    </NullableReturnStatement>
+    <PossiblyNullArgument>
+      <code><![CDATA[$user]]></code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Auth/Infrastructure/Http/Web/OidcConnectAction.php">
+    <TooFewArguments>
+      <code><![CDATA[redirect]]></code>
+      <code><![CDATA[redirect]]></code>
+    </TooFewArguments>
+  </file>
+  <file src="src/Auth/Infrastructure/Http/Web/RegisterUserAction.php">
+    <InvalidNullableReturnType>
+      <code><![CDATA[Response]]></code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement>
+      <code><![CDATA[$this->security->login($user, 'form_login')]]></code>
+    </NullableReturnStatement>
+    <PossiblyNullArgument>
+      <code><![CDATA[$user]]></code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Auth/Infrastructure/Security/EmailVerificationService.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function sendVerificationEmail(AuthUser $user): void]]></code>
+      <code><![CDATA[public function validateEmailConfirmation(Request $request): Ulid]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Auth/Infrastructure/Security/OidcAuthenticator.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function authenticate(Request $request): Passport]]></code>
+      <code><![CDATA[public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response]]></code>
+      <code><![CDATA[public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response]]></code>
+      <code><![CDATA[public function supports(Request $request): ?bool]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyNullArgument>
+      <code><![CDATA[$name]]></code>
+    </PossiblyNullArgument>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getFlashBag]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Auth/Infrastructure/Security/OidcProvider.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function checkResponse(ResponseInterface $response, $data)]]></code>
+      <code><![CDATA[protected function getScopeSeparator(): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/DependencyInjection/Compiler/OidcProviderLoggerPass.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function process(ContainerBuilder $container): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Kernel.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function build(ContainerBuilder $container): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Seller/Application/Query/ListSellersQuery.php">
+    <InvalidDocblock>
+      <code><![CDATA[final readonly class ListSellersQuery implements PaginatedQueryInterface]]></code>
+    </InvalidDocblock>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getLimit(): int]]></code>
+      <code><![CDATA[public function getPage(): int]]></code>
+    </MissingOverrideAttribute>
+    <MissingTemplateParam>
+      <code><![CDATA[PaginatedQueryInterface]]></code>
+    </MissingTemplateParam>
+  </file>
+  <file src="src/Seller/Domain/Seller.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getDeletedAt(): ?\DateTimeImmutable]]></code>
+      <code><![CDATA[public function isDeleted(): bool]]></code>
+      <code><![CDATA[public function softDelete(): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Seller/Infrastructure/Doctrine/SellerRepository.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function findById(Ulid $id): ?Seller]]></code>
+      <code><![CDATA[public function findByOwnerIdPaginated(Ulid $ownerId, int $page, int $perPage): PaginatedResult]]></code>
+      <code><![CDATA[public function getByIdForOwner(Ulid $id, Ulid $ownerId): Seller]]></code>
+      <code><![CDATA[public function save(Seller $seller): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Seller/Infrastructure/Form/SellerFormType.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function buildForm(FormBuilderInterface $builder, array $options): void]]></code>
+      <code><![CDATA[public function configureOptions(OptionsResolver $resolver): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Seller/Infrastructure/Http/Api/ListSellersApiAction.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$items]]></code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Seller/Infrastructure/Http/Web/DeleteSellerAction.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$request->request->get('_token')]]></code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Shared/Domain/Exception/CoreException.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getContext(): array]]></code>
+      <code><![CDATA[public function getHttpStatusCode(): int]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Infrastructure/Bus/CommandDispatcher.php">
+    <PossiblyNullArrayOffset>
+      <code><![CDATA[$e->getWrappedExceptions()]]></code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/Shared/Infrastructure/Bus/QueryDispatcher.php">
+    <PossiblyNullArrayOffset>
+      <code><![CDATA[$e->getWrappedExceptions()]]></code>
+    </PossiblyNullArrayOffset>
+    <PossiblyNullReference>
+      <code><![CDATA[getResult]]></code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Shared/Infrastructure/Doctrine/Filter/SoftDeleteFilter.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Infrastructure/EventListener/HttpStatusCodeCarrierExceptionListener.php">
+    <InvalidArgument>
+      <code><![CDATA[$httpStatusCodeCarrierException]]></code>
+    </InvalidArgument>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[getCode]]></code>
+      <code><![CDATA[getMessage]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Shared/Infrastructure/Form/AddressType.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function buildForm(FormBuilderInterface $builder, array $options): void]]></code>
+      <code><![CDATA[public function configureOptions(OptionsResolver $resolver): void]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Infrastructure/Form/DataTransformer/AddressTransformer.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function reverseTransform(mixed $value): ?AddressData]]></code>
+      <code><![CDATA[public function transform(mixed $value): ?array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Infrastructure/Http/PaginatedApiResponse.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function jsonSerialize(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Shared/Infrastructure/Pagination/PaginationFactory.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[iterator_to_array($pager->getCurrentPageResults())]]></code>
+    </ArgumentTypeCoercion>
+  </file>
+</files>

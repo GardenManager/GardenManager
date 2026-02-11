@@ -1,0 +1,11 @@
+knpu_oauth2_client:
+    clients:
+        oidc:
+            type: generic
+            provider_class: GardenManager\Auth\Infrastructure\Security\OidcProvider
+            client_id: '%gm.oidc.client_id%'
+            client_secret: '%gm.oidc.client_secret%'
+            redirect_route: app_oidc_check
+            redirect_params: {}
+            provider_options:
+                issuer_url: '%gm.oidc.issuer_url%'
