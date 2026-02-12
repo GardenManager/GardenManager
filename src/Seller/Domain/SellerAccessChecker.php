@@ -15,7 +15,7 @@ final class SellerAccessChecker
             throw EntityOwnershipException::fromEntityClassNameEntityIdAndUserId(
                 Seller::class,
                 $seller->getId(),
-                $ownerId
+                $ownerId,
             );
         }
     }

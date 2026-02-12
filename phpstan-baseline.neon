@@ -61,12 +61,6 @@ parameters:
 			path: src/Seller/Domain/Seller.php
 
 		-
-			message: '#^Method GardenManager\\Seller\\Infrastructure\\Doctrine\\SellerRepository\:\:findByOwnerIdPaginated\(\) should return GardenManager\\Shared\\Domain\\Pagination\\PaginatedResult\<GardenManager\\Seller\\Domain\\Seller\> but returns GardenManager\\Shared\\Domain\\Pagination\\PaginatedResult\<object\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Seller/Infrastructure/Doctrine/SellerRepository.php
-
-		-
 			message: '#^Class GardenManager\\Seller\\Infrastructure\\Form\\SellerFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -125,9 +119,3 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Shared/Infrastructure/Form/DataTransformer/AddressTransformer.php
-
-		-
-			message: '#^Template type T of method GardenManager\\Shared\\Infrastructure\\Pagination\\PaginationFactory\:\:createPaginatedResult\(\) is not referenced in a parameter\.$#'
-			identifier: method.templateTypeNotInParameter
-			count: 1
-			path: src/Shared/Infrastructure/Pagination/PaginationFactory.php

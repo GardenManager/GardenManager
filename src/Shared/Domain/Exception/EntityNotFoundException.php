@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Shared\Domain\Exception;
 
 use Symfony\Component\Uid\Ulid;
 
-class EntityNotFoundException extends CoreException
+final class EntityNotFoundException extends CoreException
 {
     public static function fromEntityClassNameAndId(string $entityClassName, Ulid $entityId): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 'The %s cannot be found by it\'s ID!',
-                array_last(explode('\\', $entityClassName))
+                array_last(explode('\\', $entityClassName)),
             ),
             [
                 'fullyQualifiedClassName' => $entityClassName,

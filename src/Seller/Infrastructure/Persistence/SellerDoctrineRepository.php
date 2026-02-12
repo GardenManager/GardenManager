@@ -11,6 +11,7 @@ use GardenManager\Seller\Domain\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Infrastructure\Pagination\PaginationFactory;
+use Override;
 use Symfony\Component\Uid\Ulid;
 
 /** @extends ServiceEntityRepository<Seller> */
@@ -23,6 +24,7 @@ final class SellerDoctrineRepository extends ServiceEntityRepository implements 
         parent::__construct($registry, Seller::class);
     }
 
+    #[Override]
     public function getById(Ulid $id): Seller
     {
         $seller = $this->createQueryBuilder('seller')
@@ -39,6 +41,7 @@ final class SellerDoctrineRepository extends ServiceEntityRepository implements 
     }
 
     /** @return PaginatedResult<Seller> */
+    #[Override]
     public function findByOwnerIdPaginated(Ulid $ownerId, int $page, int $perPage): PaginatedResult
     {
         $queryBuilder = $this->createQueryBuilder('seller')
@@ -46,6 +49,7 @@ final class SellerDoctrineRepository extends ServiceEntityRepository implements 
             ->setParameter('owner', $ownerId, 'ulid')
             ->orderBy('seller.createdAt', 'DESC');
 
+        /** @var PaginatedResult<Seller> */
         return $this->paginationFactory->createPaginatedResult(
             $queryBuilder,
             $page,
@@ -53,6 +57,7 @@ final class SellerDoctrineRepository extends ServiceEntityRepository implements 
         );
     }
 
+    #[Override]
     public function save(Seller $seller): void
     {
         $this->getEntityManager()->persist($seller);
