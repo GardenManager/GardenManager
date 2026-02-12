@@ -126,7 +126,7 @@ final class SellerApiActionsTest extends WebTestCase
         $client->loginUser($otherUser);
 
         $client->request('GET', '/api/sellers/' . $seller->getId());
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(403);
     }
 
     #[Test]

@@ -104,7 +104,7 @@ final class SellerWebActionsTest extends WebTestCase
         $client->loginUser($otherUser);
 
         $client->request('GET', '/sellers/' . $seller->getId());
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(403);
     }
 
     private function createUser(): AuthUser

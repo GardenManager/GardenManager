@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Form;
 
-use GardenManager\Seller\Application\Dto\CreateSellerDto;
-use GardenManager\Seller\Application\Dto\UpdateSellerDto;
+use GardenManager\Seller\Application\Dto\SellerFormDto;
 use GardenManager\Shared\Infrastructure\Form\AddressType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -29,7 +28,6 @@ final class SellerFormType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setRequired('data_class');
-        $resolver->setAllowedValues('data_class', [CreateSellerDto::class, UpdateSellerDto::class]);
+        $resolver->setDefault('data_class', SellerFormDto::class);
     }
 }

@@ -6,7 +6,7 @@ namespace GardenManager\Seller\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Command\CreateSellerCommand;
-use GardenManager\Seller\Application\Dto\CreateSellerDto;
+use GardenManager\Seller\Application\Dto\SellerFormDto;
 use GardenManager\Seller\Infrastructure\Form\SellerFormType;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,14 +27,8 @@ final class CreateSellerAction extends AbstractController
     #[Route('/sellers/new', name: 'seller_new', methods: ['GET', 'POST'])]
     public function __invoke(Request $request): Response
     {
-        $dto = new CreateSellerDto();
-        $form = $this->createForm(
-            SellerFormType::class,
-            $dto,
-            [
-                'data_class' => CreateSellerDto::class,
-            ],
-        );
+        $dto = new SellerFormDto();
+        $form = $this->createForm(SellerFormType::class, $dto);
 
         $form->handleRequest($request);
 
@@ -46,8 +40,8 @@ final class CreateSellerAction extends AbstractController
             $command = new CreateSellerCommand(
                 sellerId: $sellerId,
                 ownerId: $user->getId(),
-                name: $dto->name,
-                email: $dto->email,
+                name: $dto->name ?? '',
+                email: $dto->email ?? '',
                 phone: $dto->phone,
                 description: $dto->description,
                 address: $dto->address,

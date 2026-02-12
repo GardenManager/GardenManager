@@ -8,16 +8,16 @@ use GardenManager\Seller\Application\Query\SellerDetailView;
 use GardenManager\Shared\Application\Dto\AddressData;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class UpdateSellerDto
+final class SellerFormDto
 {
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    public string $name = '';
+    public ?string $name = null;
 
     #[Assert\NotBlank]
     #[Assert\Email]
     #[Assert\Length(max: 255)]
-    public string $email = '';
+    public ?string $email = null;
 
     #[Assert\Length(max: 50)]
     public ?string $phone = null;

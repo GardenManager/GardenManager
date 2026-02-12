@@ -6,7 +6,7 @@ namespace GardenManager\Seller\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Command\UpdateSellerCommand;
-use GardenManager\Seller\Application\Dto\UpdateSellerDto;
+use GardenManager\Seller\Application\Dto\SellerFormDto;
 use GardenManager\Seller\Application\Query\GetSellerQuery;
 use GardenManager\Seller\Application\Query\SellerDetailView;
 use GardenManager\Seller\Infrastructure\Form\SellerFormType;
@@ -40,14 +40,8 @@ final class EditSellerAction extends AbstractController
             ownerId: $user->getId(),
         ));
 
-        $dto = UpdateSellerDto::fromView($view);
-        $form = $this->createForm(
-            SellerFormType::class,
-            $dto,
-            [
-                'data_class' => UpdateSellerDto::class,
-            ],
-        );
+        $dto = SellerFormDto::fromView($view);
+        $form = $this->createForm(SellerFormType::class, $dto);
 
         $form->handleRequest($request);
 
@@ -55,8 +49,8 @@ final class EditSellerAction extends AbstractController
             $command = new UpdateSellerCommand(
                 sellerId: Ulid::fromString($id),
                 ownerId: $user->getId(),
-                name: $dto->name,
-                email: $dto->email,
+                name: $dto->name ?? '',
+                email: $dto->email ?? '',
                 phone: $dto->phone,
                 description: $dto->description,
                 address: $dto->address,

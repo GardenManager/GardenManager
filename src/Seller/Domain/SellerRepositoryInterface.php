@@ -9,9 +9,7 @@ use Symfony\Component\Uid\Ulid;
 
 interface SellerRepositoryInterface
 {
-    public function findById(Ulid $id): ?Seller;
-
-    public function getByIdForOwner(Ulid $id, Ulid $ownerId): Seller;
+    public function getById(Ulid $id): Seller;
 
     /** @return PaginatedResult<Seller> */
     public function findByOwnerIdPaginated(Ulid $ownerId, int $page, int $perPage): PaginatedResult;

@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Seller\Infrastructure\Doctrine;
+namespace GardenManager\Seller\Infrastructure\Persistence;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use GardenManager\Seller\Domain\Exception\SellerException;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Infrastructure\Pagination\PaginationFactory;
 use Symfony\Component\Uid\Ulid;
 
 /** @extends ServiceEntityRepository<Seller> */
-final class SellerRepository extends ServiceEntityRepository implements SellerRepositoryInterface
+final class SellerDoctrineRepository extends ServiceEntityRepository implements SellerRepositoryInterface
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -24,25 +23,16 @@ final class SellerRepository extends ServiceEntityRepository implements SellerRe
         parent::__construct($registry, Seller::class);
     }
 
-    public function findById(Ulid $id): ?Seller
+    public function getById(Ulid $id): Seller
     {
-        return $this->createQueryBuilder('s')
-            ->where('s.id = :id')
+        $seller = $this->createQueryBuilder('seller')
+            ->where('seller.id = :id')
             ->setParameter('id', $id, 'ulid')
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    public function getByIdForOwner(Ulid $id, Ulid $ownerId): Seller
-    {
-        $seller = $this->findById($id);
 
         if ($seller === null) {
-            throw SellerException::notFoundById($id);
-        }
-
-        if (!$seller->isOwnedBy($ownerId)) {
-            throw SellerException::notOwned($seller->getId(), $ownerId);
+            throw EntityNotFoundException::fromEntityClassNameAndId(Seller::class, $id);
         }
 
         return $seller;
@@ -51,8 +41,13 @@ final class SellerRepository extends ServiceEntityRepository implements SellerRe
     /** @return PaginatedResult<Seller> */
     public function findByOwnerIdPaginated(Ulid $ownerId, int $page, int $perPage): PaginatedResult
     {
+        $queryBuilder = $this->createQueryBuilder('seller')
+            ->where('seller.ownerId = :owner')
+            ->setParameter('owner', $ownerId, 'ulid')
+            ->orderBy('seller.createdAt', 'DESC');
+
         return $this->paginationFactory->createPaginatedResult(
-            $this->ownerQueryBuilder($ownerId),
+            $queryBuilder,
             $page,
             $perPage,
         );
@@ -61,13 +56,5 @@ final class SellerRepository extends ServiceEntityRepository implements SellerRe
     public function save(Seller $seller): void
     {
         $this->getEntityManager()->persist($seller);
-    }
-
-    private function ownerQueryBuilder(Ulid $ownerId): QueryBuilder
-    {
-        return $this->createQueryBuilder('s')
-            ->where('s.ownerId = :owner')
-            ->setParameter('owner', $ownerId, 'ulid')
-            ->orderBy('s.createdAt', 'DESC');
     }
 }
