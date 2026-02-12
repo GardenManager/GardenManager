@@ -6,9 +6,11 @@ namespace GardenManager\Tests\Seller\Application\Command;
 
 use GardenManager\Seller\Application\Command\DeleteSellerCommand;
 use GardenManager\Seller\Application\Command\DeleteSellerHandler;
-use GardenManager\Seller\Domain\Exception\SellerException;
 use GardenManager\Seller\Domain\Seller;
+use GardenManager\Seller\Domain\SellerAccessChecker;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
+use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
@@ -24,10 +26,10 @@ final class DeleteSellerHandlerTest extends TestCase
         $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: $ownerId, id: $sellerId);
 
         $repo = $this->createMock(SellerRepositoryInterface::class);
-        $repo->method('getByIdForOwner')->with($sellerId, $ownerId)->willReturn($seller);
+        $repo->method('getById')->with($sellerId)->willReturn($seller);
         $repo->expects(self::once())->method('save');
 
-        $handler = new DeleteSellerHandler($repo);
+        $handler = new DeleteSellerHandler($repo, new SellerAccessChecker());
 
         $handler(new DeleteSellerCommand(
             sellerId: $sellerId,
@@ -44,13 +46,13 @@ final class DeleteSellerHandlerTest extends TestCase
         $ownerId = new Ulid();
 
         $repo = $this->createStub(SellerRepositoryInterface::class);
-        $repo->method('getByIdForOwner')->willThrowException(
-            SellerException::notFoundById($sellerId),
+        $repo->method('getById')->willThrowException(
+            EntityNotFoundException::fromEntityClassNameAndId(Seller::class, $sellerId),
         );
 
-        $handler = new DeleteSellerHandler($repo);
+        $handler = new DeleteSellerHandler($repo, new SellerAccessChecker());
 
-        $this->expectException(SellerException::class);
+        $this->expectException(EntityNotFoundException::class);
 
         $handler(new DeleteSellerCommand(
             sellerId: $sellerId,
@@ -63,15 +65,16 @@ final class DeleteSellerHandlerTest extends TestCase
     {
         $sellerId = new Ulid();
         $ownerId = new Ulid();
+        $differentOwnerId = new Ulid();
+
+        $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: $differentOwnerId, id: $sellerId);
 
         $repo = $this->createStub(SellerRepositoryInterface::class);
-        $repo->method('getByIdForOwner')->willThrowException(
-            SellerException::notOwned($sellerId, $ownerId),
-        );
+        $repo->method('getById')->willReturn($seller);
 
-        $handler = new DeleteSellerHandler($repo);
+        $handler = new DeleteSellerHandler($repo, new SellerAccessChecker());
 
-        $this->expectException(SellerException::class);
+        $this->expectException(EntityOwnershipException::class);
 
         $handler(new DeleteSellerCommand(
             sellerId: $sellerId,

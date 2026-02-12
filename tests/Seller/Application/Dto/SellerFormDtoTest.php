@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Seller\Application\Dto;
 
-use GardenManager\Seller\Application\Dto\CreateSellerDto;
+use GardenManager\Seller\Application\Dto\SellerFormDto;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class CreateSellerDtoTest extends KernelTestCase
+final class SellerFormDtoTest extends KernelTestCase
 {
     private ValidatorInterface $validator;
 
@@ -22,7 +22,7 @@ final class CreateSellerDtoTest extends KernelTestCase
     #[Test]
     public function validDtoPassesValidation(): void
     {
-        $dto = new CreateSellerDto();
+        $dto = new SellerFormDto();
         $dto->name = 'John Garden';
         $dto->email = 'john@example.com';
 
@@ -34,7 +34,7 @@ final class CreateSellerDtoTest extends KernelTestCase
     #[Test]
     public function blankRequiredFieldsFail(): void
     {
-        $dto = new CreateSellerDto();
+        $dto = new SellerFormDto();
 
         $errors = $this->validator->validate($dto);
 
@@ -52,7 +52,7 @@ final class CreateSellerDtoTest extends KernelTestCase
     #[Test]
     public function invalidEmailFails(): void
     {
-        $dto = new CreateSellerDto();
+        $dto = new SellerFormDto();
         $dto->name = 'John';
         $dto->email = 'not-an-email';
 
@@ -65,7 +65,7 @@ final class CreateSellerDtoTest extends KernelTestCase
     #[Test]
     public function nameTooLongFails(): void
     {
-        $dto = new CreateSellerDto();
+        $dto = new SellerFormDto();
         $dto->name = str_repeat('a', 256);
         $dto->email = 'john@example.com';
 

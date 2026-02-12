@@ -11,11 +11,7 @@ use Pagerfanta\Pagerfanta;
 
 final readonly class PaginationFactory
 {
-    /**
-     * @template T of object
-     *
-     * @return PaginatedResult<T>
-     */
+    /** @return PaginatedResult<object> */
     public function createPaginatedResult(QueryBuilder $queryBuilder, int $page, int $maxPerPage): PaginatedResult
     {
         $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(

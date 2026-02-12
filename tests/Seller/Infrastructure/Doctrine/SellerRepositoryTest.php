@@ -6,9 +6,9 @@ namespace GardenManager\Tests\Seller\Infrastructure\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Seller\Domain\Exception\SellerException;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\ValueObject\Address;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -40,9 +40,8 @@ final class SellerRepositoryTest extends KernelTestCase
         $this->repository->save($seller);
         $this->em->flush();
 
-        $found = $this->repository->findById($seller->getId());
+        $found = $this->repository->getById($seller->getId());
 
-        self::assertInstanceOf(Seller::class, $found);
         self::assertSame('John Garden', $found->getName());
         self::assertSame('john@example.com', $found->getEmail());
         self::assertNotNull($found->getAddress());
@@ -63,7 +62,8 @@ final class SellerRepositoryTest extends KernelTestCase
         $this->repository->save($seller);
         $this->em->flush();
 
-        self::assertNull($this->repository->findById($id));
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->getById($id);
     }
 
     #[Test]
@@ -90,7 +90,7 @@ final class SellerRepositoryTest extends KernelTestCase
     }
 
     #[Test]
-    public function getByIdForOwnerReturnsSeller(): void
+    public function getByIdReturnsSeller(): void
     {
         $owner = $this->createOwner();
 
@@ -98,32 +98,17 @@ final class SellerRepositoryTest extends KernelTestCase
         $this->repository->save($seller);
         $this->em->flush();
 
-        $found = $this->repository->getByIdForOwner($seller->getId(), $owner->getId());
+        $found = $this->repository->getById($seller->getId());
 
         self::assertSame('Owned Seller', $found->getName());
     }
 
     #[Test]
-    public function getByIdForOwnerThrowsWhenSellerNotFound(): void
+    public function getByIdThrowsWhenNotFound(): void
     {
-        $this->expectException(SellerException::class);
+        $this->expectException(EntityNotFoundException::class);
 
-        $this->repository->getByIdForOwner(new Ulid(), new Ulid());
-    }
-
-    #[Test]
-    public function getByIdForOwnerThrowsWhenNotOwned(): void
-    {
-        $owner = $this->createOwner();
-        $otherOwner = $this->createOwner();
-
-        $seller = Seller::create(name: 'Someone Else', email: 'other@example.com', ownerId: $owner->getId());
-        $this->repository->save($seller);
-        $this->em->flush();
-
-        $this->expectException(SellerException::class);
-
-        $this->repository->getByIdForOwner($seller->getId(), $otherOwner->getId());
+        $this->repository->getById(new Ulid());
     }
 
     #[Test]

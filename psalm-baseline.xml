@@ -110,14 +110,6 @@
       <code><![CDATA[public function softDelete(): void]]></code>
     </MissingOverrideAttribute>
   </file>
-  <file src="src/Seller/Infrastructure/Doctrine/SellerRepository.php">
-    <MissingOverrideAttribute>
-      <code><![CDATA[public function findById(Ulid $id): ?Seller]]></code>
-      <code><![CDATA[public function findByOwnerIdPaginated(Ulid $ownerId, int $page, int $perPage): PaginatedResult]]></code>
-      <code><![CDATA[public function getByIdForOwner(Ulid $id, Ulid $ownerId): Seller]]></code>
-      <code><![CDATA[public function save(Seller $seller): void]]></code>
-    </MissingOverrideAttribute>
-  </file>
   <file src="src/Seller/Infrastructure/Form/SellerFormType.php">
     <MissingOverrideAttribute>
       <code><![CDATA[public function buildForm(FormBuilderInterface $builder, array $options): void]]></code>
