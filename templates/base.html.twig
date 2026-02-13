@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -12,7 +12,8 @@
         {% endblock %}
     </head>
     <body>
-    <img alt="logo" src="{{ asset('images/logo.png') }}" />
+    <img alt="logo" style="height: 64px; padding: 12px; display: inline-block;" src="{{ asset('images/logo.png') }}" />
+    <span style="font-size: 24px; font-weight: bold;">Garden Manager</span>
         {% block body %}{% endblock %}
     </body>
 </html>

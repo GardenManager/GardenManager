@@ -27,7 +27,7 @@ final class RegisterUserAction extends AbstractController
     }
 
     #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): ?Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_dashboard');

@@ -8,6 +8,7 @@
     findUnusedBaselineEntry="true"
     findUnusedCode="false"
     errorBaseline="psalm-baseline.xml"
+    ensureOverrideAttribute="false"
     phpVersion="8.5"
 >
     <projectFiles>
