@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
@@ -15,11 +17,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
 #[IsGranted('ROLE_USER')]
-class CreatePlantAction extends AbstractController
+final class CreatePlantAction extends AbstractController
 {
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/plants/new', name: 'plant_new', methods: ['GET', 'POST'])]
     public function __invoke(Request $request): Response

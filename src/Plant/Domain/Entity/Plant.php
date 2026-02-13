@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Domain\Entity;
 
 use DateTimeImmutable;
@@ -11,7 +13,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 #[ORM\Table(name: 'plant')]
 #[ORM\HasLifecycleCallbacks]
-final class Plant implements SoftDeletable
+class Plant implements SoftDeletable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
@@ -63,8 +65,7 @@ final class Plant implements SoftDeletable
         ?string $epithet = null,
         ?string $cultivar = null,
         ?Ulid $plantId = null,
-    ): Plant
-    {
+    ): self {
         $plant = new self();
 
         if ($plantId === null) {
@@ -92,8 +93,7 @@ final class Plant implements SoftDeletable
         ?string $genus = null,
         ?string $epithet = null,
         ?string $cultivar = null,
-    ): void
-    {
+    ): void {
         $this->id = $plantId;
         $this->ownerId = $ownerId;
         $this->localName = $localName;

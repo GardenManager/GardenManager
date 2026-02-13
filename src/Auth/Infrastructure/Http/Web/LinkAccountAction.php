@@ -27,7 +27,7 @@ final class LinkAccountAction extends AbstractController
     }
 
     #[Route('/link-account', name: 'app_link_account', methods: ['GET', 'POST'])]
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): ?Response
     {
         $pendingLink = $request->getSession()->get(PendingOidcLink::SESSION_KEY);
 

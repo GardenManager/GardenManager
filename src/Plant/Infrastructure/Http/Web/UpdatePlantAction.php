@@ -22,15 +22,15 @@ use Symfony\Component\Uid\Ulid;
 final class UpdatePlantAction extends AbstractController
 {
     public function __construct(
-        private CommandDispatcher $commandDispatcher,
-        private QueryDispatcher $queryDispatcher,
+        private readonly CommandDispatcher $commandDispatcher,
+        private readonly QueryDispatcher $queryDispatcher,
     ) {
     }
 
     #[Route(
         path: '/plants/{plantId}/update',
         name: 'plant_update',
-        methods: ['GET', 'POST']
+        methods: ['GET', 'POST'],
     )]
     public function __invoke(Request $request, Ulid $plantId): Response
     {

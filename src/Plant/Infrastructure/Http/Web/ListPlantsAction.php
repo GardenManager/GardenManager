@@ -17,7 +17,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class ListPlantsAction extends AbstractController
 {
     public function __construct(
-        private QueryDispatcher $queryDispatcher,
+        private readonly QueryDispatcher $queryDispatcher,
     ) {
     }
 
@@ -31,7 +31,7 @@ final class ListPlantsAction extends AbstractController
             new ListPlantsQuery(
                 $user->getId(),
                 $request->query->getInt('page', 1),
-            )
+            ),
         );
 
         return $this->render('plant/index.html.twig', [

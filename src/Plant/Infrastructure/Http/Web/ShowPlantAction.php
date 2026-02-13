@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Plant\Application\Query\GetPlantQuery;
@@ -20,7 +22,7 @@ final class ShowPlantAction extends AbstractController
     #[Route(
         path: '/plants/{plantId}',
         name: 'plant_show',
-        methods: ['GET']
+        methods: ['GET'],
     )]
     public function __invoke(Ulid $plantId): Response
     {

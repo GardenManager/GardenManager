@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Query;
 
 use DateTimeImmutable;
@@ -7,7 +9,7 @@ use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use Symfony\Component\Uid\Ulid;
 
-class PlantDetailView
+final class PlantDetailView
 {
     public function __construct(
         public Ulid $id,

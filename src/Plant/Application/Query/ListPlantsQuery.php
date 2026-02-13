@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Query;
 
 use GardenManager\Shared\Application\PaginatedQueryInterface;
-use GardenManager\Shared\Application\QueryInterface;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use Symfony\Component\Uid\Ulid;
 
-/** @implements QueryInterface<PaginatedResult<PlantDetailView>> */
+/** @implements PaginatedQueryInterface<PaginatedResult<PlantDetailView>> */
 final readonly class ListPlantsQuery implements PaginatedQueryInterface
 {
     public const int DEFAULT_LIMIT = 10;

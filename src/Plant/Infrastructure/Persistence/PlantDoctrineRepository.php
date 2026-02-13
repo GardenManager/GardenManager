@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Infrastructure\Persistence;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -11,7 +13,7 @@ use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Infrastructure\Pagination\PaginationFactory;
 use Symfony\Component\Uid\Ulid;
 
-class PlantDoctrineRepository extends ServiceEntityRepository implements PlantRepositoryInterface
+final class PlantDoctrineRepository extends ServiceEntityRepository implements PlantRepositoryInterface
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -35,7 +37,7 @@ class PlantDoctrineRepository extends ServiceEntityRepository implements PlantRe
         return $plant;
     }
 
-
+    /** @return PaginatedResult<Plant> */
     public function findAllByOwnerIdPaginated(Ulid $ownerId, int $page, int $limit): PaginatedResult
     {
         $queryBuilder = $this->createQueryBuilder('plant')

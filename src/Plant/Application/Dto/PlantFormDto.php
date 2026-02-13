@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Dto;
 
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PlantFormDto
+final class PlantFormDto
 {
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
@@ -25,7 +27,7 @@ class PlantFormDto
     #[Assert\Length(max: 64)]
     public ?string $cultivar = null;
 
-    public static function fromView(mixed $plantView): self
+    public static function fromView(\GardenManager\Plant\Application\Query\PlantDetailView $plantView): self
     {
         $dto = new self();
 

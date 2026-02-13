@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Command;
 
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
@@ -30,8 +32,6 @@ final readonly class CreatePlantCommand implements CommandInterface
 
         #[Assert\Length(max: 64)]
         public ?string $cultivar = null,
-    )
-    {
+    ) {
     }
-
 }

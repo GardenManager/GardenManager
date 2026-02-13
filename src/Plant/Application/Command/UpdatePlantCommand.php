@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Command;
 
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
@@ -7,7 +9,7 @@ use GardenManager\Shared\Application\CommandInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UpdatePlantCommand implements CommandInterface
+final class UpdatePlantCommand implements CommandInterface
 {
     public function __construct(
         public Ulid $plantId,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Query;
 
 use GardenManager\Shared\Application\QueryInterface;
@@ -10,8 +12,7 @@ final readonly class GetPlantQuery implements QueryInterface
 {
     public function __construct(
         public Ulid $plantId,
-        public Ulid $ownerId
-    )
-    {
+        public Ulid $ownerId,
+    ) {
     }
 }

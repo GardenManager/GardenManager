@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Application\Query;
 
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;

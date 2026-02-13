@@ -1,17 +1,18 @@
 <?php
 
-namespace GardenManager\Plant\Application\Query;
+declare(strict_types=1);
 
+namespace GardenManager\Plant\Application\Query;
 
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'query.bus')]
-class ListPlantsQueryHandler
+final readonly class ListPlantsQueryHandler
 {
     public function __construct(
-        private PlantRepositoryInterface $plantRepository,
+        private readonly PlantRepositoryInterface $plantRepository,
     ) {
     }
 

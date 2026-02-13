@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Domain\Security;
 
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
 use Symfony\Component\Uid\Ulid;
 
-class PlantAccessChecker
+final class PlantAccessChecker
 {
     public function ensureOwnership(Plant $plant, Ulid $ownerId): void
     {

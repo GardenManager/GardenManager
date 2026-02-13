@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Domain\Enum;
 
 use GardenManager\Shared\Infrastructure\Validation\GetEnumValuesTrait;

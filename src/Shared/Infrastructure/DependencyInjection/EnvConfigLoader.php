@@ -114,6 +114,7 @@ final class EnvConfigLoader
     /**
      * @param array<string, mixed> $config
      * @param list<string> $path
+     * @param scalar $value
      */
     private function setValueAtPath(array &$config, array $path, mixed $value): void
     {

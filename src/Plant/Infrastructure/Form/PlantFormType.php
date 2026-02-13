@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GardenManager\Plant\Infrastructure\Form;
 
 use GardenManager\Plant\Application\Dto\PlantFormDto;
@@ -9,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PlantFormType extends AbstractType
+final class PlantFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,8 +20,8 @@ class PlantFormType extends AbstractType
                 'localName',
                 Type\TextType::class,
                 [
-                    'label' => 'Local name'
-                ]
+                    'label' => 'Local name',
+                ],
             )
             ->add(
                 'genus',
@@ -27,7 +29,7 @@ class PlantFormType extends AbstractType
                 [
                     'label' => 'Genus',
                     'required' => false,
-                ]
+                ],
             )
             ->add(
                 'epithet',
@@ -35,7 +37,7 @@ class PlantFormType extends AbstractType
                 [
                     'label' => 'Epithet',
                     'required' => false,
-                ]
+                ],
             )
             ->add(
                 'isHybrid',
@@ -43,7 +45,7 @@ class PlantFormType extends AbstractType
                 [
                     'label' => 'Hybrid',
                     'required' => false,
-                ]
+                ],
             )
             ->add(
                 'cultivar',
@@ -51,7 +53,7 @@ class PlantFormType extends AbstractType
                 [
                     'label' => 'Cultivar',
                     'required' => false,
-                    ]
+                ],
             )
             ->add(
                 'lifecycle',
@@ -59,9 +61,9 @@ class PlantFormType extends AbstractType
                 [
                     'label' => 'Lifecycle',
                     'class' => LifecycleEnum::class,
-                    'choice_label' => fn (LifecycleEnum $choice) => ucfirst($choice->value),
+                    'choice_label' => static fn (LifecycleEnum $choice): string => ucfirst($choice->value),
                     'placeholder' => 'Select a status',
-                    ]
+                ],
             );
     }
 
@@ -69,6 +71,4 @@ class PlantFormType extends AbstractType
     {
         $resolver->setDefault('data_class', PlantFormDto::class);
     }
-
-
 }
