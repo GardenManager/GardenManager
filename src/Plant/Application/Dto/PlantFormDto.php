@@ -25,5 +25,17 @@ class PlantFormDto
     #[Assert\Length(max: 64)]
     public ?string $cultivar = null;
 
+    public static function fromView(mixed $plantView): self
+    {
+        $dto = new self();
 
+        $dto->localName = $plantView->localName;
+        $dto->isHybrid = $plantView->isHybrid;
+        $dto->lifecycle = $plantView->lifecycle;
+        $dto->genus = $plantView->genus;
+        $dto->epithet = $plantView->epithet;
+        $dto->cultivar = $plantView->cultivar;
+
+        return $dto;
+    }
 }

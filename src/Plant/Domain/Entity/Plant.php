@@ -83,6 +83,27 @@ final class Plant implements SoftDeletable
         return $plant;
     }
 
+    public function update(
+        Ulid $plantId,
+        Ulid $ownerId,
+        string $localName,
+        bool $isHybrid,
+        LifecycleEnum $lifecycle,
+        ?string $genus = null,
+        ?string $epithet = null,
+        ?string $cultivar = null,
+    ): void
+    {
+        $this->id = $plantId;
+        $this->ownerId = $ownerId;
+        $this->localName = $localName;
+        $this->isHybrid = $isHybrid;
+        $this->lifecycle = $lifecycle;
+        $this->genus = $genus;
+        $this->epithet = $epithet;
+        $this->cultivar = $cultivar;
+    }
+
     public function getId(): Ulid
     {
         return $this->id;
@@ -154,5 +175,8 @@ final class Plant implements SoftDeletable
         return $this->deletedAt !== null;
     }
 
-
+    public function isOwnedBy(Ulid $ownerId): bool
+    {
+        return $this->getOwnerId()->equals($ownerId);
+    }
 }

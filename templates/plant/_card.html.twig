@@ -5,7 +5,10 @@
         </div>
         <p class="text-sm text-gray-600 mb-3">{{ plant.lifecycle.value|capitalize }}</p>
         <div class="flex space-x-3">
-
+            <a href="{{ path('plant_show', {plantId: plant.id}) }}" data-turbo-frame="_top"
+               class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View</a>
+            <a href="{{ path('plant_update', {plantId: plant.id}) }}" data-turbo-frame="_top"
+               class="text-sm font-medium text-gray-600 hover:text-gray-500">Edit</a>
         </div>
     </div>
 </turbo-frame>

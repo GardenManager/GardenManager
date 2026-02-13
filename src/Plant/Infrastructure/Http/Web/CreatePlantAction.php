@@ -47,7 +47,7 @@ class CreatePlantAction extends AbstractController
             $this->commandDispatcher->dispatchCommand($command);
             $this->addFlash('success', 'Plant created successfully.');
 
-            return $this->redirectToRoute('plant_show', ['id' => $command->plantId]);
+            return $this->redirectToRoute('plant_show', ['plantId' => $command->plantId]);
         }
 
         return $this->render('plant/new.html.twig', [
