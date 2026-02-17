@@ -1,3 +1,6 @@
 import './stimulus_bootstrap.js';
+import 'flowbite';
+import { initFlowbite } from 'flowbite';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+document.addEventListener('turbo:render', () => initFlowbite());
+document.addEventListener('turbo:frame-render', () => initFlowbite());

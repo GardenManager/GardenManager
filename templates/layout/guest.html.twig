@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow dark:bg-gray-800 w-full max-w-md p-6">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <img alt="logo" class="h-10" src="{{ asset('images/logo.png') }}" />
+            <span class="text-xl font-bold text-gray-900 dark:text-white">Garden Manager</span>
+        </div>
+
+        <twig:FlashMessages />
+
+        {% block content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

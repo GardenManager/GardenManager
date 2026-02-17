@@ -31,6 +31,12 @@ ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
 EXPOSE 9000
 
+FROM node:22-alpine AS node-deps
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+
 FROM base AS deps
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -50,6 +56,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY .docker/php/conf.d/opcache.ini $PHP_INI_DIR/conf.d/opcache.ini
 COPY --chown=app:app . .
 COPY --from=deps --chown=app:app /srv/app/vendor ./vendor
+COPY --from=node-deps --chown=app:app /app/node_modules ./node_modules
 RUN composer install --no-dev --optimize-autoloader --classmap-authoritative \
     && composer dump-env prod \
     && bin/console cache:clear \

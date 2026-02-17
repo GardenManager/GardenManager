@@ -37,14 +37,19 @@ of this project, with more than 12 years of experience. To make myself motivated
 I like to set myself to high standards that takes a lot of effort, to maintain
 so for the following task code generation and generic chat is used:
 
+**Commits that contains AI assisted (or generated) code will be marked with "AI-Assisted: true" footer in the commit message**
+
 - Test generation
+- Work on UI related code (I'm not a FE guy, but want some decent UI for this project)
 - Code review (Multiple levels and rounds)
 - Security review (Currently not, later on)
+
+**Every generated content got manual review and refactor if needed**
 
 **For the following task, AI/LLMs are not (and will not get) used:**
 
 - Application code generation
-- Infrastructure decisions
+- Infrastructure/Architectural decisions
 - To write this README
 
 

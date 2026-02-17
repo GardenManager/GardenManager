@@ -1,60 +1,32 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/dashboard.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+{% block page_title %}My Plants{% endblock %}
+
+{% block title_display %}
+    <div class="flex justify-between items-center">
+        <span>My Plants</span>
+        <twig:Button href="{{ path('plant_new') }}" color="primary" size="sm">New Plant</twig:Button>
+    </div>
 {% endblock %}
 
-{% block title %}My Plants{% endblock %}
-
-{% block body %}
-    <div class="min-h-screen bg-gray-50">
-        <nav class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
-                    <div class="text-lg font-semibold text-gray-900">
-                        <a href="{{ path('app_dashboard') }}" class="hover:text-gray-700">GardenManager</a>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-700">{{ app.user.displayName }}</span>
-                        <a href="{{ path('app_logout') }}"
-                           class="text-sm text-red-600 hover:text-red-500 font-medium">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-            {% for message in app.flashes('success') %}
-                <div class="mb-4 rounded-md bg-green-50 p-4">
-                    <p class="text-sm font-medium text-green-800">{{ message }}</p>
-                </div>
-            {% endfor %}
-
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-bold text-gray-900">My Plants</h1>
-                <a href="{{ path('plant_new') }}"
-                   class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                    New Plant
-                </a>
+{% block content %}
+    <turbo-frame id="plant-list">
+        {% if pager.isEmpty() %}
+            <twig:EmptyState message="You have no plants yet. Create your first one!">
+                {% block actions %}
+                    <twig:Button href="{{ path('plant_new') }}" color="primary">New Plant</twig:Button>
+                {% endblock %}
+            </twig:EmptyState>
+        {% else %}
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {% for plant in pager.items %}
+                    {% include 'plant/_card.html.twig' with {plant: plant} %}
+                {% endfor %}
             </div>
 
-            <turbo-frame id="plant-list">
-                {% if pager.isEmpty() %}
-                    <div class="text-center py-12 bg-white rounded-lg shadow">
-                        <p class="text-gray-500">You have no plants yet. Create your first one!</p>
-                    </div>
-                {% else %}
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {% for plant in pager.items %}
-                            {% include 'plant/_card.html.twig' with {plant: plant} %}
-                        {% endfor %}
-                    </div>
-
-                    <div class="mt-8">
-                        {% include 'components/_pagination.html.twig' with {pager: pager, route: 'plant_index'} %}
-                    </div>
-                {% endif %}
-            </turbo-frame>
-        </main>
-    </div>
+            <div class="mt-8">
+                <twig:Pagination :pager="pager" route="plant_index" />
+            </div>
+        {% endif %}
+    </turbo-frame>
 {% endblock %}

@@ -23,5 +23,8 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 
+# Node
+/node_modules/
+
 # Jetbarins IDE
 .idea/

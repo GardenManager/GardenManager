@@ -87,10 +87,11 @@ final class PlantWebActionsTest extends WebTestCase
         $plant = $this->createPlant($user);
         $id = (string) $plant->getId();
 
-        $client->request('GET', '/plants/' . $id);
+        $crawler = $client->request('GET', '/plants/' . $id);
         self::assertResponseIsSuccessful();
 
-        $client->submitForm('Delete');
+        $form = $crawler->filter('#delete-modal form[action]')->form();
+        $client->submit($form);
         self::assertResponseRedirects('/plants');
     }
 

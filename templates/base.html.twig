@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html data-theme="light">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
-    <img alt="logo" style="height: 64px; padding: 12px; display: inline-block;" src="{{ asset('images/logo.png') }}" />
-    <span style="font-size: 24px; font-weight: bold;">Garden Manager</span>
+    <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white" {{ stimulus_controller('theme') }}>
         {% block body %}{% endblock %}
     </body>
+    <footer class="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400 text-sm p-4">
+        <p>Copyright &copy; {{ 'now'|date('Y') }} - All right reserved by ACME Industries Ltd</p>
+    </footer>
 </html>
