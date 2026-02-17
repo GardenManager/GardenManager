@@ -10,12 +10,14 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 final class Pagination
 {
-    public PaginatedResult $pager;
     public string $route;
-    private int $window = 2;
+
+    /** @var PaginatedResult<mixed> */
+    public PaginatedResult $pager;
 
     /** @var array<string, mixed> */
     public array $routeParams = [];
+    private int $window = 2;
 
     /**
      * Returns an array of page numbers and null (representing ellipsis)
@@ -54,7 +56,7 @@ final class Pagination
             $pages[] = null;
         }
 
-        for ($i = $rangeStart; $i <= $rangeEnd; $i++) {
+        for ($i = $rangeStart; $i <= $rangeEnd; ++$i) {
             $pages[] = $i;
         }
 

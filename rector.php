@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php82\Rector\Class_\ReadOnlyClassRector;
+use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -19,7 +20,8 @@ return RectorConfig::configure()
         ],
         ClassPropertyAssignToConstructorPromotionRector::class => [
             __DIR__ . '/src/Shared/Domain/ValueObject/Address.php'
-        ]
+        ],
+        AddOverrideAttributeToOverriddenMethodsRector::class,
     ])
     ->withPhpSets(php84: true)
     ->withPreparedSets(
