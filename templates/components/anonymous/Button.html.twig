@@ -1,4 +1,4 @@
-{% props color = 'neutral', size = 'md', outline = false, href = null, class = '' %}
+{% props color = 'neutral', size = 'md', outline = false, href = null, type = 'button', class = '' %}
 
 {% set size_map = {
     xs: 'px-2.5 py-1.5 text-xs',
@@ -25,7 +25,7 @@
 {% set button_content %}{% block content %}{% endblock %}{% endset %}
 
 {% if href %}
-    <a href="{{ href }}" class="{{ css }}">{{ button_content|raw }}</a>
+    <a href="{{ href }}" class="{{ css }}" {{ attributes }}>{{ button_content|raw }}</a>
 {% else %}
-    <button class="{{ css }}">{{ button_content|raw }}</button>
+    <button type="{{ type }}" class="{{ css }}" {{ attributes }}>{{ button_content|raw }}</button>
 {% endif %}

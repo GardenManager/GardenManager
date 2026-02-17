@@ -16,10 +16,12 @@
             </li>
         {% endif %}
 
-        {# Page numbers #}
-        {% for page in 1..pager.totalPages() %}
+        {# Page numbers (windowed) #}
+        {% for page in this.pages %}
             <li>
-                {% if page == pager.currentPage %}
+                {% if page is null %}
+                    <span class="flex items-center justify-center px-3 h-8 leading-tight text-gray-400 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-500">&hellip;</span>
+                {% elseif page == pager.currentPage %}
                     <span aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">
                         {{ page }}
                     </span>

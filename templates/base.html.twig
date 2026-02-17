@@ -14,8 +14,9 @@
     </head>
     <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white" {{ stimulus_controller('theme') }}>
         {% block body %}{% endblock %}
+
+        <footer class="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400 text-sm p-4">
+            <p>Copyright &copy; {{ 'now'|date('Y') }} - All right reserved by ACME Industries Ltd</p>
+        </footer>
     </body>
-    <footer class="bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400 text-sm p-4">
-        <p>Copyright &copy; {{ 'now'|date('Y') }} - All right reserved by ACME Industries Ltd</p>
-    </footer>
 </html>

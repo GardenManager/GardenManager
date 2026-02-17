@@ -7,6 +7,7 @@ namespace GardenManager\Auth\Infrastructure\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,6 +21,9 @@ final class LoginFormType extends AbstractType
             ])
             ->add('password', PasswordType::class, [
                 'attr' => ['autocomplete' => 'current-password'],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Log in',
             ]);
     }
 

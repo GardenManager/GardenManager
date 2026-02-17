@@ -8,6 +8,7 @@ use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -64,11 +65,18 @@ final class PlantFormType extends AbstractType
                     'choice_label' => static fn (LifecycleEnum $choice): string => ucfirst($choice->value),
                     'placeholder' => 'Select a status',
                 ],
-            );
+            )
+            ->add('submit', SubmitType::class, [
+                'label' => $options['submit_label'],
+                'row_attr' => ['class' => 'flex justify-end mt-4'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('data_class', PlantFormDto::class);
+        $resolver->setDefaults([
+            'data_class' => PlantFormDto::class,
+            'submit_label' => 'Save',
+        ]);
     }
 }

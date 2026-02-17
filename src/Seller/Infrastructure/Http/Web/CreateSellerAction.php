@@ -28,7 +28,9 @@ final class CreateSellerAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $dto = new SellerFormDto();
-        $form = $this->createForm(SellerFormType::class, $dto);
+        $form = $this->createForm(SellerFormType::class, $dto, [
+            'submit_label' => 'Create Seller',
+        ]);
 
         $form->handleRequest($request);
 

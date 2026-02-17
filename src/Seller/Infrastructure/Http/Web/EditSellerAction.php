@@ -41,7 +41,9 @@ final class EditSellerAction extends AbstractController
         ));
 
         $dto = SellerFormDto::fromView($view);
-        $form = $this->createForm(SellerFormType::class, $dto);
+        $form = $this->createForm(SellerFormType::class, $dto, [
+            'submit_label' => 'Save Changes',
+        ]);
 
         $form->handleRequest($request);
 
