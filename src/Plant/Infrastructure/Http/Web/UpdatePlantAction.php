@@ -40,7 +40,9 @@ final class UpdatePlantAction extends AbstractController
         /** @var PlantDetailView $plantView */
         $plantView = $this->queryDispatcher->query(new GetPlantQuery($plantId, $userId));
         $dto = PlantFormDto::fromView($plantView);
-        $form = $this->createForm(PlantFormType::class, $dto);
+        $form = $this->createForm(PlantFormType::class, $dto, [
+            'submit_label' => 'Save Changes',
+        ]);
 
         $form->handleRequest($request);
 

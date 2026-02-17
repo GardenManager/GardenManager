@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Infrastructure\Http\Web;
 
+use GardenManager\Auth\Infrastructure\Form\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,8 +24,12 @@ final class LoginAction extends AbstractController
             return $this->redirectToRoute('app_dashboard');
         }
 
+        $form = $this->createForm(LoginFormType::class, [
+            'email' => $authenticationUtils->getLastUsername(),
+        ]);
+
         return $this->render('security/login.html.twig', [
-            'last_email' => $authenticationUtils->getLastUsername(),
+            'form' => $form,
             'error' => $authenticationUtils->getLastAuthenticationError(),
             'oidc_enabled' => !empty($this->oidcClientId),
         ]);

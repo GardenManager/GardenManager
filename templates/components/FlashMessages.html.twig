@@ -1,0 +1,7 @@
+{% for type, messages in app.flashes() %}
+    {% for message in messages %}
+        <twig:Alert :type="this.getAlertType(type)" :dismissible="true">
+            {{ message }}
+        </twig:Alert>
+    {% endfor %}
+{% endfor %}

@@ -85,10 +85,11 @@ final class SellerWebActionsTest extends WebTestCase
         $seller = $this->createSeller($user);
         $id = (string) $seller->getId();
 
-        $client->request('GET', '/sellers/' . $id);
+        $crawler = $client->request('GET', '/sellers/' . $id);
         self::assertResponseIsSuccessful();
 
-        $client->submitForm('Delete');
+        $form = $crawler->filter('#delete-modal form[action]')->form();
+        $client->submit($form);
         self::assertResponseRedirects('/sellers');
     }
 

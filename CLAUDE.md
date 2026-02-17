@@ -15,6 +15,7 @@ make up          # Start core services (php, nginx, postgres, valkey, worker)
 make down        # Stop all services (includes --profile dev)
 make mailpit     # Start services including Mailpit (--profile dev)
 make shell       # Open a shell in the PHP container
+make npm         # Install npm dependencies (one-off Node container)
 ```
 
 All PHP/Symfony commands run inside the PHP container via `make`:

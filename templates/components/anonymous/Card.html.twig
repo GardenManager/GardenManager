@@ -1,0 +1,17 @@
+{% props class = '' %}
+
+<div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 {{ class }}">
+    <div class="p-5">
+        {% if block('title') is defined %}
+            <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{% block title %}{% endblock %}</h2>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+        {% if block('actions') is defined %}
+            <div class="flex items-center gap-3 mt-4">
+                {% block actions %}{% endblock %}
+            </div>
+        {% endif %}
+    </div>
+</div>

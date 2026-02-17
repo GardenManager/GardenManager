@@ -28,7 +28,9 @@ final class CreatePlantAction extends AbstractController
     public function __invoke(Request $request): Response
     {
         $dto = new PlantFormDto();
-        $form = $this->createForm(PlantFormType::class, $dto);
+        $form = $this->createForm(PlantFormType::class, $dto, [
+            'submit_label' => 'Create Plant',
+        ]);
 
         $form->handleRequest($request);
 

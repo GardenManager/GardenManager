@@ -1,14 +1,12 @@
 <turbo-frame id="plant-{{ plant.id }}">
-    <div class="bg-white rounded-lg shadow p-5">
-        <div class="mb-3">
-            <h3 class="text-lg font-semibold text-gray-900 truncate">{{ plant.localName }}</h3>
-        </div>
-        <p class="text-sm text-gray-600 mb-3">{{ plant.lifecycle.value|capitalize }}</p>
-        <div class="flex space-x-3">
-            <a href="{{ path('plant_show', {plantId: plant.id}) }}" data-turbo-frame="_top"
-               class="text-sm font-medium text-indigo-600 hover:text-indigo-500">View</a>
-            <a href="{{ path('plant_update', {plantId: plant.id}) }}" data-turbo-frame="_top"
-               class="text-sm font-medium text-gray-600 hover:text-gray-500">Edit</a>
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+            <h3 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate">{{ plant.localName }}</h3>
+            <p><twig:Badge color="neutral" size="sm">{{ plant.lifecycle.value|capitalize }}</twig:Badge></p>
+            <div class="flex items-center gap-3 mt-3">
+                <a href="{{ path('plant_show', {plantId: plant.id}) }}" data-turbo-frame="_top" class="text-blue-600 hover:underline dark:text-blue-500 text-sm">View</a>
+                <a href="{{ path('plant_update', {plantId: plant.id}) }}" data-turbo-frame="_top" class="text-gray-600 hover:underline dark:text-gray-400 text-sm">Edit</a>
+            </div>
         </div>
     </div>
 </turbo-frame>

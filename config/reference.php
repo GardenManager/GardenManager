@@ -1496,6 +1496,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         not_valid_current_page?: "to_http_not_found"|"custom"|Param, // Default: "to_http_not_found"
  *     },
  * }
+ * @psalm-type TalesFromADevTwigExtraTailwindConfig = array{
+ *     tailwind_merge?: array{
+ *         additional_configuration?: mixed, // Default: []
+ *     },
+ * }
  * @psalm-type GmConfig = array{
  *     require_email_verification?: bool|Param, // Whether new users must verify their email address before logging in. Env: GM_REQUIRE_EMAIL_VERIFICATION // Default: true
  *     oidc?: array{ // OpenID Connect provider settings. Leave client_id empty to disable OIDC.
@@ -1522,6 +1527,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *     knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *     babdev_pagerfanta?: BabdevPagerfantaConfig,
+ *     tales_from_a_dev_twig_extra_tailwind?: TalesFromADevTwigExtraTailwindConfig,
  *     gm?: GmConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
@@ -1544,6 +1550,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
+ *         tales_from_a_dev_twig_extra_tailwind?: TalesFromADevTwigExtraTailwindConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1563,6 +1570,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
+ *         tales_from_a_dev_twig_extra_tailwind?: TalesFromADevTwigExtraTailwindConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1583,6 +1591,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         symfonycasts_verify_email?: SymfonycastsVerifyEmailConfig,
  *         knpu_oauth2_client?: KnpuOauth2ClientConfig,
  *         babdev_pagerfanta?: BabdevPagerfantaConfig,
+ *         tales_from_a_dev_twig_extra_tailwind?: TalesFromADevTwigExtraTailwindConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

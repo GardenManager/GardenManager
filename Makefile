@@ -130,6 +130,14 @@ certs-trust-windows: ## Import mkcert CA into Windows certificate store (WSL2 on
 	@echo "File: C:\Users\$(WIN_USER)\gardenmanager-ca.pem"
 
 ##
+## Frontend
+## --------
+
+.PHONY: npm
+npm: ## Install npm dependencies
+	docker run --rm -v "$(PWD):/app" -w /app node:22-alpine npm install
+
+##
 ## Testing & QA
 ## ------------
 

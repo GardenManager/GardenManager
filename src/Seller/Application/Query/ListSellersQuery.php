@@ -12,7 +12,7 @@ use Symfony\Component\Uid\Ulid;
 /** @implements QueryInterface<PaginatedResult<SellerDetailView>> */
 final readonly class ListSellersQuery implements PaginatedQueryInterface
 {
-    public const int DEFAULT_LIMIT = 10;
+    public const int DEFAULT_LIMIT = 1;
 
     public function __construct(
         private Ulid $ownerId,

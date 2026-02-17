@@ -10,6 +10,7 @@ phpunit*
 .phpunit.cache/
 public/assets/
 assets/vendor/
+node_modules/
 .DS_Store
 *.md
 LICENSE
