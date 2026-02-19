@@ -103,12 +103,6 @@ parameters:
 			path: src/Seller/Application/Query/ListSellersQuery.php
 
 		-
-			message: '#^Entity class GardenManager\\Seller\\Domain\\Seller is final which can cause problems with proxies\.$#'
-			identifier: doctrine.finalEntity
-			count: 1
-			path: src/Seller/Domain/Seller.php
-
-		-
 			message: '#^Class GardenManager\\Seller\\Infrastructure\\Form\\SellerFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
 			identifier: missingType.generics
 			count: 1
@@ -187,31 +181,31 @@ parameters:
 			path: tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest.php
 
 		-
-			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:106\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:100\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest.php
 
 		-
-			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:134\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:107\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest.php
 
 		-
-			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:141\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:135\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest.php
 
 		-
-			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:82\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:142\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest.php
 
 		-
-			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:99\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
+			message: '#^Method RuntimeException@anonymous/tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest\.php\:83\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: tests/Shared/Infrastructure/Logging/ExceptionContextLogProcessorTest.php
