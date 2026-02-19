@@ -11,10 +11,12 @@ use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class CreateOidcLinkHandlerTest extends TestCase
 {
     #[Test]

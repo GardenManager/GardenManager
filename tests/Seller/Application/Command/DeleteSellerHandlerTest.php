@@ -11,10 +11,12 @@ use GardenManager\Seller\Domain\SellerAccessChecker;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class DeleteSellerHandlerTest extends TestCase
 {
     #[Test]

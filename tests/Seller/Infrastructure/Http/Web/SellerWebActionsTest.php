@@ -8,9 +8,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+#[Group('functional')]
 final class SellerWebActionsTest extends WebTestCase
 {
     #[Test]

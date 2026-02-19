@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace GardenManager\Tests\DependencyInjection;
 
 use GardenManager\Shared\Infrastructure\DependencyInjection\GardenManagerExtension;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+#[Group('unit')]
 final class GardenManagerExtensionTest extends TestCase
 {
     /** @var array<string, mixed> */

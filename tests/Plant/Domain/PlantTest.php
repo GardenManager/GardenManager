@@ -6,10 +6,12 @@ namespace GardenManager\Tests\Plant\Domain;
 
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class PlantTest extends TestCase
 {
     #[Test]

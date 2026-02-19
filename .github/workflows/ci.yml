@@ -113,8 +113,31 @@ jobs:
       - name: Composer audit
         run: composer audit
 
-  tests:
-    name: Tests (PHPUnit)
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy?serverVersion=17"
+      MESSENGER_TRANSPORT_DSN: "in-memory://"
+      MESSENGER_FAILED_TRANSPORT_DSN: "in-memory://"
+      MAILER_DSN: "null://null"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: intl, pdo_pgsql, redis, zip, sockets
+          coverage: none
+
+      - uses: ramsey/composer-install@v3
+
+      - name: Run unit tests
+        run: php bin/phpunit --group unit
+
+  integration-tests:
+    name: Integration & Functional Tests
+    needs: [unit-tests]
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: "postgresql://app:!ChangeMe!@localhost:5432/app_test?serverVersion=17"
@@ -162,5 +185,5 @@ jobs:
       - name: Build Tailwind CSS
         run: php bin/console tailwind:build --env=test
 
-      - name: Run PHPUnit
-        run: php bin/phpunit
+      - name: Run integration & functional tests
+        run: php bin/phpunit --group integration --group functional

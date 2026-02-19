@@ -8,10 +8,12 @@ use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Security\PlantAccessChecker;
 use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class PlantAccessCheckerTest extends TestCase
 {
     #[Test]

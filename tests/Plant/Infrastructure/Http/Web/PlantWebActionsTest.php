@@ -9,10 +9,12 @@ use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('functional')]
 final class PlantWebActionsTest extends WebTestCase
 {
     #[Test]

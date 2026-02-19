@@ -9,10 +9,12 @@ use GardenManager\Auth\Application\Command\VerifyEmailHandler;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class VerifyEmailHandlerTest extends TestCase
 {
     #[Test]

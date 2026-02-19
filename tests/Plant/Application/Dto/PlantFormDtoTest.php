@@ -6,10 +6,12 @@ namespace GardenManager\Tests\Plant\Application\Dto;
 
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[Group('unit')]
 final class PlantFormDtoTest extends KernelTestCase
 {
     private ValidatorInterface $validator;

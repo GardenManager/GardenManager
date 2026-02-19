@@ -9,10 +9,12 @@ use GardenManager\Seller\Application\Query\ListSellersQuery;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class ListSellersHandlerTest extends TestCase
 {
     #[Test]
