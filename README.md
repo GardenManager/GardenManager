@@ -52,6 +52,10 @@ so for the following task code generation and generic chat is used:
 - Infrastructure/Architectural decisions
 - To write this README
 
+## License
+
+This project is licensed under the [GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0-or-later).
+
 
 
 
