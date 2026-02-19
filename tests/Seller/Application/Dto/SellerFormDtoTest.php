@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Seller\Application\Dto;
 
 use GardenManager\Seller\Application\Dto\SellerFormDto;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[Group('unit')]
 final class SellerFormDtoTest extends KernelTestCase
 {
     private ValidatorInterface $validator;

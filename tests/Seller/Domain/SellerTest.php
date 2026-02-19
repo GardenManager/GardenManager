@@ -7,10 +7,12 @@ namespace GardenManager\Tests\Seller\Domain;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Shared\Domain\ValueObject\Address;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class SellerTest extends TestCase
 {
     #[Test]

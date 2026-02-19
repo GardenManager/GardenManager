@@ -9,10 +9,12 @@ use GardenManager\Seller\Application\Command\CreateSellerHandler;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
 use GardenManager\Shared\Application\Dto\AddressData;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class CreateSellerHandlerTest extends TestCase
 {
     #[Test]

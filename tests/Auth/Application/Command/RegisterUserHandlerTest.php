@@ -10,11 +10,13 @@ use GardenManager\Auth\Application\EmailVerificationServiceInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class RegisterUserHandlerTest extends TestCase
 {
     #[Test]

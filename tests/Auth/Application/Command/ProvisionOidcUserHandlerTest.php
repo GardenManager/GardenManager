@@ -10,10 +10,12 @@ use GardenManager\Auth\Domain\AuthOidc;
 use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class ProvisionOidcUserHandlerTest extends TestCase
 {
     #[Test]

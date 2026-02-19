@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Shared\Application\Pagination;
 
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[Group('unit')]
 final class PaginatedResultTest extends TestCase
 {
     #[Test]

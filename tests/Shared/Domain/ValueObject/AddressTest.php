@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Shared\Domain\ValueObject;
 
 use GardenManager\Shared\Domain\ValueObject\Address;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[Group('unit')]
 final class AddressTest extends TestCase
 {
     #[Test]

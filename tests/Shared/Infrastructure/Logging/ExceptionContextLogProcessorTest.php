@@ -10,12 +10,14 @@ use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Infrastructure\Logging\ExceptionContextLogProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Uid\Ulid;
 use Throwable;
 
+#[Group('unit')]
 final class ExceptionContextLogProcessorTest extends TestCase
 {
     private ExceptionContextLogProcessor $processor;

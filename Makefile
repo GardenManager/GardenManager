@@ -141,9 +141,23 @@ npm: ## Install npm dependencies
 ## Testing & QA
 ## ------------
 
+COVERAGE_FLAGS = $(if $(coverage),--coverage-text,)
+
 .PHONY: test
-test: ## Run PHPUnit tests
-	$(EXEC_PHP) php bin/phpunit
+test: ## Run PHPUnit tests (coverage=1 for coverage)
+	$(EXEC_PHP) php bin/phpunit $(COVERAGE_FLAGS)
+
+.PHONY: test-unit
+test-unit: ## Run unit tests only (coverage=1 for coverage)
+	$(EXEC_PHP) php bin/phpunit --group unit $(COVERAGE_FLAGS)
+
+.PHONY: test-integration
+test-integration: ## Run integration tests (coverage=1 for coverage)
+	$(EXEC_PHP) php bin/phpunit --group integration $(COVERAGE_FLAGS)
+
+.PHONY: test-functional
+test-functional: ## Run functional tests (coverage=1 for coverage)
+	$(EXEC_PHP) php bin/phpunit --group functional $(COVERAGE_FLAGS)
 
 .PHONY: phpstan
 phpstan: ## Run PHPStan static analysis

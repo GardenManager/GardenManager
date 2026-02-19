@@ -6,9 +6,11 @@ namespace GardenManager\Tests\DependencyInjection;
 
 use GardenManager\Shared\Infrastructure\DependencyInjection\Configuration;
 use GardenManager\Shared\Infrastructure\DependencyInjection\EnvConfigLoader;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[Group('unit')]
 final class EnvConfigLoaderTest extends TestCase
 {
     /** @var array<string, mixed> */

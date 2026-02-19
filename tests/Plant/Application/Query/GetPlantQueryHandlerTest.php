@@ -12,10 +12,12 @@ use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
 use GardenManager\Plant\Domain\Security\PlantAccessChecker;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
+#[Group('unit')]
 final class GetPlantQueryHandlerTest extends TestCase
 {
     #[Test]
