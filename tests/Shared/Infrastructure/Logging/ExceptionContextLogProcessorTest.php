@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Shared\Infrastructure\Logging;
 
+use DateTimeImmutable;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Shared\Domain\Exception\Contract\ContextCarrierExceptionInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
@@ -79,7 +80,7 @@ final class ExceptionContextLogProcessorTest extends TestCase
     #[Test]
     public function exceptionWithEmptyContextLeavesExtraUnchanged(): void
     {
-        $exception = new class ('empty') extends RuntimeException implements ContextCarrierExceptionInterface {
+        $exception = new class('empty') extends RuntimeException implements ContextCarrierExceptionInterface {
             public function getContext(): array
             {
                 return [];
@@ -96,14 +97,14 @@ final class ExceptionContextLogProcessorTest extends TestCase
     #[Test]
     public function chainedExceptionsMergeContext(): void
     {
-        $inner = new class ('inner') extends RuntimeException implements ContextCarrierExceptionInterface {
+        $inner = new class('inner') extends RuntimeException implements ContextCarrierExceptionInterface {
             public function getContext(): array
             {
                 return ['innerKey' => 'innerValue'];
             }
         };
 
-        $outer = new class ('outer', $inner) extends RuntimeException implements ContextCarrierExceptionInterface {
+        $outer = new class('outer', $inner) extends RuntimeException implements ContextCarrierExceptionInterface {
             public function __construct(string $message, Throwable $previous)
             {
                 parent::__construct($message, 0, $previous);
@@ -131,14 +132,14 @@ final class ExceptionContextLogProcessorTest extends TestCase
     #[Test]
     public function overlappingKeysInChainOuterWins(): void
     {
-        $inner = new class ('inner') extends RuntimeException implements ContextCarrierExceptionInterface {
+        $inner = new class('inner') extends RuntimeException implements ContextCarrierExceptionInterface {
             public function getContext(): array
             {
                 return ['shared' => 'fromInner', 'innerOnly' => 'inner'];
             }
         };
 
-        $outer = new class ('outer', $inner) extends RuntimeException implements ContextCarrierExceptionInterface {
+        $outer = new class('outer', $inner) extends RuntimeException implements ContextCarrierExceptionInterface {
             public function __construct(string $message, Throwable $previous)
             {
                 parent::__construct($message, 0, $previous);
@@ -167,7 +168,7 @@ final class ExceptionContextLogProcessorTest extends TestCase
     private function createRecord(array $context): LogRecord
     {
         return new LogRecord(
-            datetime: new \DateTimeImmutable(),
+            datetime: new DateTimeImmutable(),
             channel: 'test',
             level: Level::Error,
             message: 'test message',
