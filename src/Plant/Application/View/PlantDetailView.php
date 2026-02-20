@@ -17,7 +17,7 @@ final class PlantDetailView
         public bool $isHybrid,
         public LifecycleEnum $lifecycle,
         public DateTimeImmutable $createdAt,
-        public DateTimeImmutable $updatedAt,
+        public ?DateTimeImmutable $updatedAt = null,
         public ?string $genus = null,
         public ?string $epithet = null,
         public ?string $cultivar = null,
