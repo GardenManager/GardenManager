@@ -9,12 +9,12 @@ use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
 
-final class SessionActiveTenantProvider implements ActiveTenantProviderInterface
+final readonly class SessionActiveTenantProvider implements ActiveTenantProviderInterface
 {
     private const string SESSION_KEY = '_active_tenant_id';
 
     public function __construct(
-        private readonly RequestStack $requestStack,
+        private RequestStack $requestStack,
     ) {
     }
 

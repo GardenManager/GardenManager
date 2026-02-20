@@ -32,9 +32,12 @@ final readonly class RemoveMemberCommandHandler
 
         if ($revokedMembership->getRole() === TenantMembershipRole::OWNER) {
             $allMembers = $this->membershipRepository->findByTenantId($command->tenantId);
-            $ownerCount = \count(array_filter($allMembers, static function (TenantMembership $member): bool {
-                return $member->getRole() === TenantMembershipRole::OWNER;
-            }));
+            $ownerCount = \count(
+                array_filter(
+                    $allMembers,
+                    static fn(TenantMembership $member): bool => $member->getRole() === TenantMembershipRole::OWNER
+                )
+            );
 
             if ($ownerCount <= 1) {
                 throw TenantException::cannotRemoveLastOwner($command->tenantId);

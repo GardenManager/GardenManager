@@ -47,10 +47,10 @@ final class TenantAccessCheckerTest extends TestCase
 
     private function createTenantScopedEntity(Ulid $id, Ulid $tenantId): TenantScoped
     {
-        return new class($id, $tenantId) implements TenantScoped {
+        return new readonly class($id, $tenantId) implements TenantScoped {
             public function __construct(
-                private readonly Ulid $id,
-                private readonly Ulid $tenantId,
+                private Ulid $id,
+                private Ulid $tenantId,
             ) {
             }
 

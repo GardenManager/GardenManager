@@ -22,7 +22,7 @@ final readonly class ListUserTenantsQueryHandler
         $memberships = $this->membershipRepository->findByUserId($query->userId);
 
         return array_map(
-            static fn (TenantMembership $membership): UserTenantView => UserTenantView::fromMembership($membership),
+            UserTenantView::fromMembership(...),
             $memberships,
         );
     }
