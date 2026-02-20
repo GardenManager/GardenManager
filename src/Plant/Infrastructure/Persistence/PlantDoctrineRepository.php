@@ -43,6 +43,7 @@ final class PlantDoctrineRepository extends ServiceEntityRepository implements P
         $queryBuilder = $this->createQueryBuilder('plant')
             ->orderBy('plant.createdAt', 'DESC');
 
+        /** @var PaginatedResult<Plant> */
         return $this->paginationFactory->createPaginatedResult(
             $queryBuilder,
             $page,

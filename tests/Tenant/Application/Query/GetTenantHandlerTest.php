@@ -46,7 +46,6 @@ final class GetTenantHandlerTest extends TestCase
             actorUserId: $actorUserId,
         ));
 
-        self::assertInstanceOf(TenantDetailView::class, $result);
         self::assertTrue($tenantId->equals($result->id));
         self::assertSame('My Tenant', $result->name);
     }

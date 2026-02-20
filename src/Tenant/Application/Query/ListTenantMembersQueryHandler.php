@@ -42,7 +42,7 @@ final readonly class ListTenantMembersQueryHandler
 
         return array_map(
             function (TenantMembership $membership) use ($usersById): TenantMembershipView {
-                $user = $usersById[(string) $membership->getUserId()] ?? null;
+                $user = $usersById[(string) $membership->getUserId()];
 
                 return TenantMembershipView::fromMembershipAndUser($membership, $user);
             }, $memberships

@@ -19,9 +19,6 @@ final class TenantTest extends TestCase
         $tenant = Tenant::create(name: 'My Garden');
 
         self::assertSame('My Garden', $tenant->getName());
-        self::assertInstanceOf(Ulid::class, $tenant->getId());
-        self::assertNotNull($tenant->getCreatedAt());
-        self::assertNotNull($tenant->getUpdatedAt());
     }
 
     #[Test]

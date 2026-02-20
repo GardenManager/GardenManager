@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Shared\Infrastructure\Form;
 
+use GardenManager\Shared\Application\Dto\AddressData;
 use GardenManager\Shared\Infrastructure\Form\DataTransformer\AddressTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -11,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/** @extends AbstractType<AddressData> */
 final class AddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

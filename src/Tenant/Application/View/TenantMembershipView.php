@@ -23,13 +23,16 @@ final readonly class TenantMembershipView
     {
     }
 
-    public static function fromMembershipAndUser(TenantMembership $membership, ?MemberUserInfoDto $user): self
+    public static function fromMembershipAndUser(
+        TenantMembership $membership,
+        MemberUserInfoDto $userInfo,
+    ): self
     {
         return new self(
             membershipId: $membership->getId(),
             userId: $membership->getUserId(),
-            userEmail: $user?->email ?? '',
-            userDisplayName: $user?->displayName ?? '',
+            userEmail: $userInfo->email,
+            userDisplayName: $userInfo->displayName,
             role: $membership->getRole(),
             createdAt: $membership->getCreatedAt(),
         );

@@ -27,11 +27,9 @@ final class TenantMembershipTest extends TestCase
             role: TenantMembershipRole::OWNER,
         );
 
-        self::assertInstanceOf(Ulid::class, $membership->getId());
         self::assertSame($tenant, $membership->getTenant());
         self::assertTrue($userId->equals($membership->getUserId()));
         self::assertSame(TenantMembershipRole::OWNER, $membership->getRole());
-        self::assertNotNull($membership->getCreatedAt());
     }
 
     #[Test]
