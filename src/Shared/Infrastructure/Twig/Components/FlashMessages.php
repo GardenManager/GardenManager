@@ -22,4 +22,9 @@ final class FlashMessages
     {
         return self::TYPE_MAP[$flashType] ?? 'info';
     }
+
+    public function shouldAutoDismiss(string $flashType): bool
+    {
+        return in_array($this->getAlertType($flashType), ['success', 'info'], true);
+    }
 }

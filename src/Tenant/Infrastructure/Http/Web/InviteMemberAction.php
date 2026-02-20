@@ -7,13 +7,13 @@ namespace GardenManager\Tenant\Infrastructure\Http\Web;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
+use GardenManager\Shared\Infrastructure\Http\TurboStreamToastRenderer;
 use GardenManager\Tenant\Application\Command\InviteMemberCommand;
 use GardenManager\Tenant\Application\Dto\InviteMemberDto;
 use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Infrastructure\Form\InviteMemberFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,6 +26,7 @@ final class InviteMemberAction extends AbstractController
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
         private readonly ActiveTenantProviderInterface $activeTenantProvider,
+        private readonly TurboStreamToastRenderer $toastRenderer,
     ) {
     }
 
@@ -58,7 +59,7 @@ final class InviteMemberAction extends AbstractController
 
                 return $this->redirectToRoute('tenant_members');
             } catch (TenantException $e) {
-                $form->get('email')->addError(new FormError($e->getMessage()));
+                return $this->toastRenderer->createErrorResponse($e->getMessage());
             }
         }
 
