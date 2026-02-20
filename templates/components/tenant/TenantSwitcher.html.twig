@@ -1,4 +1,4 @@
-{% if this.memberships|length > 1 %}
+{% if this.tenants|length > 1 %}
     <div class="mb-4 px-2" data-controller="dropdown">
         <button type="button"
             class="flex items-center justify-between w-full p-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -17,24 +17,23 @@
 
         <div class="hidden mt-1 rounded-lg bg-white border border-gray-200 shadow-lg dark:bg-gray-700 dark:border-gray-600" data-dropdown-target="menu">
             <ul class="py-1">
-                {% for membership in this.memberships %}
-                    {% set tenant = membership.tenant %}
-                    {% set isActive = this.activeTenantId and tenant.id.equals(this.activeTenantId) %}
+                {% for tenant in this.tenants %}
+                    {% set isActive = this.activeTenantId and tenant.tenantId.equals(this.activeTenantId) %}
 
                     <li>
                         {% if isActive %}
                             <span class="flex items-center justify-between px-3 py-2 text-sm text-gray-900 dark:text-white font-medium">
-                                <span class="truncate">{{ tenant.name }}</span>
+                                <span class="truncate">{{ tenant.tenantName }}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 shrink-0 text-green-500">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                                 </svg>
                             </span>
                         {% else %}
                             <form method="post" action="{{ path('tenant_switch') }}">
-                                <input type="hidden" name="tenant_id" value="{{ tenant.id }}">
+                                <input type="hidden" name="tenant_id" value="{{ tenant.tenantId }}">
                                 <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="placeholder">
                                 <button type="submit" class="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 text-left">
-                                    <span class="truncate">{{ tenant.name }}</span>
+                                    <span class="truncate">{{ tenant.tenantName }}</span>
                                 </button>
                             </form>
                         {% endif %}

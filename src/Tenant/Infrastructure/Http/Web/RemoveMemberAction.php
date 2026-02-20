@@ -23,15 +23,19 @@ final class RemoveMemberAction extends AbstractController
     ) {
     }
 
-    #[Route('/tenant/members/{id}/remove', name: 'tenant_remove_member', methods: ['POST'], requirements: ['id' => '[0-9A-Z]{26}'])]
-    public function __invoke(string $id): RedirectResponse
+    #[Route(
+        path: '/tenant/members/{userId}/remove',
+        name: 'tenant_remove_member',
+        methods: ['POST'])
+    ]
+    public function __invoke(Ulid $userId): RedirectResponse
     {
         /** @var AuthUser $user */
         $user = $this->getUser();
 
         $this->commandDispatcher->dispatchCommand(new RemoveMemberCommand(
             tenantId: $this->activeTenantProvider->getActiveTenantId(),
-            memberUserId: Ulid::fromString($id),
+            memberUserId: $userId,
             actorUserId: $user->getId(),
         ));
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Shared\Infrastructure\Security\SessionActiveTenantProvider;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,12 +18,16 @@ use Symfony\Component\Uid\Ulid;
 final class SwitchTenantAction extends AbstractController
 {
     public function __construct(
-        private readonly SessionActiveTenantProvider $activeTenantProvider,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
         private readonly TenantMembershipRepositoryInterface $membershipRepository,
     ) {
     }
 
-    #[Route('/tenant/switch', name: 'tenant_switch', methods: ['POST'])]
+    #[Route(
+        path: '/tenant/switch',
+        name: 'tenant_switch',
+        methods: ['POST'])
+    ]
     public function __invoke(Request $request): RedirectResponse
     {
         /** @var AuthUser $user */

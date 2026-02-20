@@ -22,7 +22,11 @@ final class ListTenantMembersAction extends AbstractController
     ) {
     }
 
-    #[Route('/tenant/members', name: 'tenant_members', methods: ['GET'])]
+    #[Route(
+        path: '/tenant/members',
+        name: 'tenant_members',
+        methods: ['GET']
+    )]
     public function __invoke(): Response
     {
         /** @var AuthUser $user */

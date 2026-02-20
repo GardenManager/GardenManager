@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Shared\Infrastructure\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GardenManager\Shared\Infrastructure\Security\SessionActiveTenantProvider;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -15,7 +15,7 @@ final readonly class TenantFilterListener
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SessionActiveTenantProvider $activeTenantProvider,
+        private ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 

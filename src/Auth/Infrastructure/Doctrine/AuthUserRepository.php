@@ -32,6 +32,33 @@ final class AuthUserRepository extends ServiceEntityRepository implements AuthUs
         return $this->findById($id) ?? throw EntityNotFoundException::fromEntityClassNameAndId(AuthUser::class, $id);
     }
 
+    /**
+     * @param list<Ulid> $userIds
+     *
+     * @return array<string, AuthUser>
+     */
+    public function findByIds(array $userIds): array
+    {
+        $indexed = [];
+
+        if (empty($userIds)) {
+            return $indexed;
+        }
+
+        /** @var list<AuthUser> $users */
+        $users = $this->createQueryBuilder('u')
+            ->where('u.id IN (:ids)')
+            ->setParameter('ids', array_map(static fn (Ulid $id): string => $id->toRfc4122(), $userIds))
+            ->getQuery()
+            ->getResult();
+
+        foreach ($users as $user) {
+            $indexed[$user->getId()->toString()] = $user;
+        }
+
+        return $indexed;
+    }
+
     public function findByEmail(string $email): ?AuthUser
     {
         return $this->findOneBy(['email' => $email]);

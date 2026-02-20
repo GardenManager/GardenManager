@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Infrastructure\EventListener;
 
 use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Shared\Infrastructure\Security\SessionActiveTenantProvider;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
@@ -15,7 +15,7 @@ final readonly class SetActiveTenantOnLoginListener
 {
     public function __construct(
         private TenantMembershipRepositoryInterface $membershipRepository,
-        private SessionActiveTenantProvider $activeTenantProvider,
+        private ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 

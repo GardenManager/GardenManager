@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Application\View;
 
 use DateTimeImmutable;
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Tenant\Application\Dto\MemberUserInfoDto;
 use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\TenantMembership;
 use Symfony\Component\Uid\Ulid;
@@ -23,13 +23,13 @@ final readonly class TenantMembershipView
     {
     }
 
-    public static function fromMembershipAndUser(TenantMembership $membership, AuthUser $user): self
+    public static function fromMembershipAndUser(TenantMembership $membership, ?MemberUserInfoDto $user): self
     {
         return new self(
             membershipId: $membership->getId(),
             userId: $membership->getUserId(),
-            userEmail: $user->getEmail(),
-            userDisplayName: $user->getDisplayName(),
+            userEmail: $user?->email ?? '',
+            userDisplayName: $user?->displayName ?? '',
             role: $membership->getRole(),
             createdAt: $membership->getCreatedAt(),
         );

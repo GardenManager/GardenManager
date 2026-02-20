@@ -6,6 +6,7 @@ namespace GardenManager\Tenant\Application\Command;
 
 use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Exception\TenantException;
+use GardenManager\Tenant\Domain\Security\TenantAuthorizationChecker;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -13,17 +14,16 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler(bus: 'command.bus')]
 final readonly class RemoveMemberCommandHandler
 {
-    public function __construct(private TenantMembershipRepositoryInterface $membershipRepository)
+    public function __construct(
+        private TenantMembershipRepositoryInterface $membershipRepository,
+        private TenantAuthorizationChecker $authorizationChecker,
+    )
     {
     }
 
     public function __invoke(RemoveMemberCommand $command): void
     {
-        $actorMembership = $this->membershipRepository->findByTenantIdAndUserId($command->tenantId, $command->actorUserId);
-
-        if ($actorMembership === null || $actorMembership->getRole() !== TenantMembershipRole::OWNER) {
-            throw TenantException::onlyOwnersCanManage($command->tenantId, $command->actorUserId);
-        }
+        $this->authorizationChecker->ensureOwner($command->tenantId, $command->actorUserId);
 
         $revokedMembership = $this->membershipRepository->findByTenantIdAndUserId($command->tenantId, $command->memberUserId);
 

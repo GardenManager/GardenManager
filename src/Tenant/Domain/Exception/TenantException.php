@@ -11,8 +11,21 @@ final class TenantException extends CoreException
 {
     public const int CODE_ALREADY_MEMBER = 0x79ECEF04;
     public const int CODE_CANT_REMOVE_LAST_OWNER = 0x78751676;
+    public const int CODE_INVITEE_NOT_FOUND = 0xA3B1C2D4;
     public const int CODE_NOT_MEMBER = 0x9F7296DA;
     public const int CODE_ONLY_OWNERS_CAN_MANAGE = 0xE8E321F2;
+
+    public static function inviteeNotFound(string $email): self
+    {
+        return new self(
+            'No user found with this email address.',
+            [
+                'email' => $email,
+            ],
+            404,
+            self::CODE_INVITEE_NOT_FOUND,
+        );
+    }
 
     public static function alreadyAMember(Ulid $tenantId, string $email): self
     {

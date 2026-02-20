@@ -29,7 +29,11 @@ final class EditTenantAction extends AbstractController
     ) {
     }
 
-    #[Route('/tenant/edit', name: 'tenant_edit', methods: ['GET', 'POST'])]
+    #[Route(
+        path: '/tenant/edit',
+        name: 'tenant_edit',
+        methods: ['GET', 'POST']
+    )]
     public function __invoke(Request $request): Response
     {
         /** @var AuthUser $user */

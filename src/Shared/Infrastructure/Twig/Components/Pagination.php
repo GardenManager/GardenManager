@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Twig\Components;
+namespace GardenManager\Shared\Infrastructure\Twig\Components;
 
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;

@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Application\Query;
 
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Tenant\Application\Port\MemberUserResolverInterface;
 use GardenManager\Tenant\Application\View\TenantMembershipView;
 use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler(bus: 'query.bus')]
 final readonly class ListTenantMembersQueryHandler
 {
     public function __construct(
         private TenantMembershipRepositoryInterface $membershipRepository,
-        private AuthUserRepositoryInterface $userRepository,
+        private MemberUserResolverInterface $memberUserResolver,
     ) {
     }
 
-    /** @return list<TenantMembershipView> */
+    /**
+     * @return list<TenantMembershipView>
+     */
     public function __invoke(ListTenantMembersQuery $query): array
     {
         $actorMembership = $this->membershipRepository->findByTenantIdAndUserId($query->tenantId, $query->actorUserId);
@@ -30,11 +33,19 @@ final readonly class ListTenantMembersQueryHandler
         }
 
         $memberships = $this->membershipRepository->findByTenantId($query->tenantId);
+        $usersById = $this->memberUserResolver->resolveByIds(
+            array_map(
+                static fn (TenantMembership $m): Ulid => $m->getUserId(),
+                $memberships
+            )
+        );
 
-        return array_map(function (TenantMembership $membership): TenantMembershipView {
-            $user = $this->userRepository->getById($membership->getUserId());
+        return array_map(
+            function (TenantMembership $membership) use ($usersById): TenantMembershipView {
+                $user = $usersById[(string) $membership->getUserId()] ?? null;
 
-            return TenantMembershipView::fromMembershipAndUser($membership, $user);
-        }, $memberships);
+                return TenantMembershipView::fromMembershipAndUser($membership, $user);
+            }, $memberships
+        );
     }
 }

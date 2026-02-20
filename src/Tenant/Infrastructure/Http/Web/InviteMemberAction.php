@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\Exception\AuthException;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Tenant\Application\Command\InviteMemberCommand;
@@ -30,7 +29,11 @@ final class InviteMemberAction extends AbstractController
     ) {
     }
 
-    #[Route('/tenant/members/invite', name: 'tenant_invite_member', methods: ['GET', 'POST'])]
+    #[Route(
+        path: '/tenant/members/invite',
+        name: 'tenant_invite_member',
+        methods: ['GET', 'POST']
+    )]
     public function __invoke(Request $request): Response
     {
         $dto = new InviteMemberDto();
@@ -54,7 +57,7 @@ final class InviteMemberAction extends AbstractController
                 $this->addFlash('success', 'Member invited successfully.');
 
                 return $this->redirectToRoute('tenant_members');
-            } catch (AuthException | TenantException $e) {
+            } catch (TenantException $e) {
                 $form->get('email')->addError(new FormError($e->getMessage()));
             }
         }

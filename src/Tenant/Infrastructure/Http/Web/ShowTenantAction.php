@@ -22,7 +22,11 @@ final class ShowTenantAction extends AbstractController
     ) {
     }
 
-    #[Route('/tenant', name: 'tenant_show', methods: ['GET'])]
+    #[Route(
+        path: '/tenant',
+        name: 'tenant_show',
+        methods: ['GET']
+    )]
     public function __invoke(): Response
     {
         /** @var AuthUser $user */
