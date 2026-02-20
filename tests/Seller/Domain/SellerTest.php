@@ -18,11 +18,11 @@ final class SellerTest extends TestCase
     #[Test]
     public function createFromPrimitives(): void
     {
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $seller = Seller::create(
             name: 'John Garden',
             email: 'john@example.com',
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             phone: '+1234567890',
             description: 'A local gardener',
             address: new Address('123 Main St', 'Springfield', '62704', 'US'),
@@ -34,14 +34,14 @@ final class SellerTest extends TestCase
         self::assertSame('A local gardener', $seller->getDescription());
         self::assertNotNull($seller->getAddress());
         self::assertSame('123 Main St', $seller->getAddress()->street);
-        self::assertTrue($ownerId->equals($seller->getOwnerId()));
+        self::assertTrue($tenantId->equals($seller->getTenantId()));
         self::assertNull($seller->getDeletedAt());
     }
 
     #[Test]
     public function updateFromPrimitives(): void
     {
-        $seller = Seller::create(name: 'Old Name', email: 'old@example.com', ownerId: new Ulid());
+        $seller = Seller::create(name: 'Old Name', email: 'old@example.com', tenantId: new Ulid());
 
         $seller->update(
             name: 'New Name',
@@ -59,14 +59,14 @@ final class SellerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        Seller::create(name: 'Test', email: 'not-an-email', ownerId: new Ulid());
+        Seller::create(name: 'Test', email: 'not-an-email', tenantId: new Ulid());
     }
 
     #[Test]
     public function createWithCustomId(): void
     {
         $id = new Ulid();
-        $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: new Ulid(), id: $id);
+        $seller = Seller::create(name: 'Test', email: 'test@example.com', tenantId: new Ulid(), sellerId: $id);
 
         self::assertSame($id, $seller->getId());
     }
@@ -74,7 +74,7 @@ final class SellerTest extends TestCase
     #[Test]
     public function nullPhoneIsHandled(): void
     {
-        $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: new Ulid());
+        $seller = Seller::create(name: 'Test', email: 'test@example.com', tenantId: new Ulid());
 
         self::assertNull($seller->getPhone());
     }

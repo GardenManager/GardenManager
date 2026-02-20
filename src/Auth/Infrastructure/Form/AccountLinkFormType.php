@@ -11,6 +11,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @phpstan-extends AbstractType<mixed>
+ *
+ * @psalm-suppress TooManyTemplateParams
+ */
 final class AccountLinkFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

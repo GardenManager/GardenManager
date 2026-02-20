@@ -9,8 +9,12 @@ use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
+use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
+use GardenManager\Tenant\Domain\Tenant;
+use GardenManager\Tenant\Domain\TenantMembership;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Uid\Ulid;
 
@@ -31,7 +35,7 @@ final class PlantWebActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $client->request('GET', '/plants');
 
@@ -44,7 +48,7 @@ final class PlantWebActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $client->request('GET', '/plants/new');
         self::assertResponseIsSuccessful();
@@ -64,7 +68,7 @@ final class PlantWebActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $plant = $this->createPlant($user);
 
@@ -84,7 +88,7 @@ final class PlantWebActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $plant = $this->createPlant($user);
         $id = (string) $plant->getId();
@@ -106,10 +110,18 @@ final class PlantWebActionsTest extends WebTestCase
         $plant = $this->createPlant($owner);
 
         $otherUser = $this->createUser();
-        $client->loginUser($otherUser);
+        $this->loginWithTenant($client, $otherUser);
 
         $client->request('GET', '/plants/' . $plant->getId());
-        self::assertResponseStatusCodeSame(403);
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    private function loginWithTenant(KernelBrowser $client, AuthUser $user): void
+    {
+        $client->loginUser($user);
+        $session = $client->getSession();
+        $session->set('_active_tenant_id', (string) $user->getId());
+        $session->save();
     }
 
     private function createUser(): AuthUser
@@ -124,6 +136,16 @@ final class PlantWebActionsTest extends WebTestCase
         );
 
         $em->persist($user);
+
+        $tenant = Tenant::create(name: 'Test Tenant', id: $user->getId());
+        $em->persist($tenant);
+
+        $membership = TenantMembership::create(
+            tenant: $tenant,
+            userId: $user->getId(),
+            role: TenantMembershipRole::OWNER,
+        );
+        $em->persist($membership);
         $em->flush();
 
         return $user;
@@ -133,7 +155,7 @@ final class PlantWebActionsTest extends WebTestCase
     {
         $em = self::getContainer()->get(EntityManagerInterface::class);
         $plant = Plant::create(
-            ownerId: $owner->getId(),
+            tenantId: $owner->getId(),
             localName: 'Test Plant',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,

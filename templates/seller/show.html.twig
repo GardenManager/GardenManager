@@ -79,6 +79,5 @@
     <twig:ConfirmDeleteModal
         action="{{ path('seller_delete', {id: seller.id}) }}"
         entityName="{{ seller.name }}"
-        csrfToken="{{ csrf_token('delete-seller-' ~ seller.id) }}"
     />
 {% endblock %}

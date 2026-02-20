@@ -8,6 +8,7 @@ use GardenManager\Auth\Domain\AuthOidc;
 use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Tenant\Application\Service\TenantProvisioningService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]
@@ -16,6 +17,7 @@ final readonly class ProvisionOidcUserHandler
     public function __construct(
         private AuthUserRepositoryInterface $authUserRepository,
         private AuthOidcRepositoryInterface $authOidcRepository,
+        private TenantProvisioningService $tenantProvisioningService,
     ) {
     }
 
@@ -36,5 +38,6 @@ final readonly class ProvisionOidcUserHandler
 
         $this->authUserRepository->save($user);
         $this->authOidcRepository->save($link);
+        $this->tenantProvisioningService->provisionPersonalTenant($user->getId(), $command->displayName . "'s Garden");
     }
 }

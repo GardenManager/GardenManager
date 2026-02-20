@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace GardenManager\Shared\Infrastructure\Bus;
 
+use GardenManager\Shared\Application\CommandDispatcherInterface;
 use GardenManager\Shared\Application\CommandInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final readonly class CommandDispatcher
+final readonly class CommandDispatcher implements CommandDispatcherInterface
 {
     public function __construct(
         private MessageBusInterface $commandBus,

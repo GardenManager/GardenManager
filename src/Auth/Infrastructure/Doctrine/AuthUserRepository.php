@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -24,6 +25,38 @@ final class AuthUserRepository extends ServiceEntityRepository implements AuthUs
     public function findById(Ulid $id): ?AuthUser
     {
         return $this->find($id);
+    }
+
+    public function getById(Ulid $id): AuthUser
+    {
+        return $this->findById($id) ?? throw EntityNotFoundException::fromEntityClassNameAndId(AuthUser::class, $id);
+    }
+
+    /**
+     * @param list<Ulid> $userIds
+     *
+     * @return array<string, AuthUser>
+     */
+    public function findByIds(array $userIds): array
+    {
+        $indexed = [];
+
+        if (empty($userIds)) {
+            return $indexed;
+        }
+
+        /** @var list<AuthUser> $users */
+        $users = $this->createQueryBuilder('u')
+            ->where('u.id IN (:ids)')
+            ->setParameter('ids', array_map(static fn (Ulid $id): string => $id->toRfc4122(), $userIds))
+            ->getQuery()
+            ->getResult();
+
+        foreach ($users as $user) {
+            $indexed[$user->getId()->toString()] = $user;
+        }
+
+        return $indexed;
     }
 
     public function findByEmail(string $email): ?AuthUser

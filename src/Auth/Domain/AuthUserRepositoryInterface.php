@@ -10,6 +10,15 @@ interface AuthUserRepositoryInterface
 {
     public function findById(Ulid $id): ?AuthUser;
 
+    public function getById(Ulid $id): AuthUser;
+
+    /**
+     * @param list<Ulid> $userIds
+     *
+     * @return array<string, AuthUser>
+     */
+    public function findByIds(array $userIds): array;
+
     public function findByEmail(string $email): ?AuthUser;
 
     public function save(AuthUser $user): void;

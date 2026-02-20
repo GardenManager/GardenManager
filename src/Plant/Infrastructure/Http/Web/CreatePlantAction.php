@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Application\Command\CreatePlantCommand;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Infrastructure\Form\PlantFormType;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +21,7 @@ final class CreatePlantAction extends AbstractController
 {
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 
@@ -35,12 +36,9 @@ final class CreatePlantAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var AuthUser $user */
-            $user = $this->getUser();
-
             $command = new CreatePlantCommand(
                 plantId: new Ulid(),
-                ownerId: $user->getId(),
+                tenantId: $this->activeTenantProvider->getActiveTenantId(),
                 localName: $dto->localName ?? '',
                 isHybrid: $dto->isHybrid,
                 lifecycle: $dto->lifecycle,

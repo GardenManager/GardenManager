@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Command\CreateSellerCommand;
 use GardenManager\Seller\Application\Dto\SellerFormDto;
 use GardenManager\Seller\Infrastructure\Form\SellerFormType;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +21,7 @@ final class CreateSellerAction extends AbstractController
 {
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 
@@ -35,13 +36,11 @@ final class CreateSellerAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var AuthUser $user */
-            $user = $this->getUser();
             $sellerId = new Ulid();
 
             $command = new CreateSellerCommand(
                 sellerId: $sellerId,
-                ownerId: $user->getId(),
+                tenantId: $this->activeTenantProvider->getActiveTenantId(),
                 name: $dto->name ?? '',
                 email: $dto->email ?? '',
                 phone: $dto->phone,

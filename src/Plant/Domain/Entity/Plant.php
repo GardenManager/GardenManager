@@ -8,12 +8,13 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Shared\Domain\SoftDeletable;
+use GardenManager\Shared\Domain\TenantScoped;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'plant')]
 #[ORM\HasLifecycleCallbacks]
-class Plant implements SoftDeletable
+class Plant implements SoftDeletable, TenantScoped
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
@@ -21,7 +22,7 @@ class Plant implements SoftDeletable
     private Ulid $id;
 
     #[ORM\Column(type: 'ulid')]
-    private Ulid $ownerId;
+    private Ulid $tenantId;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $localName;
@@ -57,7 +58,7 @@ class Plant implements SoftDeletable
     }
 
     public static function create(
-        Ulid $ownerId,
+        Ulid $tenantId,
         string $localName,
         bool $isHybrid,
         LifecycleEnum $lifecycle,
@@ -68,12 +69,8 @@ class Plant implements SoftDeletable
     ): self {
         $plant = new self();
 
-        if ($plantId === null) {
-            $plantId = new Ulid();
-        }
-
-        $plant->id = $plantId;
-        $plant->ownerId = $ownerId;
+        $plant->id = $plantId ?? new Ulid();
+        $plant->tenantId = $tenantId;
         $plant->localName = $localName;
         $plant->isHybrid = $isHybrid;
         $plant->lifecycle = $lifecycle;
@@ -86,7 +83,7 @@ class Plant implements SoftDeletable
 
     public function update(
         Ulid $plantId,
-        Ulid $ownerId,
+        Ulid $tenantId,
         string $localName,
         bool $isHybrid,
         LifecycleEnum $lifecycle,
@@ -95,7 +92,7 @@ class Plant implements SoftDeletable
         ?string $cultivar = null,
     ): void {
         $this->id = $plantId;
-        $this->ownerId = $ownerId;
+        $this->tenantId = $tenantId;
         $this->localName = $localName;
         $this->isHybrid = $isHybrid;
         $this->lifecycle = $lifecycle;
@@ -109,9 +106,9 @@ class Plant implements SoftDeletable
         return $this->id;
     }
 
-    public function getOwnerId(): Ulid
+    public function getTenantId(): Ulid
     {
-        return $this->ownerId;
+        return $this->tenantId;
     }
 
     public function getLocalName(): string
@@ -173,10 +170,5 @@ class Plant implements SoftDeletable
     public function isDeleted(): bool
     {
         return $this->deletedAt !== null;
-    }
-
-    public function isOwnedBy(Ulid $ownerId): bool
-    {
-        return $this->getOwnerId()->equals($ownerId);
     }
 }

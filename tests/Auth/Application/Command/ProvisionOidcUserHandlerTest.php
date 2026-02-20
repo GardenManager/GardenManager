@@ -10,6 +10,8 @@ use GardenManager\Auth\Domain\AuthOidc;
 use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Shared\Application\CommandDispatcherInterface;
+use GardenManager\Tenant\Application\Service\TenantProvisioningService;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +42,11 @@ final class ProvisionOidcUserHandlerTest extends TestCase
                 $savedLink = $link;
             });
 
-        $handler = new ProvisionOidcUserHandler($userRepo, $oidcRepo);
+        $tenantProvisioning = new TenantProvisioningService(
+            $this->createStub(CommandDispatcherInterface::class),
+        );
+
+        $handler = new ProvisionOidcUserHandler($userRepo, $oidcRepo, $tenantProvisioning);
 
         $handler(new ProvisionOidcUserCommand($userId, $linkId, 'oidc@example.com', 'OIDC User', 'oidc', 'sub-123'));
 

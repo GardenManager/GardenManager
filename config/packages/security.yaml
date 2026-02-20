@@ -37,6 +37,8 @@ security:
         - { path: ^/oidc, roles: PUBLIC_ACCESS }
         - { path: ^/link-account, roles: PUBLIC_ACCESS }
         - { path: ^/dashboard, roles: ROLE_USER }
+        - { path: ^/tenant, roles: ROLE_USER }
+        - { path: ^/plants, roles: ROLE_USER }
         - { path: ^/sellers, roles: ROLE_USER }
         - { path: ^/api/sellers, roles: ROLE_USER }
 

@@ -1,24 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Class GardenManager\\Auth\\Infrastructure\\Form\\AccountLinkFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Auth/Infrastructure/Form/AccountLinkFormType.php
-
-		-
-			message: '#^Class GardenManager\\Auth\\Infrastructure\\Form\\LoginFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Auth/Infrastructure/Form/LoginFormType.php
-
-		-
-			message: '#^Class GardenManager\\Auth\\Infrastructure\\Form\\RegistrationFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Auth/Infrastructure/Form/RegistrationFormType.php
-
-		-
 			message: '#^Method KnpU\\OAuth2ClientBundle\\Client\\OAuth2ClientInterface\:\:redirect\(\) invoked with 1 parameter, 2 required\.$#'
 			identifier: arguments.count
 			count: 1
@@ -55,38 +37,8 @@ parameters:
 			path: src/Plant/Domain/Enum/LifecycleEnum.php
 
 		-
-			message: '#^Class GardenManager\\Plant\\Infrastructure\\Form\\PlantFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Plant/Infrastructure/Form/PlantFormType.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Plant/Infrastructure/Http/Web/DeletePlantAction.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Plant/Infrastructure/Http/Web/ShowPlantAction.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/Plant/Infrastructure/Http/Web/UpdatePlantAction.php
-
-		-
 			message: '#^Class GardenManager\\Plant\\Infrastructure\\Persistence\\PlantDoctrineRepository extends generic class Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository but does not specify its types\: TEntityClass$#'
 			identifier: missingType.generics
-			count: 1
-			path: src/Plant/Infrastructure/Persistence/PlantDoctrineRepository.php
-
-		-
-			message: '#^Method GardenManager\\Plant\\Infrastructure\\Persistence\\PlantDoctrineRepository\:\:findAllByOwnerIdPaginated\(\) should return GardenManager\\Shared\\Domain\\Pagination\\PaginatedResult\<GardenManager\\Plant\\Domain\\Entity\\Plant\> but returns GardenManager\\Shared\\Domain\\Pagination\\PaginatedResult\<object\>\.$#'
-			identifier: return.type
 			count: 1
 			path: src/Plant/Infrastructure/Persistence/PlantDoctrineRepository.php
 
@@ -101,12 +53,6 @@ parameters:
 			identifier: generics.wrongParent
 			count: 1
 			path: src/Seller/Application/Query/ListSellersQuery.php
-
-		-
-			message: '#^Class GardenManager\\Seller\\Infrastructure\\Form\\SellerFormType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Seller/Infrastructure/Form/SellerFormType.php
 
 		-
 			message: '#^Method GardenManager\\Shared\\Domain\\Exception\\Contract\\ContextCarrierExceptionInterface\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
@@ -143,12 +89,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Shared/Infrastructure/EventListener/HttpStatusCodeCarrierExceptionListener.php
-
-		-
-			message: '#^Class GardenManager\\Shared\\Infrastructure\\Form\\AddressType extends generic class Symfony\\Component\\Form\\AbstractType but does not specify its types\: TData$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Shared/Infrastructure/Form/AddressType.php
 
 		-
 			message: '#^Method GardenManager\\Shared\\Infrastructure\\Form\\DataTransformer\\AddressTransformer\:\:reverseTransform\(\) has parameter \$value with no value type specified in iterable type array\.$#'

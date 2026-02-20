@@ -9,9 +9,9 @@ use GardenManager\Plant\Application\Command\UpdatePlantCommandHandler;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
-use GardenManager\Plant\Domain\Security\PlantAccessChecker;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
-use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
+use GardenManager\Shared\Domain\Exception\TenantAccessException;
+use GardenManager\Shared\Domain\Security\TenantAccessChecker;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -23,11 +23,11 @@ final class UpdatePlantCommandHandlerTest extends TestCase
     #[Test]
     public function updatesPlant(): void
     {
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $plantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'Old Name',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -38,11 +38,11 @@ final class UpdatePlantCommandHandlerTest extends TestCase
         $repo->method('getById')->with($plantId)->willReturn($plant);
         $repo->expects(self::once())->method('save');
 
-        $handler = new UpdatePlantCommandHandler($repo, new PlantAccessChecker());
+        $handler = new UpdatePlantCommandHandler($repo, new TenantAccessChecker());
 
         $command = new UpdatePlantCommand(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'New Name',
             isHybrid: true,
             lifecycle: LifecycleEnum::PERENNIAL,
@@ -61,20 +61,20 @@ final class UpdatePlantCommandHandlerTest extends TestCase
     public function throwsNotFoundWhenPlantMissing(): void
     {
         $plantId = new Ulid();
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
 
         $repo = $this->createStub(PlantRepositoryInterface::class);
         $repo->method('getById')->willThrowException(
             EntityNotFoundException::fromEntityClassNameAndId(Plant::class, $plantId),
         );
 
-        $handler = new UpdatePlantCommandHandler($repo, new PlantAccessChecker());
+        $handler = new UpdatePlantCommandHandler($repo, new TenantAccessChecker());
 
         $this->expectException(EntityNotFoundException::class);
 
         $handler(new UpdatePlantCommand(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'Test',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -82,14 +82,14 @@ final class UpdatePlantCommandHandlerTest extends TestCase
     }
 
     #[Test]
-    public function throwsAccessDeniedWhenNotOwner(): void
+    public function throwsAccessDeniedWhenNotTenant(): void
     {
         $plantId = new Ulid();
-        $ownerId = new Ulid();
-        $differentOwnerId = new Ulid();
+        $tenantId = new Ulid();
+        $differentTenantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: $differentOwnerId,
+            tenantId: $differentTenantId,
             localName: 'Test',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -99,13 +99,13 @@ final class UpdatePlantCommandHandlerTest extends TestCase
         $repo = $this->createStub(PlantRepositoryInterface::class);
         $repo->method('getById')->willReturn($plant);
 
-        $handler = new UpdatePlantCommandHandler($repo, new PlantAccessChecker());
+        $handler = new UpdatePlantCommandHandler($repo, new TenantAccessChecker());
 
-        $this->expectException(EntityOwnershipException::class);
+        $this->expectException(TenantAccessException::class);
 
         $handler(new UpdatePlantCommand(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'Hacked',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,

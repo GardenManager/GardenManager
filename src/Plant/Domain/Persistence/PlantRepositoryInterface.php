@@ -13,7 +13,7 @@ interface PlantRepositoryInterface
     public function getById(Ulid $plantId): Plant;
 
     /** @return PaginatedResult<Plant> */
-    public function findAllByOwnerIdPaginated(Ulid $ownerId, int $page, int $limit): PaginatedResult;
+    public function findPaginated(int $page, int $limit): PaginatedResult;
 
     public function save(Plant $plant): void;
 }

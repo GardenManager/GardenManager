@@ -21,11 +21,11 @@ final readonly class CreateSellerHandler
         $seller = Seller::create(
             name: $command->name,
             email: $command->email,
-            ownerId: $command->ownerId,
+            tenantId: $command->tenantId,
             phone: $command->phone,
             description: $command->description,
             address: $command->address?->toAddress(),
-            id: $command->sellerId,
+            sellerId: $command->sellerId,
         );
 
         $this->sellerRepository->save($seller);

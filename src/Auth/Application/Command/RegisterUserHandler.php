@@ -8,6 +8,7 @@ use GardenManager\Auth\Application\EmailVerificationServiceInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use GardenManager\Tenant\Application\Service\TenantProvisioningService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -18,6 +19,7 @@ final readonly class RegisterUserHandler
         private AuthUserRepositoryInterface $authUserRepository,
         private UserPasswordHasherInterface $passwordHasher,
         private EmailVerificationServiceInterface $emailVerificationService,
+        private TenantProvisioningService $tenantProvisioningService,
         private bool $requireEmailVerification,
     ) {
     }
@@ -43,6 +45,7 @@ final readonly class RegisterUserHandler
         }
 
         $this->authUserRepository->save($user);
+        $this->tenantProvisioningService->provisionPersonalTenant($user->getId(), $command->displayName . "'s Garden");
 
         if ($this->requireEmailVerification) {
             $this->emailVerificationService->sendVerificationEmail($user);

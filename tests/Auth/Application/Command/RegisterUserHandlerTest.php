@@ -10,6 +10,8 @@ use GardenManager\Auth\Application\EmailVerificationServiceInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use GardenManager\Shared\Application\CommandDispatcherInterface;
+use GardenManager\Tenant\Application\Service\TenantProvisioningService;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +21,15 @@ use Symfony\Component\Uid\Ulid;
 #[Group('unit')]
 final class RegisterUserHandlerTest extends TestCase
 {
+    private TenantProvisioningService $tenantProvisioning;
+
+    protected function setUp(): void
+    {
+        $this->tenantProvisioning = new TenantProvisioningService(
+            $this->createStub(CommandDispatcherInterface::class),
+        );
+    }
+
     #[Test]
     public function createsUserWithHashedPassword(): void
     {
@@ -39,7 +50,7 @@ final class RegisterUserHandlerTest extends TestCase
         $emailService = $this->createMock(EmailVerificationServiceInterface::class);
         $emailService->expects(self::never())->method('sendVerificationEmail');
 
-        $handler = new RegisterUserHandler($repo, $hasher, $emailService, false);
+        $handler = new RegisterUserHandler($repo, $hasher, $emailService, $this->tenantProvisioning, false);
 
         $handler(new RegisterUserCommand($userId, 'test@example.com', 'Test User', 'password123'));
 
@@ -64,7 +75,7 @@ final class RegisterUserHandlerTest extends TestCase
         $emailService = $this->createMock(EmailVerificationServiceInterface::class);
         $emailService->expects(self::once())->method('sendVerificationEmail');
 
-        $handler = new RegisterUserHandler($repo, $hasher, $emailService, true);
+        $handler = new RegisterUserHandler($repo, $hasher, $emailService, $this->tenantProvisioning, true);
 
         $handler(new RegisterUserCommand(new Ulid(), 'test@example.com', 'Test', 'password123'));
     }
@@ -82,7 +93,7 @@ final class RegisterUserHandlerTest extends TestCase
 
         $emailService = $this->createStub(EmailVerificationServiceInterface::class);
 
-        $handler = new RegisterUserHandler($repo, $hasher, $emailService, false);
+        $handler = new RegisterUserHandler($repo, $hasher, $emailService, $this->tenantProvisioning, false);
 
         $this->expectException(AuthException::class);
 

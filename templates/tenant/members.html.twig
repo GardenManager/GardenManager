@@ -1,0 +1,58 @@
+{% extends 'layout/dashboard.html.twig' %}
+
+{% block page_title %}Tenant Members{% endblock %}
+
+{% block title_display %}
+    <div class="flex justify-between items-center">
+        <span>Tenant Members</span>
+        <twig:Button href="{{ path('tenant_invite_member') }}" color="primary" size="sm">Invite Member</twig:Button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-6">
+        <a href="{{ path('tenant_show') }}" class="text-blue-600 hover:underline dark:text-blue-500 text-sm">&larr; Back to Tenant Settings</a>
+    </div>
+
+    {% if members is empty %}
+        <twig:EmptyState message="No members found." />
+    {% else %}
+        <twig:Card>
+            {% block content %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Name</th>
+                                <th scope="col" class="px-6 py-3">Email</th>
+                                <th scope="col" class="px-6 py-3">Role</th>
+                                <th scope="col" class="px-6 py-3">Joined</th>
+                                <th scope="col" class="px-6 py-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ member.userDisplayName }}</td>
+                                    <td class="px-6 py-4">{{ member.userEmail }}</td>
+                                    <td class="px-6 py-4">
+                                        <twig:Badge color="{{ member.role.value == 'owner' ? 'blue' : 'gray' }}">{{ member.role.value|capitalize }}</twig:Badge>
+                                    </td>
+                                    <td class="px-6 py-4">{{ member.createdAt|date('F j, Y') }}</td>
+                                    <td class="px-6 py-4 text-right">
+                                        {% if member.userId != app.user.id %}
+                                            <form action="{{ path('tenant_remove_member', {id: member.userId}) }}" method="post" class="inline">
+                                                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="placeholder">
+                                                <button type="submit" class="text-red-600 hover:underline dark:text-red-500 text-sm" onclick="return confirm('Remove this member?')">Remove</button>
+                                            </form>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endblock %}
+        </twig:Card>
+    {% endif %}
+{% endblock %}

@@ -9,9 +9,9 @@ use GardenManager\Plant\Application\Query\GetPlantQueryHandler;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
-use GardenManager\Plant\Domain\Security\PlantAccessChecker;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
-use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
+use GardenManager\Shared\Domain\Exception\TenantAccessException;
+use GardenManager\Shared\Domain\Security\TenantAccessChecker;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -23,11 +23,11 @@ final class GetPlantQueryHandlerTest extends TestCase
     #[Test]
     public function returnsPlantDetailView(): void
     {
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $plantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'Test Plant',
             isHybrid: true,
             lifecycle: LifecycleEnum::PERENNIAL,
@@ -38,13 +38,13 @@ final class GetPlantQueryHandlerTest extends TestCase
         );
 
         $repo = $this->createStub(PlantRepositoryInterface::class);
-        $repo->method('getById')->with($plantId)->willReturn($plant);
+        $repo->method('getById')->willReturn($plant);
 
-        $handler = new GetPlantQueryHandler($repo, new PlantAccessChecker());
+        $handler = new GetPlantQueryHandler($repo, new TenantAccessChecker());
 
         $result = $handler(new GetPlantQuery(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
         ));
 
         self::assertSame('Test Plant', $result->localName);
@@ -59,32 +59,32 @@ final class GetPlantQueryHandlerTest extends TestCase
     public function throwsNotFoundWhenPlantMissing(): void
     {
         $plantId = new Ulid();
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
 
         $repo = $this->createStub(PlantRepositoryInterface::class);
         $repo->method('getById')->willThrowException(
             EntityNotFoundException::fromEntityClassNameAndId(Plant::class, $plantId),
         );
 
-        $handler = new GetPlantQueryHandler($repo, new PlantAccessChecker());
+        $handler = new GetPlantQueryHandler($repo, new TenantAccessChecker());
 
         $this->expectException(EntityNotFoundException::class);
 
         $handler(new GetPlantQuery(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
         ));
     }
 
     #[Test]
-    public function throwsAccessDeniedWhenNotOwner(): void
+    public function throwsAccessDeniedWhenNotTenant(): void
     {
         $plantId = new Ulid();
-        $ownerId = new Ulid();
-        $differentOwnerId = new Ulid();
+        $tenantId = new Ulid();
+        $differentTenantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: $differentOwnerId,
+            tenantId: $differentTenantId,
             localName: 'Test',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -94,13 +94,13 @@ final class GetPlantQueryHandlerTest extends TestCase
         $repo = $this->createStub(PlantRepositoryInterface::class);
         $repo->method('getById')->willReturn($plant);
 
-        $handler = new GetPlantQueryHandler($repo, new PlantAccessChecker());
+        $handler = new GetPlantQueryHandler($repo, new TenantAccessChecker());
 
-        $this->expectException(EntityOwnershipException::class);
+        $this->expectException(TenantAccessException::class);
 
         $handler(new GetPlantQuery(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
         ));
     }
 }

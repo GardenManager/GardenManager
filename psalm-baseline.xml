@@ -32,32 +32,11 @@
       <code><![CDATA[getFlashBag]]></code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Plant/Application/Query/PlantDetailView.php">
-    <PossiblyNullArgument>
-      <code><![CDATA[$plant->getUpdatedAt()]]></code>
-    </PossiblyNullArgument>
-  </file>
   <file src="src/Plant/Infrastructure/Http/Web/CreatePlantAction.php">
     <PossiblyNullArgument>
       <code><![CDATA[$dto->isHybrid]]></code>
       <code><![CDATA[$dto->lifecycle]]></code>
     </PossiblyNullArgument>
-  </file>
-  <file src="src/Plant/Infrastructure/Http/Web/DeletePlantAction.php">
-    <PossiblyNullReference>
-      <code><![CDATA[getId]]></code>
-    </PossiblyNullReference>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[getId]]></code>
-    </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Plant/Infrastructure/Http/Web/ShowPlantAction.php">
-    <PossiblyNullReference>
-      <code><![CDATA[getId]]></code>
-    </PossiblyNullReference>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[getId]]></code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Plant/Infrastructure/Http/Web/UpdatePlantAction.php">
     <PossiblyNullArgument>
@@ -65,27 +44,11 @@
       <code><![CDATA[$dto->lifecycle]]></code>
       <code><![CDATA[$dto->localName]]></code>
     </PossiblyNullArgument>
-    <PossiblyNullReference>
-      <code><![CDATA[getId]]></code>
-    </PossiblyNullReference>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[getId]]></code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Plant/Infrastructure/Persistence/PlantDoctrineRepository.php">
-    <LessSpecificReturnStatement>
-      <code><![CDATA[$this->paginationFactory->createPaginatedResult(
-            $queryBuilder,
-            $page,
-            $limit,
-        )]]></code>
-    </LessSpecificReturnStatement>
     <MissingTemplateParam>
       <code><![CDATA[PlantDoctrineRepository]]></code>
     </MissingTemplateParam>
-    <MoreSpecificReturnType>
-      <code><![CDATA[PaginatedResult<Plant>]]></code>
-    </MoreSpecificReturnType>
   </file>
   <file src="src/Seller/Application/Query/ListSellersQuery.php">
     <InvalidDocblock>
@@ -98,11 +61,6 @@
   <file src="src/Seller/Infrastructure/Http/Api/ListSellersApiAction.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$items]]></code>
-    </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Seller/Infrastructure/Http/Web/DeleteSellerAction.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$request->request->get('_token')]]></code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Shared/Infrastructure/Bus/CommandDispatcher.php">

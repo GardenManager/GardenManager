@@ -15,6 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @phpstan-extends AbstractType<SellerFormDto>
+ *
+ * @psalm-suppress TooManyTemplateParams
+ */
 final class SellerFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
