@@ -25,7 +25,7 @@ final class ShowTenantAction extends AbstractController
     #[Route(
         path: '/tenant',
         name: 'tenant_show',
-        methods: ['GET']
+        methods: ['GET'],
     )]
     public function __invoke(): Response
     {

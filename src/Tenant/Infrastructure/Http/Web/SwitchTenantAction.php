@@ -26,8 +26,7 @@ final class SwitchTenantAction extends AbstractController
     #[Route(
         path: '/tenant/switch',
         name: 'tenant_switch',
-        methods: ['POST'])
-    ]
+        methods: ['POST'])]
     public function __invoke(Request $request): RedirectResponse
     {
         /** @var AuthUser $user */

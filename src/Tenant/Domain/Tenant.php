@@ -45,8 +45,7 @@ class Tenant
 
     public function update(
         string $name,
-    ): void
-    {
+    ): void {
         $this->name = $name;
     }
 

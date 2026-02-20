@@ -26,8 +26,7 @@ final class RemoveMemberAction extends AbstractController
     #[Route(
         path: '/tenant/members/{userId}/remove',
         name: 'tenant_remove_member',
-        methods: ['POST'])
-    ]
+        methods: ['POST'])]
     public function __invoke(Ulid $userId): RedirectResponse
     {
         /** @var AuthUser $user */

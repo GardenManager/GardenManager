@@ -17,8 +17,7 @@ final readonly class RemoveMemberCommandHandler
     public function __construct(
         private TenantMembershipRepositoryInterface $membershipRepository,
         private TenantAuthorizationChecker $authorizationChecker,
-    )
-    {
+    ) {
     }
 
     public function __invoke(RemoveMemberCommand $command): void
@@ -33,7 +32,7 @@ final readonly class RemoveMemberCommandHandler
 
         if ($revokedMembership->getRole() === TenantMembershipRole::OWNER) {
             $allMembers = $this->membershipRepository->findByTenantId($command->tenantId);
-            $ownerCount = count(array_filter($allMembers, function (TenantMembership $member): bool {
+            $ownerCount = \count(array_filter($allMembers, static function (TenantMembership $member): bool {
                 return $member->getRole() === TenantMembershipRole::OWNER;
             }));
 

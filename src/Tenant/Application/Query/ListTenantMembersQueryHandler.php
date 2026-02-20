@@ -36,16 +36,16 @@ final readonly class ListTenantMembersQueryHandler
         $usersById = $this->memberUserResolver->resolveByIds(
             array_map(
                 static fn (TenantMembership $m): Ulid => $m->getUserId(),
-                $memberships
-            )
+                $memberships,
+            ),
         );
 
         return array_map(
-            function (TenantMembership $membership) use ($usersById): TenantMembershipView {
+            static function (TenantMembership $membership) use ($usersById): TenantMembershipView {
                 $user = $usersById[(string) $membership->getUserId()];
 
                 return TenantMembershipView::fromMembershipAndUser($membership, $user);
-            }, $memberships
+            }, $memberships,
         );
     }
 }

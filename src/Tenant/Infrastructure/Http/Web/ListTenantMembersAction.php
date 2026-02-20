@@ -25,7 +25,7 @@ final class ListTenantMembersAction extends AbstractController
     #[Route(
         path: '/tenant/members',
         name: 'tenant_members',
-        methods: ['GET']
+        methods: ['GET'],
     )]
     public function __invoke(): Response
     {

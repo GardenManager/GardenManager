@@ -40,14 +40,6 @@ final class InviteMemberHandlerTest extends TestCase
         );
     }
 
-    private function createCheckerStub(?TenantMembership $actorMembership): TenantAuthorizationChecker
-    {
-        $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
-        $repo->method('findByTenantIdAndUserId')->willReturn($actorMembership);
-
-        return new TenantAuthorizationChecker($repo);
-    }
-
     #[Test]
     public function ownerCanInviteMember(): void
     {
@@ -170,5 +162,13 @@ final class InviteMemberHandlerTest extends TestCase
             role: TenantMembershipRole::MEMBER,
             actorUserId: $this->actorUserId,
         ));
+    }
+
+    private function createCheckerStub(?TenantMembership $actorMembership): TenantAuthorizationChecker
+    {
+        $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
+        $repo->method('findByTenantIdAndUserId')->willReturn($actorMembership);
+
+        return new TenantAuthorizationChecker($repo);
     }
 }

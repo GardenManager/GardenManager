@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Application\Dto;
 
-use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Application\View\PlantDetailView;
+use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class PlantFormDto

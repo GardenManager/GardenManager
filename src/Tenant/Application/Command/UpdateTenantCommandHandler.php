@@ -14,8 +14,7 @@ final readonly class UpdateTenantCommandHandler
     public function __construct(
         private TenantRepositoryInterface $tenantRepository,
         private TenantAuthorizationChecker $authorizationChecker,
-    )
-    {
+    ) {
     }
 
     public function __invoke(UpdateTenantCommand $command): void

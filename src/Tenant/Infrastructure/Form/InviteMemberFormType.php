@@ -24,7 +24,7 @@ final class InviteMemberFormType extends AbstractType
                 EmailType::class,
                 [
                     'label' => 'Email address',
-                ]
+                ],
             )
             ->add(
                 'role',
@@ -32,7 +32,7 @@ final class InviteMemberFormType extends AbstractType
                 [
                     'class' => TenantMembershipRole::class,
                     'label' => 'Role',
-                ]
+                ],
             )
             ->add(
                 'submit',
@@ -40,7 +40,7 @@ final class InviteMemberFormType extends AbstractType
                 [
                     'label' => 'Invite Member',
                     'row_attr' => ['class' => 'flex justify-end mt-4'],
-                ]
+                ],
             );
     }
 

@@ -19,15 +19,13 @@ final readonly class TenantMembershipView
         public string $userDisplayName,
         public TenantMembershipRole $role,
         public DateTimeImmutable $createdAt,
-    )
-    {
+    ) {
     }
 
     public static function fromMembershipAndUser(
         TenantMembership $membership,
         MemberUserInfoDto $userInfo,
-    ): self
-    {
+    ): self {
         return new self(
             membershipId: $membership->getId(),
             userId: $membership->getUserId(),

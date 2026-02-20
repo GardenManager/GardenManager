@@ -88,5 +88,4 @@ final class ListTenantMembersHandlerTest extends TestCase
             actorUserId: $actorUserId,
         ));
     }
-
 }

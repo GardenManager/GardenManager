@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Tenant\Application\Query;
 
-use GardenManager\Tenant\Application\Query\GetTenantQueryHandler;
 use GardenManager\Tenant\Application\Query\GetTenantQuery;
-use GardenManager\Tenant\Application\View\TenantDetailView;
+use GardenManager\Tenant\Application\Query\GetTenantQueryHandler;
 use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Domain\Tenant;

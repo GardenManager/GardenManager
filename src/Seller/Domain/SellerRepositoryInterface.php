@@ -11,7 +11,6 @@ interface SellerRepositoryInterface
 {
     public function getById(Ulid $id): Seller;
 
-
     /** @return PaginatedResult<Seller> */
     public function findPaginated(int $page, int $perPage): PaginatedResult;
 

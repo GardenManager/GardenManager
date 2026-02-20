@@ -15,8 +15,7 @@ final readonly class TenantDetailView
         public string $name,
         public DateTimeImmutable $createdAt,
         public DateTimeImmutable $updatedAt,
-    )
-    {
+    ) {
     }
 
     public static function fromEntity(Tenant $tenant): self

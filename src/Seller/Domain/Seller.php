@@ -162,5 +162,4 @@ final class Seller implements SoftDeletable, TenantScoped
     {
         $this->updatedAt = new DateTimeImmutable();
     }
-
 }

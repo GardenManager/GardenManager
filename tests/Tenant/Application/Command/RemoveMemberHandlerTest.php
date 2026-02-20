@@ -37,14 +37,6 @@ final class RemoveMemberHandlerTest extends TestCase
         );
     }
 
-    private function createCheckerStub(?TenantMembership $actorMembership): TenantAuthorizationChecker
-    {
-        $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
-        $repo->method('findByTenantIdAndUserId')->willReturn($actorMembership);
-
-        return new TenantAuthorizationChecker($repo);
-    }
-
     #[Test]
     public function ownerCanRemoveMember(): void
     {
@@ -163,5 +155,13 @@ final class RemoveMemberHandlerTest extends TestCase
             memberUserId: $secondOwnerId,
             actorUserId: $this->actorUserId,
         ));
+    }
+
+    private function createCheckerStub(?TenantMembership $actorMembership): TenantAuthorizationChecker
+    {
+        $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
+        $repo->method('findByTenantIdAndUserId')->willReturn($actorMembership);
+
+        return new TenantAuthorizationChecker($repo);
     }
 }

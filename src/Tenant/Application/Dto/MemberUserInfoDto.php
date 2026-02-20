@@ -12,7 +12,6 @@ final readonly class MemberUserInfoDto
         public Ulid $id,
         public string $email,
         public string $displayName,
-    )
-    {
+    ) {
     }
 }

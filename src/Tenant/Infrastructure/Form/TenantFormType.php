@@ -22,7 +22,7 @@ final class TenantFormType extends AbstractType
                 TextType::class,
                 [
                     'label' => 'Tenant name',
-                ]
+                ],
             )
             ->add(
                 'submit',
@@ -30,7 +30,7 @@ final class TenantFormType extends AbstractType
                 [
                     'label' => $options['submit_label'],
                     'row_attr' => ['class' => 'flex justify-end mt-4'],
-                ]
+                ],
             );
     }
 

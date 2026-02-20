@@ -171,5 +171,4 @@ class Plant implements SoftDeletable, TenantScoped
     {
         return $this->deletedAt !== null;
     }
-
 }

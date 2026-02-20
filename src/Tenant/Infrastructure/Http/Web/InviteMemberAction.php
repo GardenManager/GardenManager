@@ -32,7 +32,7 @@ final class InviteMemberAction extends AbstractController
     #[Route(
         path: '/tenant/members/invite',
         name: 'tenant_invite_member',
-        methods: ['GET', 'POST']
+        methods: ['GET', 'POST'],
     )]
     public function __invoke(Request $request): Response
     {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace GardenManager\Shared\Infrastructure\Security;
 
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
+use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Uid\Ulid;
-use \LogicException;
 
 final class SessionActiveTenantProvider implements ActiveTenantProviderInterface
 {
