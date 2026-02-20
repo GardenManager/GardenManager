@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 /**
  * @phpstan-extends AbstractType<RegisterUserDto>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class RegistrationFormType extends AbstractType

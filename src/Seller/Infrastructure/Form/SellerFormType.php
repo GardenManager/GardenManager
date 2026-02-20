@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @phpstan-extends AbstractType<SellerFormDto>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class SellerFormType extends AbstractType

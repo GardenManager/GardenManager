@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @phpstan-extends AbstractType<mixed>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class LoginFormType extends AbstractType

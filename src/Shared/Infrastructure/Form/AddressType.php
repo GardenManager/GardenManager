@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @phpstan-extends AbstractType<AddressData>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class AddressType extends AbstractType

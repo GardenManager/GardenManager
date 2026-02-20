@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @phpstan-extends AbstractType<PlantFormDto>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class PlantFormType extends AbstractType

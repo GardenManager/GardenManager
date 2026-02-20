@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @phpstan-extends AbstractType<TenantFormDto>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class TenantFormType extends AbstractType

@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @phpstan-extends AbstractType<mixed>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class AccountLinkFormType extends AbstractType

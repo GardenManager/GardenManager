@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @phpstan-extends AbstractType<InviteMemberDto>
+ *
  * @psalm-suppress TooManyTemplateParams
  */
 final class InviteMemberFormType extends AbstractType

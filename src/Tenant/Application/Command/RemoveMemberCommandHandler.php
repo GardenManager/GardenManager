@@ -35,8 +35,8 @@ final readonly class RemoveMemberCommandHandler
             $ownerCount = \count(
                 array_filter(
                     $allMembers,
-                    static fn(TenantMembership $member): bool => $member->getRole() === TenantMembershipRole::OWNER
-                )
+                    static fn (TenantMembership $member): bool => $member->getRole() === TenantMembershipRole::OWNER,
+                ),
             );
 
             if ($ownerCount <= 1) {
