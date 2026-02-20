@@ -21,7 +21,7 @@ final class CreateSellerHandlerTest extends TestCase
     public function createsSeller(): void
     {
         $sellerId = new Ulid();
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $savedSeller = null;
 
         $repo = $this->createMock(SellerRepositoryInterface::class);
@@ -35,7 +35,7 @@ final class CreateSellerHandlerTest extends TestCase
 
         $command = new CreateSellerCommand(
             sellerId: $sellerId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             name: 'John Garden',
             email: 'john@example.com',
             phone: '+1234567890',
@@ -55,7 +55,7 @@ final class CreateSellerHandlerTest extends TestCase
     public function createsSellerWithAddress(): void
     {
         $sellerId = new Ulid();
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $savedSeller = null;
 
         $repo = $this->createMock(SellerRepositoryInterface::class);
@@ -69,7 +69,7 @@ final class CreateSellerHandlerTest extends TestCase
 
         $command = new CreateSellerCommand(
             sellerId: $sellerId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             name: 'Test',
             email: 'test@example.com',
             address: new AddressData('123 Main St', 'Springfield', '62704', 'US'),

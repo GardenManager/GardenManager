@@ -8,8 +8,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
+use GardenManager\Tenant\Domain\Tenant;
+use GardenManager\Tenant\Domain\TenantMembership;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 #[Group('functional')]
@@ -20,7 +24,7 @@ final class SellerApiActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $client->request('GET', '/api/sellers');
 
@@ -43,7 +47,7 @@ final class SellerApiActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $client->request('POST', '/api/sellers', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -64,7 +68,7 @@ final class SellerApiActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $client->request('POST', '/api/sellers', [], [], [
             'CONTENT_TYPE' => 'application/json',
@@ -85,7 +89,7 @@ final class SellerApiActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $seller = $this->createSeller($user);
 
@@ -107,7 +111,7 @@ final class SellerApiActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $seller = $this->createSeller($user);
 
@@ -125,10 +129,10 @@ final class SellerApiActionsTest extends WebTestCase
         $seller = $this->createSeller($owner);
 
         $otherUser = $this->createUser();
-        $client->loginUser($otherUser);
+        $this->loginWithTenant($client, $otherUser);
 
         $client->request('GET', '/api/sellers/' . $seller->getId());
-        self::assertResponseStatusCodeSame(403);
+        self::assertResponseStatusCodeSame(404);
     }
 
     #[Test]
@@ -136,7 +140,7 @@ final class SellerApiActionsTest extends WebTestCase
     {
         $client = static::createClient();
         $user = $this->createUser();
-        $client->loginUser($user);
+        $this->loginWithTenant($client, $user);
 
         $seller = $this->createSeller($user);
         $seller->softDelete();
@@ -146,6 +150,14 @@ final class SellerApiActionsTest extends WebTestCase
 
         $client->request('GET', '/api/sellers/' . $seller->getId());
         self::assertResponseStatusCodeSame(404);
+    }
+
+    private function loginWithTenant(KernelBrowser $client, AuthUser $user): void
+    {
+        $client->loginUser($user);
+        $session = $client->getSession();
+        $session->set('_active_tenant_id', (string) $user->getId());
+        $session->save();
     }
 
     private function createUser(): AuthUser
@@ -160,6 +172,16 @@ final class SellerApiActionsTest extends WebTestCase
         );
 
         $em->persist($user);
+
+        $tenant = Tenant::create(name: 'Test Tenant', id: $user->getId());
+        $em->persist($tenant);
+
+        $membership = TenantMembership::create(
+            tenant: $tenant,
+            userId: $user->getId(),
+            role: TenantMembershipRole::OWNER,
+        );
+        $em->persist($membership);
         $em->flush();
 
         return $user;
@@ -168,7 +190,7 @@ final class SellerApiActionsTest extends WebTestCase
     private function createSeller(AuthUser $owner): Seller
     {
         $em = self::getContainer()->get(EntityManagerInterface::class);
-        $seller = Seller::create(name: 'Test Seller', email: 'seller@test.com', ownerId: $owner->getId());
+        $seller = Seller::create(name: 'Test Seller', email: 'seller@test.com', tenantId: $owner->getId());
 
         $repository = self::getContainer()->get(SellerRepositoryInterface::class);
         $repository->save($seller);

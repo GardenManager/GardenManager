@@ -17,11 +17,11 @@ final class PlantTest extends TestCase
     #[Test]
     public function createsPlantWithAllFields(): void
     {
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $plantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'Tomato',
             isHybrid: true,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -32,7 +32,7 @@ final class PlantTest extends TestCase
         );
 
         self::assertTrue($plantId->equals($plant->getId()));
-        self::assertTrue($ownerId->equals($plant->getOwnerId()));
+        self::assertTrue($tenantId->equals($plant->getTenantId()));
         self::assertSame('Tomato', $plant->getLocalName());
         self::assertTrue($plant->isHybrid());
         self::assertSame(LifecycleEnum::ANNUAL, $plant->getLifecycle());
@@ -46,7 +46,7 @@ final class PlantTest extends TestCase
     public function createsPlantWithGeneratedId(): void
     {
         $plant = Plant::create(
-            ownerId: new Ulid(),
+            tenantId: new Ulid(),
             localName: 'Basil',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -61,7 +61,7 @@ final class PlantTest extends TestCase
         $plantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: new Ulid(),
+            tenantId: new Ulid(),
             localName: 'Basil',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -74,11 +74,11 @@ final class PlantTest extends TestCase
     #[Test]
     public function updatesMutableFields(): void
     {
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $plantId = new Ulid();
 
         $plant = Plant::create(
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'Old Name',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -87,7 +87,7 @@ final class PlantTest extends TestCase
 
         $plant->update(
             plantId: $plantId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
             localName: 'New Name',
             isHybrid: true,
             lifecycle: LifecycleEnum::PERENNIAL,
@@ -108,7 +108,7 @@ final class PlantTest extends TestCase
     public function softDeleteSetsTimestamp(): void
     {
         $plant = Plant::create(
-            ownerId: new Ulid(),
+            tenantId: new Ulid(),
             localName: 'Basil',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -124,40 +124,12 @@ final class PlantTest extends TestCase
     public function isNotDeletedByDefault(): void
     {
         $plant = Plant::create(
-            ownerId: new Ulid(),
+            tenantId: new Ulid(),
             localName: 'Basil',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
         );
 
         self::assertFalse($plant->isDeleted());
-    }
-
-    #[Test]
-    public function isOwnedByMatchingOwner(): void
-    {
-        $ownerId = new Ulid();
-
-        $plant = Plant::create(
-            ownerId: $ownerId,
-            localName: 'Basil',
-            isHybrid: false,
-            lifecycle: LifecycleEnum::ANNUAL,
-        );
-
-        self::assertTrue($plant->isOwnedBy($ownerId));
-    }
-
-    #[Test]
-    public function isNotOwnedByDifferentOwner(): void
-    {
-        $plant = Plant::create(
-            ownerId: new Ulid(),
-            localName: 'Basil',
-            isHybrid: false,
-            lifecycle: LifecycleEnum::ANNUAL,
-        );
-
-        self::assertFalse($plant->isOwnedBy(new Ulid()));
     }
 }

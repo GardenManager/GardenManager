@@ -1,0 +1,39 @@
+{% extends 'layout/dashboard.html.twig' %}
+
+{% block page_title %}Tenant Settings{% endblock %}
+
+{% block title_display %}
+    <div class="flex justify-between items-center">
+        <span>Tenant Settings</span>
+        <twig:Button href="{{ path('tenant_edit') }}" color="primary" size="sm">Edit</twig:Button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <twig:Card>
+        {% block content %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Name</th>
+                            <td class="px-6 py-4">{{ tenant.name }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Created</th>
+                            <td class="px-6 py-4">{{ tenant.createdAt|date('F j, Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Updated</th>
+                            <td class="px-6 py-4">{{ tenant.updatedAt|date('F j, Y') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endblock %}
+    </twig:Card>
+
+    <div class="mt-6">
+        <twig:Button href="{{ path('tenant_members') }}" color="secondary" size="sm">Manage Members</twig:Button>
+    </div>
+{% endblock %}

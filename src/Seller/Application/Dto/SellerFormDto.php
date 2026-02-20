@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Application\Dto;
 
-use GardenManager\Seller\Application\Query\SellerDetailView;
+use GardenManager\Seller\Application\View\SellerDetailView;
 use GardenManager\Shared\Application\Dto\AddressData;
 use Symfony\Component\Validator\Constraints as Assert;
 

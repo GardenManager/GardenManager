@@ -42,11 +42,9 @@ final class SellerDoctrineRepository extends ServiceEntityRepository implements 
 
     /** @return PaginatedResult<Seller> */
     #[Override]
-    public function findByOwnerIdPaginated(Ulid $ownerId, int $page, int $perPage): PaginatedResult
+    public function findPaginated(int $page, int $perPage): PaginatedResult
     {
         $queryBuilder = $this->createQueryBuilder('seller')
-            ->where('seller.ownerId = :owner')
-            ->setParameter('owner', $ownerId, 'ulid')
             ->orderBy('seller.createdAt', 'DESC');
 
         /** @var PaginatedResult<Seller> */

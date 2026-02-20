@@ -19,7 +19,7 @@ final readonly class CreatePlantCommandHandler
     public function __invoke(CreatePlantCommand $command): void
     {
         $this->plantRepository->save(Plant::create(
-            ownerId: $command->ownerId,
+            tenantId: $command->tenantId,
             localName: $command->localName,
             isHybrid: $command->isHybrid,
             lifecycle: $command->lifecycle,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Application\Query\ListPlantsQuery;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,12 +23,8 @@ final class ListPlantsAction extends AbstractController
     #[Route(path: '/plants', name: 'plant_index', methods: ['GET'])]
     public function __invoke(Request $request): Response
     {
-        /** @var AuthUser $user */
-        $user = $this->getUser();
-
         $pager = $this->queryDispatcher->query(
             new ListPlantsQuery(
-                $user->getId(),
                 $request->query->getInt('page', 1),
             ),
         );

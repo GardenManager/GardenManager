@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Seller\Application\Dto\Api;
 
 use DateTimeInterface;
-use GardenManager\Seller\Application\Query\SellerDetailView;
+use GardenManager\Seller\Application\View\SellerDetailView;
 use GardenManager\Shared\Application\View\AddressView;
 
 final readonly class SellerApiResponse

@@ -11,7 +11,7 @@ final readonly class DeleteSellerCommand implements CommandInterface
 {
     public function __construct(
         public Ulid $sellerId,
-        public Ulid $ownerId,
+        public Ulid $tenantId,
     ) {
     }
 }

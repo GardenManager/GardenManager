@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Plant\Application\Command\DeletePlantCommand;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,6 +18,7 @@ final class DeletePlantAction extends AbstractController
 {
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 
@@ -27,11 +29,11 @@ final class DeletePlantAction extends AbstractController
     )]
     public function __invoke(Ulid $plantId): RedirectResponse
     {
-        /** @var Ulid $userId */
-        $userId = $this->getUser()->getId();
-
-        $this->commandDispatcher->dispatchCommand(new DeletePlantCommand($plantId, $userId));
-        $this->addFlash('success', 'Seller deleted successfully.');
+        $this->commandDispatcher->dispatchCommand(new DeletePlantCommand(
+            $plantId,
+            $this->activeTenantProvider->getActiveTenantId(),
+        ));
+        $this->addFlash('success', 'Plant deleted successfully.');
 
         return $this->redirectToRoute('plant_index');
     }

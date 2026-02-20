@@ -7,8 +7,9 @@ namespace GardenManager\Plant\Infrastructure\Http\Web;
 use GardenManager\Plant\Application\Command\UpdatePlantCommand;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Application\Query\GetPlantQuery;
-use GardenManager\Plant\Application\Query\PlantDetailView;
+use GardenManager\Plant\Application\View\PlantDetailView;
 use GardenManager\Plant\Infrastructure\Form\PlantFormType;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,6 +25,7 @@ final class UpdatePlantAction extends AbstractController
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
         private readonly QueryDispatcher $queryDispatcher,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 
@@ -34,11 +36,10 @@ final class UpdatePlantAction extends AbstractController
     )]
     public function __invoke(Request $request, Ulid $plantId): Response
     {
-        /** @var Ulid $userId */
-        $userId = $this->getUser()->getId();
+        $tenantId = $this->activeTenantProvider->getActiveTenantId();
 
         /** @var PlantDetailView $plantView */
-        $plantView = $this->queryDispatcher->query(new GetPlantQuery($plantId, $userId));
+        $plantView = $this->queryDispatcher->query(new GetPlantQuery($plantId, $tenantId));
         $dto = PlantFormDto::fromView($plantView);
         $form = $this->createForm(PlantFormType::class, $dto, [
             'submit_label' => 'Save Changes',
@@ -49,7 +50,7 @@ final class UpdatePlantAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $command = new UpdatePlantCommand(
                 plantId: $plantId,
-                ownerId: $userId,
+                tenantId: $tenantId,
                 localName: $dto->localName,
                 isHybrid: $dto->isHybrid,
                 lifecycle: $dto->lifecycle,

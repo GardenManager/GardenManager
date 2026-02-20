@@ -20,20 +20,20 @@ final class ListSellersHandlerTest extends TestCase
     #[Test]
     public function returnsPaginatedResultWithViews(): void
     {
-        $ownerId = new Ulid();
-        $seller = Seller::create('Test', 'test@example.com', $ownerId);
+        $tenantId = new Ulid();
+        $seller = Seller::create('Test', 'test@example.com', $tenantId);
 
         $repoResult = new PaginatedResult([$seller], 1, 10, 1);
 
         $repo = $this->createMock(SellerRepositoryInterface::class);
         $repo->expects(self::once())
-            ->method('findByOwnerIdPaginated')
-            ->with($ownerId, 1, ListSellersQuery::DEFAULT_LIMIT)
+            ->method('findPaginated')
+            ->with(1, ListSellersQuery::DEFAULT_LIMIT)
             ->willReturn($repoResult);
 
         $handler = new ListSellersHandler($repo);
 
-        $result = $handler(new ListSellersQuery($ownerId));
+        $result = $handler(new ListSellersQuery());
 
         self::assertCount(1, $result->items);
         self::assertSame('Test', $result->items[0]->name);
@@ -46,18 +46,17 @@ final class ListSellersHandlerTest extends TestCase
     #[Test]
     public function passesCustomPageAndLimit(): void
     {
-        $ownerId = new Ulid();
         $repoResult = new PaginatedResult([], 3, 5, 0);
 
         $repo = $this->createMock(SellerRepositoryInterface::class);
         $repo->expects(self::once())
-            ->method('findByOwnerIdPaginated')
-            ->with($ownerId, 3, 5)
+            ->method('findPaginated')
+            ->with(3, 5)
             ->willReturn($repoResult);
 
         $handler = new ListSellersHandler($repo);
 
-        $result = $handler(new ListSellersQuery($ownerId, page: 3, limit: 5));
+        $result = $handler(new ListSellersQuery(page: 3, limit: 5));
 
         self::assertEquals($repoResult, $result);
     }

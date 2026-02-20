@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Plant\Application\Query;
+namespace GardenManager\Plant\Application\View;
 
 use DateTimeImmutable;
 use GardenManager\Plant\Domain\Entity\Plant;

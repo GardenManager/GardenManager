@@ -13,7 +13,7 @@ final class UpdatePlantCommand implements CommandInterface
 {
     public function __construct(
         public Ulid $plantId,
-        public Ulid $ownerId,
+        public Ulid $tenantId,
 
         #[Assert\NotBlank]
         #[Assert\Length(max: 255)]

@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -24,6 +25,11 @@ final class AuthUserRepository extends ServiceEntityRepository implements AuthUs
     public function findById(Ulid $id): ?AuthUser
     {
         return $this->find($id);
+    }
+
+    public function getById(Ulid $id): AuthUser
+    {
+        return $this->findById($id) ?? throw EntityNotFoundException::fromEntityClassNameAndId(AuthUser::class, $id);
     }
 
     public function findByEmail(string $email): ?AuthUser

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Http\Api;
 
-use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Dto\Api\SellerApiResponse;
 use GardenManager\Seller\Application\Query\ListSellersQuery;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
@@ -26,13 +25,10 @@ final class ListSellersApiAction extends AbstractController
     #[Route('/api/sellers', name: 'api_seller_list', methods: ['GET'])]
     public function __invoke(Request $request): JsonResponse
     {
-        /** @var AuthUser $user */
-        $user = $this->getUser();
-
         $page = $request->query->getInt('page', 1);
         $limit = min(100, max(1, $request->query->getInt('limit', ListSellersQuery::DEFAULT_LIMIT)));
 
-        $pager = $this->queryDispatcher->query(new ListSellersQuery($user->getId(), $page, $limit));
+        $pager = $this->queryDispatcher->query(new ListSellersQuery($page, $limit));
 
         $items = array_map(SellerApiResponse::fromView(...), $pager->items);
 

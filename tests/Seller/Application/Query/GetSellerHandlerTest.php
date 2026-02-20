@@ -7,10 +7,10 @@ namespace GardenManager\Tests\Seller\Application\Query;
 use GardenManager\Seller\Application\Query\GetSellerHandler;
 use GardenManager\Seller\Application\Query\GetSellerQuery;
 use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerAccessChecker;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
-use GardenManager\Shared\Domain\Exception\EntityOwnershipException;
+use GardenManager\Shared\Domain\Exception\TenantAccessException;
+use GardenManager\Shared\Domain\Security\TenantAccessChecker;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -22,19 +22,19 @@ final class GetSellerHandlerTest extends TestCase
     #[Test]
     public function returnsSellerDetailView(): void
     {
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
         $sellerId = new Ulid();
 
-        $seller = Seller::create(name: 'Test Seller', email: 'test@example.com', ownerId: $ownerId, id: $sellerId);
+        $seller = Seller::create(name: 'Test Seller', email: 'test@example.com', tenantId: $tenantId, sellerId: $sellerId);
 
         $repo = $this->createStub(SellerRepositoryInterface::class);
-        $repo->method('getById')->with($sellerId)->willReturn($seller);
+        $repo->method('getById')->willReturn($seller);
 
-        $handler = new GetSellerHandler($repo, new SellerAccessChecker());
+        $handler = new GetSellerHandler($repo, new TenantAccessChecker());
 
         $result = $handler(new GetSellerQuery(
             sellerId: $sellerId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
         ));
 
         self::assertSame('Test Seller', $result->name);
@@ -45,42 +45,42 @@ final class GetSellerHandlerTest extends TestCase
     public function throwsNotFoundWhenSellerMissing(): void
     {
         $sellerId = new Ulid();
-        $ownerId = new Ulid();
+        $tenantId = new Ulid();
 
         $repo = $this->createStub(SellerRepositoryInterface::class);
         $repo->method('getById')->willThrowException(
             EntityNotFoundException::fromEntityClassNameAndId(Seller::class, $sellerId),
         );
 
-        $handler = new GetSellerHandler($repo, new SellerAccessChecker());
+        $handler = new GetSellerHandler($repo, new TenantAccessChecker());
 
         $this->expectException(EntityNotFoundException::class);
 
         $handler(new GetSellerQuery(
             sellerId: $sellerId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
         ));
     }
 
     #[Test]
-    public function throwsAccessDeniedWhenNotOwner(): void
+    public function throwsAccessDeniedWhenNotTenant(): void
     {
         $sellerId = new Ulid();
-        $ownerId = new Ulid();
-        $differentOwnerId = new Ulid();
+        $tenantId = new Ulid();
+        $differentTenantId = new Ulid();
 
-        $seller = Seller::create(name: 'Test', email: 'test@example.com', ownerId: $differentOwnerId, id: $sellerId);
+        $seller = Seller::create(name: 'Test', email: 'test@example.com', tenantId: $differentTenantId, sellerId: $sellerId);
 
         $repo = $this->createStub(SellerRepositoryInterface::class);
         $repo->method('getById')->willReturn($seller);
 
-        $handler = new GetSellerHandler($repo, new SellerAccessChecker());
+        $handler = new GetSellerHandler($repo, new TenantAccessChecker());
 
-        $this->expectException(EntityOwnershipException::class);
+        $this->expectException(TenantAccessException::class);
 
         $handler(new GetSellerQuery(
             sellerId: $sellerId,
-            ownerId: $ownerId,
+            tenantId: $tenantId,
         ));
     }
 }

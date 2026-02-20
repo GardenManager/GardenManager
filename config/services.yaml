@@ -9,6 +9,7 @@ services:
             string $oidcClientId: '%gm.oidc.client_id%'
             Symfony\Component\Messenger\MessageBusInterface $commandBus: '@command.bus'
             Symfony\Component\Messenger\MessageBusInterface $queryBus: '@query.bus'
+            GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface: '@GardenManager\Shared\Infrastructure\Security\SessionActiveTenantProvider'
 
     GardenManager\:
         resource: '../src/'

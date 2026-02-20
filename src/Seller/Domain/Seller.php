@@ -7,6 +7,7 @@ namespace GardenManager\Seller\Domain;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use GardenManager\Shared\Domain\SoftDeletable;
+use GardenManager\Shared\Domain\TenantScoped;
 use GardenManager\Shared\Domain\ValueObject\Address;
 use GardenManager\Shared\Domain\ValueObject\EmailAddress;
 use GardenManager\Shared\Domain\ValueObject\PhoneNumber;
@@ -15,7 +16,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 #[ORM\Table(name: 'seller')]
 #[ORM\HasLifecycleCallbacks]
-final class Seller implements SoftDeletable
+final class Seller implements SoftDeletable, TenantScoped
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
@@ -38,7 +39,7 @@ final class Seller implements SoftDeletable
     private ?Address $address = null;
 
     #[ORM\Column(type: 'ulid')]
-    private Ulid $ownerId;
+    private Ulid $tenantId;
 
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
@@ -58,26 +59,21 @@ final class Seller implements SoftDeletable
     public static function create(
         string $name,
         string $email,
-        Ulid $ownerId,
+        Ulid $tenantId,
         ?string $phone = null,
         ?string $description = null,
         ?Address $address = null,
-        ?Ulid $id = null,
+        ?Ulid $sellerId = null,
     ): self {
         $seller = new self();
-        $sellerId = $id;
 
-        if ($sellerId === null) {
-            $sellerId = new Ulid();
-        }
-
-        $seller->id = $sellerId;
+        $seller->id = $sellerId ?? new Ulid();
         $seller->name = $name;
         $seller->email = new EmailAddress($email);
         $seller->phone = new PhoneNumber($phone);
         $seller->description = $description;
         $seller->address = $address;
-        $seller->ownerId = $ownerId;
+        $seller->tenantId = $tenantId;
 
         return $seller;
     }
@@ -131,9 +127,9 @@ final class Seller implements SoftDeletable
         return $this->address;
     }
 
-    public function getOwnerId(): Ulid
+    public function getTenantId(): Ulid
     {
-        return $this->ownerId;
+        return $this->tenantId;
     }
 
     public function getCreatedAt(): DateTimeImmutable
@@ -167,8 +163,4 @@ final class Seller implements SoftDeletable
         $this->updatedAt = new DateTimeImmutable();
     }
 
-    public function isOwnedBy(Ulid $userId): bool
-    {
-        return $this->ownerId->equals($userId);
-    }
 }

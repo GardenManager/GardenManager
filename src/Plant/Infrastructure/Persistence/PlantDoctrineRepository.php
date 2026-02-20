@@ -38,11 +38,9 @@ final class PlantDoctrineRepository extends ServiceEntityRepository implements P
     }
 
     /** @return PaginatedResult<Plant> */
-    public function findAllByOwnerIdPaginated(Ulid $ownerId, int $page, int $limit): PaginatedResult
+    public function findPaginated(int $page, int $limit): PaginatedResult
     {
         $queryBuilder = $this->createQueryBuilder('plant')
-            ->where('plant.ownerId = :owner')
-            ->setParameter('owner', $ownerId, 'ulid')
             ->orderBy('plant.createdAt', 'DESC');
 
         return $this->paginationFactory->createPaginatedResult(

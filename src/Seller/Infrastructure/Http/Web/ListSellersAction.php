@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Query\ListSellersQuery;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,11 +23,8 @@ final class ListSellersAction extends AbstractController
     #[Route('/sellers', name: 'seller_index', methods: ['GET'])]
     public function __invoke(Request $request): Response
     {
-        /** @var AuthUser $user */
-        $user = $this->getUser();
-
         $page = $request->query->getInt('page', 1);
-        $pager = $this->queryDispatcher->query(new ListSellersQuery($user->getId(), $page));
+        $pager = $this->queryDispatcher->query(new ListSellersQuery($page));
 
         return $this->render('seller/index.html.twig', [
             'pager' => $pager,

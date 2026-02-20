@@ -6,22 +6,22 @@ namespace GardenManager\Shared\Domain\Exception;
 
 use Symfony\Component\Uid\Ulid;
 
-final class EntityOwnershipException extends CoreException
+final class TenantAccessException extends CoreException
 {
-    public static function fromEntityClassNameEntityIdAndUserId(
+    public static function fromEntityClassNameEntityIdAndTenantId(
         string $entityClassName,
         Ulid $entityId,
-        Ulid $userId,
+        Ulid $tenantId,
     ): self {
         return new self(
             \sprintf(
-                'The specified user not owns this %s!',
+                'The active tenant does not have access to this %s!',
                 array_last(explode('\\', $entityClassName)),
             ),
             [
                 'fullyQualifiedClassName' => $entityClassName,
                 'entityId' => $entityId,
-                'userId' => $userId,
+                'tenantId' => $tenantId,
             ],
             403,
         );

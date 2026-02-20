@@ -1,4 +1,4 @@
-{% props id = 'delete-modal', action, entityName, csrfToken %}
+{% props id = 'delete-modal', action, entityName %}
 
 <div id="{{ id }}" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -15,7 +15,7 @@
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete <strong>{{ entityName }}</strong>? This action cannot be undone.</h3>
                 <div class="flex justify-center gap-3">
                     <form method="post" action="{{ action }}">
-                        <input type="hidden" name="_token" value="{{ csrfToken }}">
+                        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="placeholder">
                         <twig:Button type="submit" color="error">Yes, delete</twig:Button>
                     </form>
                     <twig:Button color="neutral" data-modal-hide="{{ id }}">Cancel</twig:Button>

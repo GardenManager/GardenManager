@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Plant\Application\Query\GetPlantQuery;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +16,10 @@ use Symfony\Component\Uid\Ulid;
 #[IsGranted('ROLE_USER')]
 final class ShowPlantAction extends AbstractController
 {
-    public function __construct(public QueryDispatcher $queryDispatcher)
-    {
+    public function __construct(
+        private readonly QueryDispatcher $queryDispatcher,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
+    ) {
     }
 
     #[Route(
@@ -26,9 +29,10 @@ final class ShowPlantAction extends AbstractController
     )]
     public function __invoke(Ulid $plantId): Response
     {
-        /** @var Ulid $userId */
-        $userId = $this->getUser()->getId();
-        $plantView = $this->queryDispatcher->query(new GetPlantQuery($plantId, $userId));
+        $plantView = $this->queryDispatcher->query(new GetPlantQuery(
+            $plantId,
+            $this->activeTenantProvider->getActiveTenantId(),
+        ));
 
         return $this->render('plant/show.html.twig', [
             'plant' => $plantView,

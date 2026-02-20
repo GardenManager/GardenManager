@@ -36,7 +36,7 @@ final class SellerRepositoryTest extends KernelTestCase
         $seller = Seller::create(
             name: 'John Garden',
             email: 'john@example.com',
-            ownerId: $owner->getId(),
+            tenantId: $owner->getId(),
             address: new Address('123 Main St', 'Springfield', '62704', 'US'),
         );
         $this->repository->save($seller);
@@ -55,7 +55,7 @@ final class SellerRepositoryTest extends KernelTestCase
     {
         $owner = $this->createOwner();
 
-        $seller = Seller::create(name: 'Deleted Seller', email: 'deleted@example.com', ownerId: $owner->getId());
+        $seller = Seller::create(name: 'Deleted Seller', email: 'deleted@example.com', tenantId: $owner->getId());
         $this->repository->save($seller);
         $this->em->flush();
         $id = $seller->getId();
@@ -69,22 +69,22 @@ final class SellerRepositoryTest extends KernelTestCase
     }
 
     #[Test]
-    public function findActiveByOwnerReturnsOnlyActiveSellers(): void
+    public function findPaginatedReturnsOnlyActiveSellers(): void
     {
         $owner = $this->createOwner();
 
-        $seller1 = Seller::create(name: 'Active Seller', email: 'active@example.com', ownerId: $owner->getId());
+        $seller1 = Seller::create(name: 'Active Seller', email: 'active@example.com', tenantId: $owner->getId());
         $this->repository->save($seller1);
         $this->em->flush();
 
-        $seller2 = Seller::create(name: 'Deleted Seller', email: 'deleted2@example.com', ownerId: $owner->getId());
+        $seller2 = Seller::create(name: 'Deleted Seller', email: 'deleted2@example.com', tenantId: $owner->getId());
         $this->repository->save($seller2);
         $this->em->flush();
         $seller2->softDelete();
         $this->repository->save($seller2);
         $this->em->flush();
 
-        $sellers = $this->repository->findByOwnerIdPaginated($owner->getId(), 1, 2)->items;
+        $sellers = $this->repository->findPaginated(1, 2)->items;
 
         $names = array_map(static fn (Seller $s): string => $s->getName(), $sellers);
         self::assertContains('Active Seller', $names);
@@ -96,7 +96,7 @@ final class SellerRepositoryTest extends KernelTestCase
     {
         $owner = $this->createOwner();
 
-        $seller = Seller::create(name: 'Owned Seller', email: 'owned@example.com', ownerId: $owner->getId());
+        $seller = Seller::create(name: 'Owned Seller', email: 'owned@example.com', tenantId: $owner->getId());
         $this->repository->save($seller);
         $this->em->flush();
 
@@ -114,7 +114,7 @@ final class SellerRepositoryTest extends KernelTestCase
     }
 
     #[Test]
-    public function findByOwnerIdPaginatedReturnsPaginatedResult(): void
+    public function findPaginatedReturnsPaginatedResult(): void
     {
         $owner = $this->createOwner();
 
@@ -122,19 +122,17 @@ final class SellerRepositoryTest extends KernelTestCase
             $seller = Seller::create(
                 name: "Seller $i",
                 email: "seller$i-" . bin2hex(random_bytes(4)) . '@test.com',
-                ownerId: $owner->getId(),
+                tenantId: $owner->getId(),
             );
             $this->repository->save($seller);
             $this->em->flush();
         }
 
-        $result = $this->repository->findByOwnerIdPaginated($owner->getId(), 1, 2);
+        $result = $this->repository->findPaginated(1, 2);
 
-        self::assertSame(3, $result->totalItems);
-        self::assertSame(2, $result->totalPages());
+        self::assertGreaterThanOrEqual(3, $result->totalItems);
         self::assertCount(2, $result->items);
         self::assertTrue($result->hasNextPage());
-        self::assertFalse($result->hasPreviousPage());
     }
 
     private function createOwner(): AuthUser

@@ -11,7 +11,7 @@ final class DeletePlantCommand implements CommandInterface
 {
     public function __construct(
         public Ulid $plantId,
-        public Ulid $ownerId,
+        public Ulid $tenantId,
     ) {
     }
 }

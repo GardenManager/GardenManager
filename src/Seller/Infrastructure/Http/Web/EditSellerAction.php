@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Command\UpdateSellerCommand;
 use GardenManager\Seller\Application\Dto\SellerFormDto;
 use GardenManager\Seller\Application\Query\GetSellerQuery;
-use GardenManager\Seller\Application\Query\SellerDetailView;
+use GardenManager\Seller\Application\View\SellerDetailView;
 use GardenManager\Seller\Infrastructure\Form\SellerFormType;
+use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,19 +25,19 @@ final class EditSellerAction extends AbstractController
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
         private readonly QueryDispatcher $queryDispatcher,
+        private readonly ActiveTenantProviderInterface $activeTenantProvider,
     ) {
     }
 
     #[Route('/sellers/{id}/edit', name: 'seller_edit', methods: ['GET', 'POST'], requirements: ['id' => '[0-9A-Z]{26}'])]
     public function __invoke(Request $request, string $id): Response
     {
-        /** @var AuthUser $user */
-        $user = $this->getUser();
+        $tenantId = $this->activeTenantProvider->getActiveTenantId();
 
         /** @var SellerDetailView $view */
         $view = $this->queryDispatcher->query(new GetSellerQuery(
             sellerId: Ulid::fromString($id),
-            ownerId: $user->getId(),
+            tenantId: $tenantId,
         ));
 
         $dto = SellerFormDto::fromView($view);
@@ -50,7 +50,7 @@ final class EditSellerAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $command = new UpdateSellerCommand(
                 sellerId: Ulid::fromString($id),
-                ownerId: $user->getId(),
+                tenantId: $tenantId,
                 name: $dto->name ?? '',
                 email: $dto->email ?? '',
                 phone: $dto->phone,
