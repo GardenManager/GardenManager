@@ -1,7 +1,5 @@
 {% for type, messages in app.flashes() %}
     {% for message in messages %}
-        <twig:Alert :type="this.getAlertType(type)" :dismissible="true">
-            {{ message }}
-        </twig:Alert>
+        <twig:Toast :type="this.getAlertType(type)" :message="message" :autoDismiss="this.shouldAutoDismiss(type)" />
     {% endfor %}
 {% endfor %}

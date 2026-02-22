@@ -17,46 +17,51 @@ final class AuthException extends CoreException
     public static function userNotFoundById(Ulid $userId): self
     {
         return new self(
-            'User not found by ID',
-            [
+            message: 'User not found by ID',
+            context: [
                 'userId' => $userId,
             ],
-            404,
-            self::CODE_NOT_FOUND_BY_ID,
+            httpStatusCode: 404,
+            code: self::CODE_NOT_FOUND_BY_ID,
         );
     }
 
     public static function userNotFoundByEmail(string $email): self
     {
         return new self(
-            'User not found by email',
-            [
+            message: 'User not found by email',
+            context: [
                 'email' => $email,
             ],
-            404,
-            self::CODE_NOT_FOUND_BY_EMAIL,
+            httpStatusCode: 404,
+            code: self::CODE_NOT_FOUND_BY_EMAIL,
         );
     }
 
     public static function invalidPassword(): self
     {
+        $message = 'Invalid password. Please try again.';
+
         return new self(
-            'Invalid password',
-            [],
-            401,
-            self::CODE_INVALID_PASSWORD,
+            message: $message,
+            httpStatusCode: 401,
+            code: self::CODE_INVALID_PASSWORD,
+            userFacingMessage: $message,
         );
     }
 
     public static function emailAlreadyRegistered(string $email): self
     {
+        $message = 'This email address is already registered.';
+
         return new self(
-            'Email already registered',
-            [
+            message: $message,
+            context: [
                 'email' => $email,
             ],
-            409,
-            self::CODE_EMAIL_ALREADY_REGISTERED,
+            httpStatusCode: 409,
+            code: self::CODE_EMAIL_ALREADY_REGISTERED,
+            userFacingMessage: $message,
         );
     }
 }

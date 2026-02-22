@@ -7,7 +7,6 @@ namespace GardenManager\Auth\Infrastructure\Http\Web;
 use GardenManager\Auth\Application\Command\ConfirmOidcLinkCommand;
 use GardenManager\Auth\Application\Dto\PendingOidcLink;
 use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
-use GardenManager\Auth\Domain\Exception\AuthException;
 use GardenManager\Auth\Infrastructure\Form\AccountLinkFormType;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,27 +38,21 @@ final class LinkAccountAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $this->commandDispatcher->dispatchCommand(
-                    new ConfirmOidcLinkCommand(
-                        linkId: new Ulid(),
-                        email: $pendingLink->email,
-                        plainPassword: $form->get('password')->getData(),
-                        provider: $pendingLink->provider,
-                        subject: $pendingLink->subject,
-                    ),
-                );
+            $this->commandDispatcher->dispatchCommand(
+                new ConfirmOidcLinkCommand(
+                    linkId: new Ulid(),
+                    email: $pendingLink->email,
+                    plainPassword: $form->get('password')->getData(),
+                    provider: $pendingLink->provider,
+                    subject: $pendingLink->subject,
+                ),
+            );
 
-                $request->getSession()->remove(PendingOidcLink::SESSION_KEY);
+            $request->getSession()->remove(PendingOidcLink::SESSION_KEY);
 
-                $user = $this->authUserRepository->findByEmail($pendingLink->email);
+            $user = $this->authUserRepository->findByEmail($pendingLink->email);
 
-                return $this->security->login($user, 'form_login');
-            } catch (AuthException) {
-                $this->addFlash('error', 'Invalid password. Please try again.');
-
-                return $this->redirectToRoute('app_link_account');
-            }
+            return $this->security->login($user, 'form_login');
         }
 
         return $this->render('security/link_account.html.twig', [
