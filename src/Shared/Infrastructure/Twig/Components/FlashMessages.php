@@ -25,6 +25,6 @@ final class FlashMessages
 
     public function shouldAutoDismiss(string $flashType): bool
     {
-        return in_array($this->getAlertType($flashType), ['success', 'info'], true);
+        return \in_array($this->getAlertType($flashType), ['success', 'info'], true);
     }
 }

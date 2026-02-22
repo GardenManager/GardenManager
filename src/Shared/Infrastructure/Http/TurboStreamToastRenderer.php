@@ -25,7 +25,7 @@ final readonly class TurboStreamToastRenderer
     {
         $html = $this->renderToast('success', $message, autoDismiss: true);
 
-        return (new TurboStreamResponse())
+        return new TurboStreamResponse()
             ->append('#toast-container', $html);
     }
 

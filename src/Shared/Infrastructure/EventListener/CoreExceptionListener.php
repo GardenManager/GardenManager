@@ -10,6 +10,7 @@ use GardenManager\Shared\Infrastructure\Http\TurboStreamToastRenderer;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -23,8 +24,7 @@ final readonly class CoreExceptionListener
         private TurboStreamToastRenderer $toastRenderer,
         #[Autowire('%kernel.environment%')]
         private string $environment,
-    )
-    {
+    ) {
     }
 
     public function __invoke(ExceptionEvent $event): void
@@ -44,7 +44,7 @@ final readonly class CoreExceptionListener
             return;
         }
 
-        $isTurbo = in_array(TurboBundle::STREAM_MEDIA_TYPE, $request->getAcceptableContentTypes(), true);
+        $isTurbo = \in_array(TurboBundle::STREAM_MEDIA_TYPE, $request->getAcceptableContentTypes(), true);
         $message = $exception->getUserFacingMessage();
 
         if ($message === null) {
@@ -55,11 +55,11 @@ final readonly class CoreExceptionListener
             }
 
             $message = $this->environment !== 'prod'
-                ? sprintf(
+                ? \sprintf(
                     '[%s] %s: %s',
                     strtoupper($this->environment),
                     array_last(explode('\\', $exception::class)),
-                    $exception->getMessage()
+                    $exception->getMessage(),
                 )
                 : 'Something went wrong. Please try again.';
         }
@@ -70,19 +70,22 @@ final readonly class CoreExceptionListener
             return;
         }
 
-        $referer = $request->headers->get('Referer', '/');
+        $session = $request->getSession();
 
-        $request->getSession()->getFlashBag()->add('error', $message);
+        if ($session instanceof FlashBagAwareSessionInterface) {
+            $session->getFlashBag()->add('error', $message);
+        }
+
+        $referer = $request->headers->get('Referer') ?? '/';
         $event->setResponse(new RedirectResponse($referer));
     }
 
-    private function wrapWithHttpStatus(ExceptionEvent $event, UserFacingExceptionInterface $exception): void
+    private function wrapWithHttpStatus(ExceptionEvent $event, Throwable $exception): void
     {
         if (!$exception instanceof HttpStatusCodeCarrierExceptionInterface) {
             return;
         }
 
-        /** @var Throwable&HttpStatusCodeCarrierExceptionInterface $exception */
         $event->setThrowable(HttpException::fromStatusCode(
             $exception->getHttpStatusCode(),
             $exception->getMessage(),

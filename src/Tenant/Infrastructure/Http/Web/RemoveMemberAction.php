@@ -9,7 +9,7 @@ use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Tenant\Application\Command\RemoveMemberCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
@@ -27,7 +27,7 @@ final class RemoveMemberAction extends AbstractController
         path: '/tenant/members/{userId}/remove',
         name: 'tenant_remove_member',
         methods: ['POST'])]
-    public function __invoke(Ulid $userId): Response
+    public function __invoke(Ulid $userId): RedirectResponse
     {
         /** @var AuthUser $user */
         $user = $this->getUser();

@@ -10,6 +10,7 @@ use GardenManager\Shared\Infrastructure\Http\TurboStreamToastRenderer;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\UX\Turbo\TurboBundle;
+use Throwable;
 use Twig\Environment;
 
 #[Group('unit')]
@@ -41,14 +43,14 @@ final class CoreExceptionListenerTest extends TestCase
     public function ignoresNonCoreException(): void
     {
         $event = $this->createEvent(
-            new \RuntimeException('something broke'),
+            new RuntimeException('something broke'),
             $this->createHtmlRequest(),
         );
 
         $this->listener->__invoke($event);
 
         self::assertNull($event->getResponse());
-        self::assertInstanceOf(\RuntimeException::class, $event->getThrowable());
+        self::assertInstanceOf(RuntimeException::class, $event->getThrowable());
     }
 
     #[Test]
@@ -200,7 +202,7 @@ final class CoreExceptionListenerTest extends TestCase
         self::assertSame($exception, $throwable->getPrevious());
     }
 
-    private function createEvent(\Throwable $exception, Request $request): ExceptionEvent
+    private function createEvent(Throwable $exception, Request $request): ExceptionEvent
     {
         return new ExceptionEvent(
             $this->createStub(HttpKernelInterface::class),
