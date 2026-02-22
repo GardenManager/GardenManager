@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Uid\Ulid;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 final class EmailVerificationService implements EmailVerificationServiceInterface
@@ -64,11 +65,15 @@ final class EmailVerificationService implements EmailVerificationServiceInterfac
             throw AuthException::userNotFoundById($userUlid);
         }
 
-        $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
-            $request,
-            (string) $userUlid,
-            $authUser->getEmail(),
-        );
+        try {
+            $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
+                $request,
+                (string) $userUlid,
+                $authUser->getEmail(),
+            );
+        } catch (VerifyEmailExceptionInterface $e) {
+            throw EmailVerificationException::invalidVerificationLink($e);
+        }
 
         return $userUlid;
     }

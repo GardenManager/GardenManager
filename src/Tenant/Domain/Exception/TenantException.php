@@ -17,64 +17,79 @@ final class TenantException extends CoreException
 
     public static function inviteeNotFound(string $email): self
     {
+        $message = 'No user found with this email address.';
+
         return new self(
-            'No user found with this email address.',
-            [
+            message: $message,
+            context: [
                 'email' => $email,
             ],
-            404,
-            self::CODE_INVITEE_NOT_FOUND,
+            httpStatusCode: 404,
+            code: self::CODE_INVITEE_NOT_FOUND,
+            userFacingMessage: $message,
         );
     }
 
     public static function alreadyAMember(Ulid $tenantId, string $email): self
     {
+        $message = 'This user is already a member of the tenant.';
+
         return new self(
-            'This user is already a member of the tenant.',
-            [
+            message: $message,
+            context: [
                 'tenantId' => $tenantId,
                 'email' => $email,
             ],
-            409,
-            self::CODE_ALREADY_MEMBER,
+            httpStatusCode: 409,
+            code: self::CODE_ALREADY_MEMBER,
+            userFacingMessage: $message,
         );
     }
 
     public static function cannotRemoveLastOwner(Ulid $tenantId): self
     {
+        $message = 'Cannot remove the last owner of the tenant.';
+
         return new self(
-            'Cannot remove the last owner of the tenant.',
-            [
+            message: $message,
+            context: [
                 'tenantId' => $tenantId,
             ],
-            403,
-            self::CODE_CANT_REMOVE_LAST_OWNER,
+            httpStatusCode: 403,
+            code: self::CODE_CANT_REMOVE_LAST_OWNER,
+            userFacingMessage: $message,
         );
     }
 
     public static function notAMember(Ulid $tenantId, Ulid $userId): self
     {
+        $message = 'The user is not a member of this tenant.';
+
         return new self(
-            'The user is not a member of this tenant.',
-            [
+            message: $message,
+            context: [
                 'tenantId' => $tenantId,
                 'userId' => $userId,
             ],
-            404,
-            self::CODE_NOT_MEMBER,
+            httpStatusCode: 404,
+            code: self::CODE_NOT_MEMBER,
+            userFacingMessage: $message,
         );
     }
 
     public static function onlyOwnersCanManage(Ulid $tenantId, Ulid $actorUserId): self
     {
+        $message = 'Only tenant owners can manage members.';
+
         return new self(
-            'Only tenant owners can manage members.',
-            [
+            message: $message,
+            context: [
                 'tenantId' => $tenantId,
                 'actorUserId' => $actorUserId,
             ],
-            403,
-            self::CODE_ONLY_OWNERS_CAN_MANAGE,
+            httpStatusCode: 403,
+            code: self::CODE_ONLY_OWNERS_CAN_MANAGE,
+            userFacingMessage: $message,
         );
     }
 }

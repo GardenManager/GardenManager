@@ -7,11 +7,9 @@ namespace GardenManager\Tenant\Infrastructure\Http\Web;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
-use GardenManager\Shared\Infrastructure\Http\TurboStreamToastRenderer;
 use GardenManager\Tenant\Application\Command\InviteMemberCommand;
 use GardenManager\Tenant\Application\Dto\InviteMemberDto;
 use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
-use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Infrastructure\Form\InviteMemberFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +24,6 @@ final class InviteMemberAction extends AbstractController
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
         private readonly ActiveTenantProviderInterface $activeTenantProvider,
-        private readonly TurboStreamToastRenderer $toastRenderer,
     ) {
     }
 
@@ -46,21 +43,17 @@ final class InviteMemberAction extends AbstractController
             /** @var AuthUser $user */
             $user = $this->getUser();
 
-            try {
-                $this->commandDispatcher->dispatchCommand(new InviteMemberCommand(
-                    membershipId: new Ulid(),
-                    tenantId: $this->activeTenantProvider->getActiveTenantId(),
-                    inviteeEmail: $dto->email ?? '',
-                    role: $dto->role ?? TenantMembershipRole::MEMBER,
-                    actorUserId: $user->getId(),
-                ));
+            $this->commandDispatcher->dispatchCommand(new InviteMemberCommand(
+                membershipId: new Ulid(),
+                tenantId: $this->activeTenantProvider->getActiveTenantId(),
+                inviteeEmail: $dto->email ?? '',
+                role: $dto->role ?? TenantMembershipRole::MEMBER,
+                actorUserId: $user->getId(),
+            ));
 
-                $this->addFlash('success', 'Member invited successfully.');
+            $this->addFlash('success', 'Member invited successfully.');
 
-                return $this->redirectToRoute('tenant_members');
-            } catch (TenantException $e) {
-                return $this->toastRenderer->createErrorResponse($e->getMessage());
-            }
+            return $this->redirectToRoute('tenant_members');
         }
 
         return $this->render('tenant/invite.html.twig', [
