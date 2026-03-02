@@ -15,7 +15,7 @@ services:
         resource: '../src/'
 
     GardenManager\Permission\Domain\Service\PermissionResolverInterface:
-        alias: GardenManager\Permission\Domain\Service\PermissionResolver
+        alias: GardenManager\Permission\Application\Service\PermissionResolver
 
     Symfony\Component\Uid\Command\GenerateUlidCommand: ~
     Symfony\Component\Uid\Command\GenerateUuidCommand: ~

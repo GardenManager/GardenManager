@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Application\Command;
 
+use GardenManager\Permission\Infrastructure\Validator\ValidPermissionEntry;
 use GardenManager\Shared\Application\Attribute\RequiresPermission;
 use GardenManager\Shared\Application\AuthorizedMessageInterface;
 use GardenManager\Shared\Application\CommandInterface;
 use GardenManager\Tenant\Domain\TenantPermissions;
 use Symfony\Component\Uid\Ulid;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[RequiresPermission(TenantPermissions::EDIT)]
 final readonly class AddMemberPermissionOverrideCommand implements CommandInterface, AuthorizedMessageInterface
@@ -18,7 +18,7 @@ final readonly class AddMemberPermissionOverrideCommand implements CommandInterf
         public Ulid $tenantId,
         public Ulid $userId,
 
-        #[Assert\NotBlank]
+        #[ValidPermissionEntry]
         public string $prefixedPermission,
 
         public Ulid $actorUserId,
