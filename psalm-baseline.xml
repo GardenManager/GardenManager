@@ -76,15 +76,6 @@
       <code><![CDATA[getResult]]></code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Shared/Infrastructure/EventListener/HttpStatusCodeCarrierExceptionListener.php">
-    <InvalidArgument>
-      <code><![CDATA[$httpStatusCodeCarrierException]]></code>
-    </InvalidArgument>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[getCode]]></code>
-      <code><![CDATA[getMessage]]></code>
-    </UndefinedInterfaceMethod>
-  </file>
   <file src="src/Shared/Infrastructure/Pagination/PaginationFactory.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[iterator_to_array($pager->getCurrentPageResults())]]></code>
