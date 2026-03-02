@@ -11,12 +11,12 @@ use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use Symfony\Component\Uid\Ulid;
 
-final class PermissionResolver implements PermissionResolverInterface
+final readonly class PermissionResolver implements PermissionResolverInterface
 {
     public function __construct(
-        private readonly TenantRepositoryInterface $tenantRepository,
-        private readonly TenantMembershipRepositoryInterface $membershipRepository,
-        private readonly PermissionMatcher $matcher,
+        private TenantRepositoryInterface $tenantRepository,
+        private TenantMembershipRepositoryInterface $membershipRepository,
+        private PermissionMatcher $matcher,
     ) {
     }
 

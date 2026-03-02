@@ -24,7 +24,7 @@ final readonly class PermissionCheckMiddleware implements MiddlewareInterface
         $message = $envelope->getMessage();
 
         if ($message instanceof AuthorizedMessageInterface) {
-            $attributes = (new \ReflectionClass($message))->getAttributes(RequiresPermission::class);
+            $attributes = new \ReflectionClass($message)->getAttributes(RequiresPermission::class);
 
             if ($attributes !== []) {
                 /** @var RequiresPermission $requiredPermission */

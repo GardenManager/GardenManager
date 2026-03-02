@@ -108,13 +108,8 @@ final readonly class PermissionConfigValidator
         if (!str_contains($permission, '*')) {
             return false;
         }
-
-        foreach ($knownPermissions as $known) {
-            if ($this->permissionMatcher->matches($permission, $known)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $knownPermissions, fn(string $known): bool => $this->permissionMatcher->matches($permission, $known)
+        );
     }
 }

@@ -11,6 +11,7 @@ use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,7 +32,7 @@ final class ChangeMemberGroupsAction extends AbstractController
         name: 'member_change_groups',
         methods: ['POST'],
     )]
-    public function __invoke(Request $request, Ulid $userId): Response
+    public function __invoke(Request $request, Ulid $userId): RedirectResponse
     {
         $tenantId = $this->activeTenantProvider->getActiveTenantId();
         $tenant = $this->tenantRepository->getById($tenantId);

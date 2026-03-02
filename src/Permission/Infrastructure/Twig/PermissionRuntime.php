@@ -10,12 +10,12 @@ use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\RuntimeExtensionInterface;
 
-final class PermissionRuntime implements RuntimeExtensionInterface
+final readonly class PermissionRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
-        private readonly PermissionResolverInterface $permissionResolver,
-        private readonly ActiveTenantProviderInterface $activeTenantProvider,
-        private readonly Security $security,
+        private PermissionResolverInterface $permissionResolver,
+        private ActiveTenantProviderInterface $activeTenantProvider,
+        private Security $security,
     ) {}
 
     public function hasPermission(string $permission): bool

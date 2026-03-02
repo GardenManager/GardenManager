@@ -13,6 +13,7 @@ use GardenManager\Permission\Infrastructure\Form\MemberPermissionOverrideFormTyp
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,7 +34,7 @@ final class AddMemberPermissionOverrideAction extends AbstractController
         name: 'member_add_override',
         methods: ['POST'],
     )]
-    public function __invoke(Request $request, Ulid $userId): Response
+    public function __invoke(Request $request, Ulid $userId): RedirectResponse
     {
         $dto = new MemberPermissionOverrideFormDto();
         $form = $this->createForm(MemberPermissionOverrideFormType::class, $dto, [

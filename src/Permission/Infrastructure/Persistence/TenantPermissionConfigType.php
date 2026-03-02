@@ -23,7 +23,7 @@ final class TenantPermissionConfigType extends Type
             return new TenantPermissionConfig();
         }
 
-        $data = json_decode($value, true, 512, \JSON_THROW_ON_ERROR);
+        $data = json_decode((string) $value, true, 512, \JSON_THROW_ON_ERROR);
 
         return TenantPermissionConfig::fromArray($data);
     }
@@ -31,7 +31,7 @@ final class TenantPermissionConfigType extends Type
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
     {
         if ($value === null) {
-            return json_encode((new TenantPermissionConfig())->toArray(), \JSON_THROW_ON_ERROR);
+            return json_encode(new TenantPermissionConfig()->toArray(), \JSON_THROW_ON_ERROR);
         }
 
         \assert($value instanceof TenantPermissionConfig);

@@ -7,10 +7,10 @@ namespace GardenManager\Permission\Application\Service;
 use GardenManager\Permission\Domain\PermissionProviderInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
-final class PermissionRegistryService
+final readonly class PermissionRegistryService
 {
     /** @var list<PermissionProviderInterface> */
-    private readonly array $providers;
+    private array $providers;
 
     /**
      * @param iterable<PermissionProviderInterface> $providers

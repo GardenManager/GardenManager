@@ -52,7 +52,7 @@ final class EditRawPermissionsAction extends AbstractController
             $rawJson = $form->get('permissionsJson')->getData();
 
             try {
-                $data = json_decode($rawJson, true, 512, \JSON_THROW_ON_ERROR);
+                $data = json_decode((string) $rawJson, true, 512, \JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
                 throw PermissionException::invalidConfig(['Invalid JSON: ' . $e->getMessage()]);
             }

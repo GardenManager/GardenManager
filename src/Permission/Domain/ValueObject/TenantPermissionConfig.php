@@ -6,7 +6,7 @@ namespace GardenManager\Permission\Domain\ValueObject;
 
 use GardenManager\Permission\Domain\Exception\PermissionException;
 
-final class TenantPermissionConfig
+final readonly class TenantPermissionConfig
 {
     /**
      * @param array<string, PermissionGroupData> $groups
@@ -14,9 +14,9 @@ final class TenantPermissionConfig
      * @param array<string, list<string>>        $userOverrides
      */
     public function __construct(
-        private readonly array $groups = [],
-        private readonly array $userAssignments = [],
-        private readonly array $userOverrides = [],
+        private array $groups = [],
+        private array $userAssignments = [],
+        private array $userOverrides = [],
     ) {
     }
 
