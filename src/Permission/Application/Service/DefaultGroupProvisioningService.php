@@ -67,9 +67,7 @@ final readonly class DefaultGroupProvisioningService
 
         foreach ($this->providers as $provider) {
             foreach ($provider->getPermissions() as $permission => $defaultGroup) {
-                if ($defaultGroup !== null) {
-                    $defaultGroups[$defaultGroup->value][] = $permission;
-                }
+                $defaultGroups[$defaultGroup->value][] = $permission;
             }
         }
 

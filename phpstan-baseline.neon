@@ -43,18 +43,6 @@ parameters:
 			path: src/Plant/Infrastructure/Persistence/PlantDoctrineRepository.php
 
 		-
-			message: '#^Class GardenManager\\Seller\\Application\\Query\\ListSellersQuery implements generic interface GardenManager\\Shared\\Application\\PaginatedQueryInterface but does not specify its types\: TResult$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Seller/Application/Query/ListSellersQuery.php
-
-		-
-			message: '#^The @implements tag of class GardenManager\\Seller\\Application\\Query\\ListSellersQuery describes GardenManager\\Shared\\Application\\QueryInterface but the class implements\: GardenManager\\Shared\\Application\\PaginatedQueryInterface$#'
-			identifier: generics.wrongParent
-			count: 1
-			path: src/Seller/Application/Query/ListSellersQuery.php
-
-		-
 			message: '#^Method GardenManager\\Shared\\Domain\\Exception\\Contract\\ContextCarrierExceptionInterface\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1

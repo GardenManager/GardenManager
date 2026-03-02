@@ -20,7 +20,6 @@ final readonly class PermissionRuntime implements RuntimeExtensionInterface
 
     public function hasPermission(string $permission): bool
     {
-        /** @var AuthUser $user */
         $user = $this->security->getUser();
 
         if (!$user instanceof AuthUser) {

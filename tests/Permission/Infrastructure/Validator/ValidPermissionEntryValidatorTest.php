@@ -12,6 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/** @extends ConstraintValidatorTestCase<ValidPermissionEntryValidator> */
 #[Group('unit')]
 final class ValidPermissionEntryValidatorTest extends ConstraintValidatorTestCase
 {
@@ -51,6 +52,7 @@ final class ValidPermissionEntryValidatorTest extends ConstraintValidatorTestCas
         $this->assertNoViolation();
     }
 
+    /** @return iterable<string, array{string}> */
     public static function validPrefixedEntries(): iterable
     {
         yield 'grant exact' => ['+plant.edit'];
@@ -83,6 +85,7 @@ final class ValidPermissionEntryValidatorTest extends ConstraintValidatorTestCas
             ->assertRaised();
     }
 
+    /** @return iterable<string, array{string}> */
     public static function tooShortPrefixedEntries(): iterable
     {
         yield 'plus only' => ['+'];
@@ -100,6 +103,7 @@ final class ValidPermissionEntryValidatorTest extends ConstraintValidatorTestCas
         $this->assertNoViolation();
     }
 
+    /** @return iterable<string, array{string}> */
     public static function validUnprefixedPermissions(): iterable
     {
         yield 'exact' => ['plant.edit'];

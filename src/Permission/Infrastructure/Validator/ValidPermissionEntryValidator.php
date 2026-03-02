@@ -27,9 +27,7 @@ final class ValidPermissionEntryValidator extends ConstraintValidator
             return;
         }
 
-        $minimumLength = ($constraint->prefixed === true) ? 4 : 2;
-
-        if (strlen((string) $value) < $minimumLength) {
+        if (strlen((string) $value) < 4) {
             $this->context->buildViolation($constraint->invalidPermissionMessage)
                 ->addViolation();
 

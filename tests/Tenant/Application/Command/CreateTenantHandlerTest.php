@@ -62,7 +62,6 @@ final class CreateTenantHandlerTest extends TestCase
 
         // Verify permissions config was provisioned
         $config = $savedTenant->getPermissionsConfig();
-        self::assertNotNull($config);
         self::assertNotEmpty($config->getGroups());
         self::assertSame(['admin'], $config->getUserAssignments((string) $ownerUserId));
 

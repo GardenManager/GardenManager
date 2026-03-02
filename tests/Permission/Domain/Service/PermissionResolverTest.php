@@ -14,6 +14,7 @@ use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Ulid;
 
@@ -22,7 +23,7 @@ final class PermissionResolverTest extends TestCase
 {
     private Ulid $userId;
     private Ulid $tenantId;
-    private TenantMembershipRepositoryInterface $membershipRepo;
+    private Stub&TenantMembershipRepositoryInterface $membershipRepo;
 
     protected function setUp(): void
     {

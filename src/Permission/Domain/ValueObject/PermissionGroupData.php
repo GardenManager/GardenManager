@@ -6,6 +6,10 @@ namespace GardenManager\Permission\Domain\ValueObject;
 
 final readonly class PermissionGroupData
 {
+    /**
+     * @param list<string> $parents
+     * @param list<string> $permissions
+     */
     public function __construct(
         public string $name,
         public int $priority,
@@ -14,6 +18,9 @@ final readonly class PermissionGroupData
     ) {
     }
 
+    /**
+     * @return array<string, bool>
+     */
     public function getResolvedPermissionMap(): array
     {
         $map = [];
@@ -38,6 +45,9 @@ final readonly class PermissionGroupData
         ];
     }
 
+    /**
+     * @param array{name?: mixed, priority?: mixed, parents?: list<string>, permissions?: list<string>} $data
+     */
     public static function fromArray(array $data): self
     {
         if (!isset($data['name']) || !is_string($data['name'])) {

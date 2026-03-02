@@ -196,6 +196,9 @@ final readonly class TenantPermissionConfig
         ];
     }
 
+    /**
+     * @param array{groups?: mixed, userAssignments?: mixed, userOverrides?: mixed} $data
+     */
     public static function fromArray(array $data): self
     {
         if (isset($data['groups']) && !is_array($data['groups'])) {
