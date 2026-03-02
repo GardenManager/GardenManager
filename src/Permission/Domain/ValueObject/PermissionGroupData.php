@@ -19,7 +19,7 @@ final readonly class PermissionGroupData
         $map = [];
         foreach ($this->permissions as $entry) {
             $parsed = PermissionEntryParser::parse($entry);
-            $map[$parsed['permission']] = $parsed['granted'];
+            $map[$parsed->permission] = $parsed->granted;
         }
 
         return $map;

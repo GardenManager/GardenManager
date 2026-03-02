@@ -123,7 +123,7 @@ final class TenantPermissionConfig
         $map = [];
         foreach ($this->getUserOverrides($userId) as $entry) {
             $parsed = self::parsePermissionEntry($entry);
-            $map[$parsed['permission']] = $parsed['granted'];
+            $map[$parsed->permission] = $parsed->granted;
         }
 
         return $map;
@@ -132,7 +132,7 @@ final class TenantPermissionConfig
     public function withUserOverride(string $userId, string $prefixedPermission): self
     {
         $parsed = self::parsePermissionEntry($prefixedPermission);
-        $basePermission = $parsed['permission'];
+        $basePermission = $parsed->permission;
 
         $existing = $this->userOverrides[$userId] ?? [];
 
@@ -141,7 +141,7 @@ final class TenantPermissionConfig
             static function (string $entry) use ($basePermission): bool {
                 $entryParsed = self::parsePermissionEntry($entry);
 
-                return $entryParsed['permission'] !== $basePermission;
+                return $entryParsed->permission !== $basePermission;
             },
         ));
 
@@ -164,7 +164,7 @@ final class TenantPermissionConfig
             static function (string $entry) use ($permission): bool {
                 $parsed = self::parsePermissionEntry($entry);
 
-                return $parsed['permission'] !== $permission;
+                return $parsed->permission !== $permission;
             },
         ));
 
@@ -292,10 +292,7 @@ final class TenantPermissionConfig
         return null;
     }
 
-    /**
-     * @return array{permission: string, granted: bool}
-     */
-    public static function parsePermissionEntry(string $entry): array
+    public static function parsePermissionEntry(string $entry): PermissionEntry
     {
         return PermissionEntryParser::parse($entry);
     }

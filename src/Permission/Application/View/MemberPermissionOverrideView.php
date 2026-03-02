@@ -21,8 +21,8 @@ final readonly class MemberPermissionOverrideView
 
         return new self(
             userId: $userId,
-            permission: $parsed['permission'],
-            granted: $parsed['granted'],
+            permission: $parsed->permission,
+            granted: $parsed->granted,
         );
     }
 }

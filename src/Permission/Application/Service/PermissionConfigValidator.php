@@ -45,7 +45,7 @@ final readonly class PermissionConfigValidator
             foreach ($group->permissions as $entry) {
                 try {
                     $parsed = PermissionEntryParser::parse($entry);
-                    $permission = $parsed['permission'];
+                    $permission = $parsed->permission;
                 } catch (\InvalidArgumentException) {
                     $errors[] = sprintf('Group "%s" has permission entry "%s" without a "+" or "-" prefix.', $slug, $entry);
 
@@ -70,7 +70,7 @@ final readonly class PermissionConfigValidator
             foreach ($overrides as $entry) {
                 try {
                     $parsed = PermissionEntryParser::parse($entry);
-                    $permission = $parsed['permission'];
+                    $permission = $parsed->permission;
                 } catch (\InvalidArgumentException) {
                     $errors[] = sprintf('User "%s" has override "%s" without a "+" or "-" prefix.', $userId, $entry);
 

@@ -6,17 +6,14 @@ namespace GardenManager\Permission\Domain\ValueObject;
 
 final class PermissionEntryParser
 {
-    /**
-     * @return array{permission: string, granted: bool}
-     */
-    public static function parse(string $entry): array
+    public static function parse(string $entry): PermissionEntry
     {
         $prefix = $entry[0] ?? '';
         $permissionRaw = substr($entry, 1);
 
         return match ($prefix) {
-            '+' => ['permission' => $permissionRaw, 'granted' => true],
-            '-' => ['permission' => $permissionRaw, 'granted' => false],
+            '+' => new PermissionEntry($permissionRaw, true),
+            '-' => new PermissionEntry($permissionRaw, false),
             default => throw new \InvalidArgumentException(\sprintf('Permission entry "%s" must start with "+" or "-".', $entry)),
         };
     }
