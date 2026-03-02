@@ -44,7 +44,7 @@ final class PermissionMatcher
         if (end($patternSegments) === '**') {
             $concreteSegments = \array_slice($patternSegments, 0, -1);
 
-            if (\count($requestedSegments) <= \count($concreteSegments)) {
+            if (count($requestedSegments) <= count($concreteSegments)) {
                 return false;
             }
 
@@ -61,7 +61,7 @@ final class PermissionMatcher
             return true;
         }
 
-        if (\count($patternSegments) !== \count($requestedSegments)) {
+        if (count($patternSegments) !== count($requestedSegments)) {
             return false;
         }
 

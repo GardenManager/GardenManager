@@ -40,11 +40,11 @@ final readonly class PermissionGroupData
 
     public static function fromArray(array $data): self
     {
-        if (!isset($data['name']) || !\is_string($data['name'])) {
+        if (!isset($data['name']) || !is_string($data['name'])) {
             throw new \InvalidArgumentException('PermissionGroupData requires a string "name" key.');
         }
 
-        if (!isset($data['priority']) || !\is_int($data['priority'])) {
+        if (!isset($data['priority']) || !is_int($data['priority'])) {
             throw new \InvalidArgumentException('PermissionGroupData requires an integer "priority" key.');
         }
 
