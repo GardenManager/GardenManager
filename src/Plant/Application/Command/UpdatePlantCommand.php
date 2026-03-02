@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace GardenManager\Plant\Application\Command;
 
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
+use GardenManager\Plant\Domain\PlantPermissions;
+use GardenManager\Shared\Application\Attribute\RequiresPermission;
+use GardenManager\Shared\Application\AuthorizedMessageInterface;
 use GardenManager\Shared\Application\CommandInterface;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class UpdatePlantCommand implements CommandInterface
+#[RequiresPermission(PlantPermissions::EDIT)]
+final class UpdatePlantCommand implements CommandInterface, AuthorizedMessageInterface
 {
     public function __construct(
         public Ulid $plantId,
         public Ulid $tenantId,
+        public Ulid $actorUserId,
 
         #[Assert\NotBlank]
         #[Assert\Length(max: 255)]
@@ -33,5 +38,15 @@ final class UpdatePlantCommand implements CommandInterface
         #[Assert\Length(max: 64)]
         public ?string $cultivar = null,
     ) {
+    }
+
+    public function getActorUserId(): Ulid
+    {
+        return $this->actorUserId;
+    }
+
+    public function getTenantId(): Ulid
+    {
+        return $this->tenantId;
     }
 }

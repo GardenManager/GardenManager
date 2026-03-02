@@ -36,6 +36,7 @@ final class DeleteSellerHandlerTest extends TestCase
         $handler(new DeleteSellerCommand(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
 
         self::assertTrue($seller->isDeleted());
@@ -59,6 +60,7 @@ final class DeleteSellerHandlerTest extends TestCase
         $handler(new DeleteSellerCommand(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 
@@ -81,6 +83,7 @@ final class DeleteSellerHandlerTest extends TestCase
         $handler(new DeleteSellerCommand(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 }

@@ -17,9 +17,12 @@ framework:
             messenger.bus.default: []
             command.bus:
                 middleware:
+                    - GardenManager\Shared\Infrastructure\Messenger\PermissionCheckMiddleware
                     - validation
                     - doctrine_transaction
-            query.bus: []
+            query.bus:
+                middleware:
+                    - GardenManager\Shared\Infrastructure\Messenger\PermissionCheckMiddleware
 
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async

@@ -5,16 +5,20 @@
 {% block title_display %}
     <div class="flex justify-between items-center">
         <span>My Sellers</span>
-        <twig:Button href="{{ path('seller_new') }}" color="primary" size="sm">New Seller</twig:Button>
+        {% if has_permission('seller.create') %}
+            <twig:Button href="{{ path('seller_new') }}" color="primary" size="sm">New Seller</twig:Button>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block content %}
     <turbo-frame id="seller-list">
         {% if pager.isEmpty() %}
-            <twig:EmptyState message="You have no sellers yet. Create your first one!">
+            <twig:EmptyState message="You have no sellers yet.{{ has_permission('seller.create') ? ' Create your first one!' : '' }}">
                 {% block actions %}
-                    <twig:Button href="{{ path('seller_new') }}" color="primary">New Seller</twig:Button>
+                    {% if has_permission('seller.create') %}
+                        <twig:Button href="{{ path('seller_new') }}" color="primary">New Seller</twig:Button>
+                    {% endif %}
                 {% endblock %}
             </twig:EmptyState>
         {% else %}

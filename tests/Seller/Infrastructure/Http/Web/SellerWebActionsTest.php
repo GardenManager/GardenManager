@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Domain\Seller;
 use GardenManager\Seller\Domain\SellerRepositoryInterface;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use PHPUnit\Framework\Attributes\Group;
@@ -141,7 +140,7 @@ final class SellerWebActionsTest extends WebTestCase
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $user->getId(),
-            role: TenantMembershipRole::OWNER,
+            isOwner: true,
         );
         $em->persist($membership);
         $em->flush();

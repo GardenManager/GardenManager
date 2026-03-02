@@ -9,7 +9,6 @@ use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use PHPUnit\Framework\Attributes\Group;
@@ -143,7 +142,7 @@ final class PlantWebActionsTest extends WebTestCase
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $user->getId(),
-            role: TenantMembershipRole::OWNER,
+            isOwner: true,
         );
         $em->persist($membership);
         $em->flush();

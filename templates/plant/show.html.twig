@@ -6,8 +6,12 @@
     <div class="flex justify-between items-center">
         <span>{{ plant.localName }}</span>
         <div class="flex gap-2">
-            <twig:Button href="{{ path('plant_update', {plantId: plant.id}) }}" color="primary" size="sm">Edit</twig:Button>
-            <twig:Button color="error" size="sm" data-modal-target="delete-modal" data-modal-toggle="delete-modal">Delete</twig:Button>
+            {% if has_permission('plant.edit') %}
+                <twig:Button href="{{ path('plant_update', {plantId: plant.id}) }}" color="primary" size="sm">Edit</twig:Button>
+            {% endif %}
+            {% if has_permission('plant.delete') %}
+                <twig:Button color="error" size="sm" data-modal-target="delete-modal" data-modal-toggle="delete-modal">Delete</twig:Button>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
@@ -76,8 +80,10 @@
         {% endblock %}
     </twig:Card>
 
-    <twig:ConfirmDeleteModal
-        action="{{ path('plant_delete', {plantId: plant.id}) }}"
-        entityName="{{ plant.localName }}"
-    />
+    {% if has_permission('plant.delete') %}
+        <twig:ConfirmDeleteModal
+            action="{{ path('plant_delete', {plantId: plant.id}) }}"
+            entityName="{{ plant.localName }}"
+        />
+    {% endif %}
 {% endblock %}

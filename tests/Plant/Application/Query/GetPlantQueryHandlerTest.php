@@ -45,6 +45,7 @@ final class GetPlantQueryHandlerTest extends TestCase
         $result = $handler(new GetPlantQuery(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
 
         self::assertSame('Test Plant', $result->localName);
@@ -73,6 +74,7 @@ final class GetPlantQueryHandlerTest extends TestCase
         $handler(new GetPlantQuery(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 
@@ -101,6 +103,7 @@ final class GetPlantQueryHandlerTest extends TestCase
         $handler(new GetPlantQuery(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 }

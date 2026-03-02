@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Infrastructure\Form;
 
 use GardenManager\Tenant\Application\Dto\InviteMemberDto;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,11 +30,11 @@ final class InviteMemberFormType extends AbstractType
                 ],
             )
             ->add(
-                'role',
-                EnumType::class,
+                'groupSlug',
+                ChoiceType::class,
                 [
-                    'class' => TenantMembershipRole::class,
-                    'label' => 'Role',
+                    'label' => 'Group',
+                    'choices' => $options['group_choices'],
                 ],
             )
             ->add(
@@ -52,6 +51,9 @@ final class InviteMemberFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => InviteMemberDto::class,
+            'group_choices' => [],
         ]);
+
+        $resolver->setAllowedTypes('group_choices', 'array');
     }
 }

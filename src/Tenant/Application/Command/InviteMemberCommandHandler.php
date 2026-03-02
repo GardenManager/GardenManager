@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Application\Command;
 
+use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInterface;
+use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Tenant\Application\Port\MemberUserResolverInterface;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\Security\TenantAuthorizationChecker;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
 use GardenManager\Tenant\Domain\TenantRepositoryInterface;
@@ -19,14 +20,12 @@ final readonly class InviteMemberCommandHandler
         private TenantRepositoryInterface $tenantRepository,
         private TenantMembershipRepositoryInterface $membershipRepository,
         private MemberUserResolverInterface $memberUserResolver,
-        private TenantAuthorizationChecker $authorizationChecker,
+        private PermissionCacheInvalidatorInterface $cacheInvalidator,
     ) {
     }
 
     public function __invoke(InviteMemberCommand $command): void
     {
-        $this->authorizationChecker->ensureOwner($command->tenantId, $command->actorUserId);
-
         $invitee = $this->memberUserResolver->resolveByEmail($command->inviteeEmail);
 
         if ($invitee === null) {
@@ -40,14 +39,23 @@ final readonly class InviteMemberCommandHandler
         }
 
         $tenant = $this->tenantRepository->getById($command->tenantId);
+        $config = $tenant->getPermissionsConfig();
+
+        if (!$config->hasGroup($command->groupSlug)) {
+            throw PermissionException::groupNotFound();
+        }
 
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $invitee->id,
-            role: $command->role,
             id: $command->membershipId,
         );
 
+        $config = $config->withUserAssignments((string) $invitee->id, [$command->groupSlug]);
+        $tenant->updatePermissionsConfig($config);
+
+        $this->tenantRepository->save($tenant);
         $this->membershipRepository->save($membership);
+        $this->cacheInvalidator->invalidateForTenant($command->tenantId);
     }
 }

@@ -33,7 +33,7 @@ final class ListSellersHandlerTest extends TestCase
 
         $handler = new ListSellersHandler($repo);
 
-        $result = $handler(new ListSellersQuery());
+        $result = $handler(new ListSellersQuery(actorUserId: new Ulid(), tenantId: new Ulid()));
 
         self::assertCount(1, $result->items);
         self::assertSame('Test', $result->items[0]->name);
@@ -56,7 +56,7 @@ final class ListSellersHandlerTest extends TestCase
 
         $handler = new ListSellersHandler($repo);
 
-        $result = $handler(new ListSellersQuery(page: 3, limit: 5));
+        $result = $handler(new ListSellersQuery(actorUserId: new Ulid(), tenantId: new Ulid(), page: 3, limit: 5));
 
         self::assertEquals($repoResult, $result);
     }

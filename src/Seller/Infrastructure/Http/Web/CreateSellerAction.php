@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Http\Web;
 
+use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Seller\Application\Command\CreateSellerCommand;
 use GardenManager\Seller\Application\Dto\SellerFormDto;
 use GardenManager\Seller\Infrastructure\Form\SellerFormType;
@@ -13,10 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
-#[IsGranted('ROLE_USER')]
 final class CreateSellerAction extends AbstractController
 {
     public function __construct(
@@ -38,9 +37,13 @@ final class CreateSellerAction extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $sellerId = new Ulid();
 
+            /** @var AuthUser $user */
+            $user = $this->getUser();
+
             $command = new CreateSellerCommand(
                 sellerId: $sellerId,
                 tenantId: $this->activeTenantProvider->getActiveTenantId(),
+                actorUserId: $user->getId(),
                 name: $dto->name ?? '',
                 email: $dto->email ?? '',
                 phone: $dto->phone,

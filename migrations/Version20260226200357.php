@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20260219202609 extends AbstractMigration
+final class Version20260226200357 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,8 +27,8 @@ final class Version20260219202609 extends AbstractMigration
         $this->addSql('CREATE UNIQUE INDEX UNIQ_A3B536FDE7927C74 ON auth_user (email)');
         $this->addSql('CREATE TABLE plant (id UUID NOT NULL, tenant_id UUID NOT NULL, local_name VARCHAR(255) NOT NULL, is_hybrid BOOLEAN NOT NULL, lifecycle VARCHAR(16) NOT NULL, genus VARCHAR(64) DEFAULT NULL, epithet VARCHAR(64) DEFAULT NULL, cultivar VARCHAR(64) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE TABLE seller (id UUID NOT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, tenant_id UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(50) DEFAULT NULL, address_street VARCHAR(255) DEFAULT NULL, address_city VARCHAR(255) DEFAULT NULL, address_postal_code VARCHAR(20) DEFAULT NULL, address_country VARCHAR(2) DEFAULT NULL, PRIMARY KEY (id))');
-        $this->addSql('CREATE TABLE tenant (id UUID NOT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY (id))');
-        $this->addSql('CREATE TABLE tenant_membership (id UUID NOT NULL, user_id UUID NOT NULL, role VARCHAR(16) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, tenant_id UUID NOT NULL, PRIMARY KEY (id))');
+        $this->addSql('CREATE TABLE tenant (id UUID NOT NULL, name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, permissions_config jsonb NOT NULL, version INT DEFAULT 1 NOT NULL, PRIMARY KEY (id))');
+        $this->addSql('CREATE TABLE tenant_membership (id UUID NOT NULL, user_id UUID NOT NULL, is_owner BOOLEAN NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, tenant_id UUID NOT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE INDEX IDX_7EBE842D9033212A ON tenant_membership (tenant_id)');
         $this->addSql('CREATE UNIQUE INDEX uniq_tenant_user ON tenant_membership (tenant_id, user_id)');
         $this->addSql('ALTER TABLE auth_oidc ADD CONSTRAINT FK_FE0BB613A76ED395 FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE NOT DEFERRABLE');

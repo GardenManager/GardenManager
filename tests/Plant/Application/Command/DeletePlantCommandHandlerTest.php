@@ -43,6 +43,7 @@ final class DeletePlantCommandHandlerTest extends TestCase
         $handler(new DeletePlantCommand(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
 
         self::assertTrue($plant->isDeleted());
@@ -66,6 +67,7 @@ final class DeletePlantCommandHandlerTest extends TestCase
         $handler(new DeletePlantCommand(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 
@@ -94,6 +96,7 @@ final class DeletePlantCommandHandlerTest extends TestCase
         $handler(new DeletePlantCommand(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 }

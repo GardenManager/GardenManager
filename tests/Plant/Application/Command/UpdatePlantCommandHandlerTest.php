@@ -43,6 +43,7 @@ final class UpdatePlantCommandHandlerTest extends TestCase
         $command = new UpdatePlantCommand(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
             localName: 'New Name',
             isHybrid: true,
             lifecycle: LifecycleEnum::PERENNIAL,
@@ -75,6 +76,7 @@ final class UpdatePlantCommandHandlerTest extends TestCase
         $handler(new UpdatePlantCommand(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
             localName: 'Test',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,
@@ -106,6 +108,7 @@ final class UpdatePlantCommandHandlerTest extends TestCase
         $handler(new UpdatePlantCommand(
             plantId: $plantId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
             localName: 'Hacked',
             isHybrid: false,
             lifecycle: LifecycleEnum::ANNUAL,

@@ -1,0 +1,89 @@
+{% extends 'layout/dashboard.html.twig' %}
+
+{% block page_title %}Member Permissions — {{ member.userDisplayName }}{% endblock %}
+
+{% block content %}
+    <div class="mb-6">
+        <a href="{{ path('tenant_members') }}" class="text-blue-600 hover:underline dark:text-blue-500 text-sm">&larr; Back to Members</a>
+    </div>
+
+    {# Member Info #}
+    <twig:Card class="mb-6">
+        {% block content %}
+            <div class="px-6 py-4">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ member.userDisplayName }}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ member.userEmail }}</p>
+                <div class="mt-2 flex items-center gap-2">
+                    {% if member.isOwner %}
+                        <twig:Badge color="blue">Owner</twig:Badge>
+                    {% endif %}
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Joined {{ member.joinedAt|date('F j, Y') }}</span>
+                </div>
+            </div>
+        {% endblock %}
+    </twig:Card>
+
+    {# Group Assignment #}
+    <twig:Card class="mb-6">
+        {% block content %}
+            <div class="px-6 py-4">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Group Assignments</h3>
+                {% if member.isOwner %}
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Tenant owners have full permissions and do not need a group assignment.</p>
+                {% else %}
+                    {{ form_start(groupForm) }}
+                        {{ form_rest(groupForm) }}
+                    {{ form_end(groupForm) }}
+                {% endif %}
+            </div>
+        {% endblock %}
+    </twig:Card>
+
+    {# Permission Overrides #}
+    <twig:Card>
+        {% block content %}
+            <div class="px-6 py-4">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Permission Overrides</h3>
+
+                {% if member.overrides is not empty %}
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">Permission</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for override in member.overrides %}
+                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ override.permission }}</td>
+                                        <td class="px-6 py-4">
+                                            <twig:Badge color="{{ override.granted ? 'green' : 'red' }}">{{ override.granted ? '+' : '-' }} {{ override.granted ? 'Granted' : 'Denied' }}</twig:Badge>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <form action="{{ path('member_remove_override', {userId: member.userId, permission: override.permission}) }}" method="post" class="inline">
+                                                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="placeholder">
+                                                <button type="submit" class="text-red-600 hover:underline dark:text-red-500 text-sm" onclick="return confirm('Remove this override?')">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">No permission overrides configured.</p>
+                {% endif %}
+
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                    <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Add Override</h4>
+                    {{ form_start(overrideForm) }}
+                        {{ form_rest(overrideForm) }}
+                    {{ form_end(overrideForm) }}
+                </div>
+            </div>
+        {% endblock %}
+    </twig:Card>
+{% endblock %}

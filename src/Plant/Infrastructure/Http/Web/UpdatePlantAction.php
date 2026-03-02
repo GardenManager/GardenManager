@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
+use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Application\Command\UpdatePlantCommand;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Application\Query\GetPlantQuery;
@@ -19,7 +20,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
-#[IsGranted('ROLE_USER')]
 final class UpdatePlantAction extends AbstractController
 {
     public function __construct(
@@ -36,10 +36,12 @@ final class UpdatePlantAction extends AbstractController
     )]
     public function __invoke(Request $request, Ulid $plantId): Response
     {
+        /** @var AuthUser $user */
+        $user = $this->getUser();
         $tenantId = $this->activeTenantProvider->getActiveTenantId();
 
         /** @var PlantDetailView $plantView */
-        $plantView = $this->queryDispatcher->query(new GetPlantQuery($plantId, $tenantId));
+        $plantView = $this->queryDispatcher->query(new GetPlantQuery($plantId, $tenantId, $user->getId()));
         $dto = PlantFormDto::fromView($plantView);
         $form = $this->createForm(PlantFormType::class, $dto, [
             'submit_label' => 'Save Changes',
@@ -51,6 +53,7 @@ final class UpdatePlantAction extends AbstractController
             $command = new UpdatePlantCommand(
                 plantId: $plantId,
                 tenantId: $tenantId,
+                actorUserId: $user->getId(),
                 localName: $dto->localName,
                 isHybrid: $dto->isHybrid,
                 lifecycle: $dto->lifecycle,

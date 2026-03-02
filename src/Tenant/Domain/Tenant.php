@@ -6,6 +6,7 @@ namespace GardenManager\Tenant\Domain;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity]
@@ -27,10 +28,18 @@ class Tenant
     #[ORM\Column]
     private DateTimeImmutable $updatedAt;
 
+    #[ORM\Column(type: 'tenant_permission_config')]
+    private TenantPermissionConfig $permissionsConfig;
+
+    #[ORM\Version]
+    #[ORM\Column(type: 'integer')]
+    private int $version = 1;
+
     private function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
+        $this->permissionsConfig = new TenantPermissionConfig();
     }
 
     public static function create(string $name, ?Ulid $id = null): self
@@ -67,6 +76,21 @@ class Tenant
     public function getUpdatedAt(): DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function getPermissionsConfig(): TenantPermissionConfig
+    {
+        return $this->permissionsConfig;
+    }
+
+    public function updatePermissionsConfig(TenantPermissionConfig $permissionsConfig): void
+    {
+        $this->permissionsConfig = $permissionsConfig;
+    }
+
+    public function getVersion(): int
+    {
+        return $this->version;
     }
 
     #[ORM\PreUpdate]

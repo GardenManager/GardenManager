@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
+use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Plant\Application\Command\CreatePlantCommand;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Infrastructure\Form\PlantFormType;
@@ -13,10 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
-#[IsGranted('ROLE_USER')]
 final class CreatePlantAction extends AbstractController
 {
     public function __construct(
@@ -28,6 +27,9 @@ final class CreatePlantAction extends AbstractController
     #[Route(path: '/plants/new', name: 'plant_new', methods: ['GET', 'POST'])]
     public function __invoke(Request $request): Response
     {
+        /** @var AuthUser $user */
+        $user = $this->getUser();
+
         $dto = new PlantFormDto();
         $form = $this->createForm(PlantFormType::class, $dto, [
             'submit_label' => 'Create Plant',
@@ -39,6 +41,7 @@ final class CreatePlantAction extends AbstractController
             $command = new CreatePlantCommand(
                 plantId: new Ulid(),
                 tenantId: $this->activeTenantProvider->getActiveTenantId(),
+                actorUserId: $user->getId(),
                 localName: $dto->localName ?? '',
                 isHybrid: $dto->isHybrid,
                 lifecycle: $dto->lifecycle,

@@ -7,7 +7,6 @@ namespace GardenManager\Tests\Tenant\Application\Query;
 use GardenManager\Tenant\Application\Query\ListUserTenantsQuery;
 use GardenManager\Tenant\Application\Query\ListUserTenantsQueryHandler;
 use GardenManager\Tenant\Application\View\UserTenantView;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
@@ -25,8 +24,8 @@ final class ListUserTenantsHandlerTest extends TestCase
         $userId = new Ulid();
         $tenant1 = Tenant::create(name: 'Tenant One');
         $tenant2 = Tenant::create(name: 'Tenant Two');
-        $membership1 = TenantMembership::create(tenant: $tenant1, userId: $userId, role: TenantMembershipRole::OWNER);
-        $membership2 = TenantMembership::create(tenant: $tenant2, userId: $userId, role: TenantMembershipRole::MEMBER);
+        $membership1 = TenantMembership::create(tenant: $tenant1, userId: $userId, isOwner: true);
+        $membership2 = TenantMembership::create(tenant: $tenant2, userId: $userId);
 
         $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
         $repo->method('findByUserId')->willReturn([$membership1, $membership2]);
@@ -37,9 +36,9 @@ final class ListUserTenantsHandlerTest extends TestCase
         self::assertCount(2, $result);
         self::assertContainsOnlyInstancesOf(UserTenantView::class, $result);
         self::assertSame('Tenant One', $result[0]->tenantName);
-        self::assertSame(TenantMembershipRole::OWNER, $result[0]->role);
+        self::assertTrue($result[0]->isOwner);
         self::assertSame('Tenant Two', $result[1]->tenantName);
-        self::assertSame(TenantMembershipRole::MEMBER, $result[1]->role);
+        self::assertFalse($result[1]->isOwner);
     }
 
     #[Test]

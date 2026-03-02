@@ -6,7 +6,6 @@ namespace GardenManager\Tenant\Domain;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity]
@@ -26,8 +25,8 @@ class TenantMembership
     #[ORM\Column(type: 'ulid')]
     private Ulid $userId;
 
-    #[ORM\Column(type: 'string', length: 16, enumType: TenantMembershipRole::class)]
-    private TenantMembershipRole $role;
+    #[ORM\Column]
+    private bool $isOwner;
 
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
@@ -40,14 +39,14 @@ class TenantMembership
     public static function create(
         Tenant $tenant,
         Ulid $userId,
-        TenantMembershipRole $role,
+        bool $isOwner = false,
         ?Ulid $id = null,
     ): self {
         $membership = new self();
         $membership->id = $id ?? new Ulid();
         $membership->tenant = $tenant;
         $membership->userId = $userId;
-        $membership->role = $role;
+        $membership->isOwner = $isOwner;
 
         return $membership;
     }
@@ -62,14 +61,19 @@ class TenantMembership
         return $this->tenant;
     }
 
+    public function getTenantId(): Ulid
+    {
+        return $this->tenant->getId();
+    }
+
     public function getUserId(): Ulid
     {
         return $this->userId;
     }
 
-    public function getRole(): TenantMembershipRole
+    public function isOwner(): bool
     {
-        return $this->role;
+        return $this->isOwner;
     }
 
     public function getCreatedAt(): DateTimeImmutable
