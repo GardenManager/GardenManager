@@ -197,7 +197,7 @@ final readonly class TenantPermissionConfig
     }
 
     /**
-     * @param array{groups?: mixed, userAssignments?: mixed, userOverrides?: mixed} $data
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {

@@ -46,7 +46,7 @@ final readonly class PermissionGroupData
     }
 
     /**
-     * @param array{name?: mixed, priority?: mixed, parents?: list<string>, permissions?: list<string>} $data
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {

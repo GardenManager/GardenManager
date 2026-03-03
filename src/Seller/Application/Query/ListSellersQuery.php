@@ -8,6 +8,7 @@ use GardenManager\Seller\Application\View\SellerDetailView;
 use GardenManager\Seller\Domain\SellerPermissions;
 use GardenManager\Shared\Application\Attribute\RequiresPermission;
 use GardenManager\Shared\Application\AuthorizedMessageInterface;
+use GardenManager\Shared\Application\PaginatedQueryInterface;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use Symfony\Component\Uid\Ulid;
 

@@ -32,6 +32,12 @@
       <code><![CDATA[getFlashBag]]></code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="src/Permission/Infrastructure/Http/Web/AddMemberPermissionOverrideAction.php">
+    <PossiblyNullArgument>
+      <code><![CDATA[$dto->granted]]></code>
+      <code><![CDATA[$dto->permission]]></code>
+    </PossiblyNullArgument>
+  </file>
   <file src="src/Plant/Infrastructure/Http/Web/CreatePlantAction.php">
     <PossiblyNullArgument>
       <code><![CDATA[$dto->isHybrid]]></code>
@@ -50,18 +56,10 @@
       <code><![CDATA[PlantDoctrineRepository]]></code>
     </MissingTemplateParam>
   </file>
-  <file src="src/Seller/Application/Query/ListSellersQuery.php">
-    <InvalidDocblock>
-      <code><![CDATA[final readonly class ListSellersQuery implements PaginatedQueryInterface]]></code>
-    </InvalidDocblock>
-    <MissingTemplateParam>
-      <code><![CDATA[PaginatedQueryInterface]]></code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/Seller/Infrastructure/Http/Api/ListSellersApiAction.php">
-    <ArgumentTypeCoercion>
-      <code><![CDATA[$items]]></code>
-    </ArgumentTypeCoercion>
+    <InvalidArgument>
+      <code><![CDATA[$pager]]></code>
+    </InvalidArgument>
   </file>
   <file src="src/Shared/Infrastructure/Bus/CommandDispatcher.php">
     <PossiblyNullArrayOffset>

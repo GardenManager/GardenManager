@@ -17,7 +17,7 @@ final readonly class DefaultGroupProvisioningService
     private array $providers;
 
     /**
-     * @param iterable<PermissionProviderInterface> $providers
+     * @param iterable<int, PermissionProviderInterface> $providers
      */
     public function __construct(
         #[AutowireIterator('app.permission_provider')]

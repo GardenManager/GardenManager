@@ -20,7 +20,7 @@ final readonly class PermissionCacheInvalidator implements PermissionCacheInvali
 
     public function invalidateForTenant(Ulid $tenantId): void
     {
-        $this->cache->invalidateTags(['perm_tenant_' . $tenantId]);
+        $this->cache->invalidateTags(['perm_tenant_' . $tenantId->toString()]);
         $this->cachedResolver->clearL1Cache();
     }
 

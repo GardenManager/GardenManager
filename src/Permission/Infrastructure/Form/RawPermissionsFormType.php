@@ -9,7 +9,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/** @extends AbstractType<null> */
+/**
+ * @phpstan-extends AbstractType<null>
+ *
+ * @psalm-suppress TooManyTemplateParams
+ */
 final class RawPermissionsFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

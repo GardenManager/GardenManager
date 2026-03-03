@@ -38,7 +38,7 @@ final class CachedPermissionResolver implements PermissionResolverInterface
     /** @return array<string, bool> */
     public function resolvePermissions(Ulid $userId, Ulid $tenantId): array
     {
-        $cacheKey = 't_' . $tenantId . '-u_' . $userId;
+        $cacheKey = 't_' . $tenantId->toString() . '-u_' . $userId->toString();
 
         if (isset($this->l1Cache[$cacheKey])) {
             return $this->l1Cache[$cacheKey];
@@ -46,7 +46,7 @@ final class CachedPermissionResolver implements PermissionResolverInterface
 
         /** @var array<string, bool> $resolved */
         $resolved = $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId, $tenantId): array {
-            $item->tag(['perm_all', 'perm_tenant_' . $tenantId]);
+            $item->tag(['perm_all', 'perm_tenant_' . $tenantId->toString()]);
 
             return $this->innerResolver->resolvePermissions($userId, $tenantId);
         });
