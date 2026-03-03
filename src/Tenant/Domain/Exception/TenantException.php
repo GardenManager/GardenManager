@@ -13,7 +13,6 @@ final class TenantException extends CoreException
     public const int CODE_CANT_REMOVE_LAST_OWNER = 0x78751676;
     public const int CODE_INVITEE_NOT_FOUND = 0xA3B1C2D4;
     public const int CODE_NOT_MEMBER = 0x9F7296DA;
-    public const int CODE_ONLY_OWNERS_CAN_MANAGE = 0xE8E321F2;
 
     public static function inviteeNotFound(string $email): self
     {
@@ -73,22 +72,6 @@ final class TenantException extends CoreException
             ],
             httpStatusCode: 404,
             code: self::CODE_NOT_MEMBER,
-            userFacingMessage: $message,
-        );
-    }
-
-    public static function onlyOwnersCanManage(Ulid $tenantId, Ulid $actorUserId): self
-    {
-        $message = 'Only tenant owners can manage members.';
-
-        return new self(
-            message: $message,
-            context: [
-                'tenantId' => $tenantId,
-                'actorUserId' => $actorUserId,
-            ],
-            httpStatusCode: 403,
-            code: self::CODE_ONLY_OWNERS_CAN_MANAGE,
             userFacingMessage: $message,
         );
     }

@@ -9,21 +9,20 @@ use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Tenant\Application\Command\InviteMemberCommand;
 use GardenManager\Tenant\Application\Dto\InviteMemberDto;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
+use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use GardenManager\Tenant\Infrastructure\Form\InviteMemberFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Ulid;
 
-#[IsGranted('ROLE_USER')]
 final class InviteMemberAction extends AbstractController
 {
     public function __construct(
         private readonly CommandDispatcher $commandDispatcher,
         private readonly ActiveTenantProviderInterface $activeTenantProvider,
+        private readonly TenantRepositoryInterface $tenantRepository,
     ) {
     }
 
@@ -34,8 +33,19 @@ final class InviteMemberAction extends AbstractController
     )]
     public function __invoke(Request $request): Response
     {
+        $tenantId = $this->activeTenantProvider->getActiveTenantId();
+        $tenant = $this->tenantRepository->getById($tenantId);
+        $config = $tenant->getPermissionsConfig();
+
+        $groupChoices = [];
+        foreach ($config->getGroups() as $slug => $group) {
+            $groupChoices[$group->name] = $slug;
+        }
+
         $dto = new InviteMemberDto();
-        $form = $this->createForm(InviteMemberFormType::class, $dto);
+        $form = $this->createForm(InviteMemberFormType::class, $dto, [
+            'group_choices' => $groupChoices,
+        ]);
 
         $form->handleRequest($request);
 
@@ -45,9 +55,9 @@ final class InviteMemberAction extends AbstractController
 
             $this->commandDispatcher->dispatchCommand(new InviteMemberCommand(
                 membershipId: new Ulid(),
-                tenantId: $this->activeTenantProvider->getActiveTenantId(),
+                tenantId: $tenantId,
                 inviteeEmail: $dto->email ?? '',
-                role: $dto->role ?? TenantMembershipRole::MEMBER,
+                groupSlug: $dto->groupSlug ?? 'viewer',
                 actorUserId: $user->getId(),
             ));
 

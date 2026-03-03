@@ -9,6 +9,7 @@ use GardenManager\Tenant\Application\View\TenantMembershipView;
 use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
@@ -18,6 +19,7 @@ final readonly class ListTenantMembersQueryHandler
     public function __construct(
         private TenantMembershipRepositoryInterface $membershipRepository,
         private MemberUserResolverInterface $memberUserResolver,
+        private TenantRepositoryInterface $tenantRepository,
     ) {
     }
 
@@ -40,11 +42,27 @@ final readonly class ListTenantMembersQueryHandler
             ),
         );
 
-        return array_map(
-            static function (TenantMembership $membership) use ($usersById): TenantMembershipView {
-                $user = $usersById[(string) $membership->getUserId()];
+        $tenant = $this->tenantRepository->getById($query->tenantId);
+        $config = $tenant->getPermissionsConfig();
 
-                return TenantMembershipView::fromMembershipAndUser($membership, $user);
+        // Build a map of userId -> group name for display
+        $groupNamesByUserId = [];
+        foreach ($memberships as $membership) {
+            $assignedSlugs = $config->getUserAssignments((string) $membership->getUserId());
+            $groupNames = [];
+            foreach ($assignedSlugs as $slug) {
+                $group = $config->getGroup($slug);
+                $groupNames[] = $group !== null ? $group->name : $slug;
+            }
+            $groupNamesByUserId[(string) $membership->getUserId()] = implode(', ', $groupNames) ?: 'None';
+        }
+
+        return array_map(
+            static function (TenantMembership $membership) use ($usersById, $groupNamesByUserId): TenantMembershipView {
+                $user = $usersById[(string) $membership->getUserId()];
+                $groupName = $groupNamesByUserId[(string) $membership->getUserId()] ?? 'None';
+
+                return TenantMembershipView::fromMembershipAndUser($membership, $user, $groupName);
             }, $memberships,
         );
     }

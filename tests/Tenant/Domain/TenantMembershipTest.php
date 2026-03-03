@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Tenant\Domain;
 
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use PHPUnit\Framework\Attributes\Group;
@@ -24,16 +23,16 @@ final class TenantMembershipTest extends TestCase
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $userId,
-            role: TenantMembershipRole::OWNER,
+            isOwner: true,
         );
 
         self::assertSame($tenant, $membership->getTenant());
         self::assertTrue($userId->equals($membership->getUserId()));
-        self::assertSame(TenantMembershipRole::OWNER, $membership->getRole());
+        self::assertTrue($membership->isOwner());
     }
 
     #[Test]
-    public function createMemberMembership(): void
+    public function createRegularMembership(): void
     {
         $tenant = Tenant::create(name: 'Test Tenant');
         $userId = new Ulid();
@@ -41,10 +40,9 @@ final class TenantMembershipTest extends TestCase
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $userId,
-            role: TenantMembershipRole::MEMBER,
         );
 
-        self::assertSame(TenantMembershipRole::MEMBER, $membership->getRole());
+        self::assertFalse($membership->isOwner());
     }
 
     #[Test]
@@ -56,7 +54,6 @@ final class TenantMembershipTest extends TestCase
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: new Ulid(),
-            role: TenantMembershipRole::MEMBER,
             id: $id,
         );
 

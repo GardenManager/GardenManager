@@ -5,16 +5,20 @@
 {% block title_display %}
     <div class="flex justify-between items-center">
         <span>My Plants</span>
-        <twig:Button href="{{ path('plant_new') }}" color="primary" size="sm">New Plant</twig:Button>
+        {% if has_permission('plant.create') %}
+            <twig:Button href="{{ path('plant_new') }}" color="primary" size="sm">New Plant</twig:Button>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block content %}
     <turbo-frame id="plant-list">
         {% if pager.isEmpty() %}
-            <twig:EmptyState message="You have no plants yet. Create your first one!">
+            <twig:EmptyState message="You have no plants yet.{{ has_permission('plant.create') ? ' Create your first one!' : '' }}">
                 {% block actions %}
-                    <twig:Button href="{{ path('plant_new') }}" color="primary">New Plant</twig:Button>
+                    {% if has_permission('plant.create') %}
+                        <twig:Button href="{{ path('plant_new') }}" color="primary">New Plant</twig:Button>
+                    {% endif %}
                 {% endblock %}
             </twig:EmptyState>
         {% else %}

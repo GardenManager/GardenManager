@@ -36,6 +36,7 @@ final class UpdateSellerHandlerTest extends TestCase
         $command = new UpdateSellerCommand(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
             name: 'New Name',
             email: 'new@example.com',
         );
@@ -64,6 +65,7 @@ final class UpdateSellerHandlerTest extends TestCase
         $handler(new UpdateSellerCommand(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
             name: 'Test',
             email: 'test@example.com',
         ));
@@ -88,6 +90,7 @@ final class UpdateSellerHandlerTest extends TestCase
         $handler(new UpdateSellerCommand(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
             name: 'Hacked',
             email: 'hack@example.com',
         ));

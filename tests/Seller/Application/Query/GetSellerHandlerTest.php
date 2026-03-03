@@ -35,6 +35,7 @@ final class GetSellerHandlerTest extends TestCase
         $result = $handler(new GetSellerQuery(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
 
         self::assertSame('Test Seller', $result->name);
@@ -59,6 +60,7 @@ final class GetSellerHandlerTest extends TestCase
         $handler(new GetSellerQuery(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 
@@ -81,6 +83,7 @@ final class GetSellerHandlerTest extends TestCase
         $handler(new GetSellerQuery(
             sellerId: $sellerId,
             tenantId: $tenantId,
+            actorUserId: new Ulid(),
         ));
     }
 }

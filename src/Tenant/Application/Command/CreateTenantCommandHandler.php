@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Application\Command;
 
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
+use GardenManager\Permission\Application\Service\DefaultGroupProvisioningService;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
@@ -17,6 +17,7 @@ final readonly class CreateTenantCommandHandler
     public function __construct(
         private TenantRepositoryInterface $tenantRepository,
         private TenantMembershipRepositoryInterface $membershipRepository,
+        private DefaultGroupProvisioningService $provisioningService,
     ) {
     }
 
@@ -27,12 +28,16 @@ final readonly class CreateTenantCommandHandler
             id: $command->tenantId,
         );
 
+        $config = $this->provisioningService->provisionDefaultGroups()
+            ->withUserAssignments((string) $command->userId, ['admin']);
+        $tenant->updatePermissionsConfig($config);
+
         $this->tenantRepository->save($tenant);
 
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $command->userId,
-            role: TenantMembershipRole::OWNER,
+            isOwner: true,
         );
 
         $this->membershipRepository->save($membership);

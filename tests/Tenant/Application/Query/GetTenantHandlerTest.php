@@ -6,7 +6,6 @@ namespace GardenManager\Tests\Tenant\Application\Query;
 
 use GardenManager\Tenant\Application\Query\GetTenantQuery;
 use GardenManager\Tenant\Application\Query\GetTenantQueryHandler;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
@@ -29,7 +28,6 @@ final class GetTenantHandlerTest extends TestCase
         $membership = TenantMembership::create(
             tenant: $tenant,
             userId: $actorUserId,
-            role: TenantMembershipRole::MEMBER,
         );
 
         $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);

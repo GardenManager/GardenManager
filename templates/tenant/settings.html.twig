@@ -5,7 +5,9 @@
 {% block title_display %}
     <div class="flex justify-between items-center">
         <span>Tenant Settings</span>
-        <twig:Button href="{{ path('tenant_edit') }}" color="primary" size="sm">Edit</twig:Button>
+        {% if has_permission('tenant.edit') %}
+            <twig:Button href="{{ path('tenant_edit') }}" color="primary" size="sm">Edit</twig:Button>
+        {% endif %}
     </div>
 {% endblock %}
 
@@ -33,7 +35,12 @@
         {% endblock %}
     </twig:Card>
 
-    <div class="mt-6">
-        <twig:Button href="{{ path('tenant_members') }}" color="secondary" size="sm">Manage Members</twig:Button>
+    <div class="mt-6 flex gap-3">
+        {% if has_permission('member.list') %}
+            <twig:Button href="{{ path('tenant_members') }}" color="secondary" size="sm">Manage Members</twig:Button>
+        {% endif %}
+        {% if has_permission('tenant.edit.raw') %}
+            <twig:Button href="{{ path('permission_raw_edit') }}" color="secondary" size="sm">Manage Permissions</twig:Button>
+        {% endif %}
     </div>
 {% endblock %}

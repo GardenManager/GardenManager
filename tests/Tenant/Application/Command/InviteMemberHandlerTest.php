@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Tenant\Application\Command;
 
+use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInterface;
+use GardenManager\Permission\Domain\ValueObject\PermissionGroupData;
+use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
 use GardenManager\Tenant\Application\Command\InviteMemberCommand;
 use GardenManager\Tenant\Application\Command\InviteMemberCommandHandler;
 use GardenManager\Tenant\Application\Dto\MemberUserInfoDto;
 use GardenManager\Tenant\Application\Port\MemberUserResolverInterface;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\Security\TenantAuthorizationChecker;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
@@ -26,22 +27,28 @@ final class InviteMemberHandlerTest extends TestCase
     private Ulid $tenantId;
     private Ulid $actorUserId;
     private Tenant $tenant;
-    private TenantMembership $actorMembership;
 
     protected function setUp(): void
     {
         $this->tenantId = new Ulid();
         $this->actorUserId = new Ulid();
         $this->tenant = Tenant::create(name: 'Test Tenant', id: $this->tenantId);
-        $this->actorMembership = TenantMembership::create(
-            tenant: $this->tenant,
-            userId: $this->actorUserId,
-            role: TenantMembershipRole::OWNER,
+
+        $config = new TenantPermissionConfig(
+            groups: [
+                'member' => new PermissionGroupData(
+                    name: 'Member',
+                    priority: 10,
+                    parents: [],
+                    permissions: ['+plant.view'],
+                ),
+            ],
         );
+        $this->tenant->updatePermissionsConfig($config);
     }
 
     #[Test]
-    public function ownerCanInviteMember(): void
+    public function authorizedUserCanInviteMember(): void
     {
         $inviteeId = new Ulid();
         $invitee = new MemberUserInfoDto($inviteeId, 'invitee@example.com', 'Invitee');
@@ -61,64 +68,49 @@ final class InviteMemberHandlerTest extends TestCase
         $resolver = $this->createStub(MemberUserResolverInterface::class);
         $resolver->method('resolveByEmail')->willReturn($invitee);
 
-        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
+        $tenantRepo = $this->createMock(TenantRepositoryInterface::class);
         $tenantRepo->method('getById')->willReturn($this->tenant);
+        $tenantRepo->expects(self::once())->method('save');
 
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new InviteMemberCommandHandler($tenantRepo, $membershipRepo, $resolver, $checker);
+        $handler = new InviteMemberCommandHandler(
+            $tenantRepo,
+            $membershipRepo,
+            $resolver,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $handler(new InviteMemberCommand(
             membershipId: $membershipId,
             tenantId: $this->tenantId,
             inviteeEmail: 'invitee@example.com',
-            role: TenantMembershipRole::MEMBER,
+            groupSlug: 'member',
             actorUserId: $this->actorUserId,
         ));
 
         self::assertInstanceOf(TenantMembership::class, $savedMembership);
         self::assertTrue($inviteeId->equals($savedMembership->getUserId()));
-        self::assertSame(TenantMembershipRole::MEMBER, $savedMembership->getRole());
-    }
+        self::assertFalse($savedMembership->isOwner());
 
-    #[Test]
-    public function nonOwnerCannotInvite(): void
-    {
-        $memberMembership = TenantMembership::create(
-            tenant: $this->tenant,
-            userId: $this->actorUserId,
-            role: TenantMembershipRole::MEMBER,
-        );
-
-        $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
-        $resolver = $this->createStub(MemberUserResolverInterface::class);
-        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
-
-        $checker = $this->createCheckerStub($memberMembership);
-        $handler = new InviteMemberCommandHandler($tenantRepo, $membershipRepo, $resolver, $checker);
-
-        $this->expectException(TenantException::class);
-
-        $handler(new InviteMemberCommand(
-            membershipId: new Ulid(),
-            tenantId: $this->tenantId,
-            inviteeEmail: 'invitee@example.com',
-            role: TenantMembershipRole::MEMBER,
-            actorUserId: $this->actorUserId,
-        ));
+        // Verify user was assigned to the group in config
+        $config = $this->tenant->getPermissionsConfig();
+        self::assertSame(['member'], $config->getUserAssignments((string) $inviteeId));
     }
 
     #[Test]
     public function throwsWhenInviteeNotFound(): void
     {
         $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
+        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
 
         $resolver = $this->createStub(MemberUserResolverInterface::class);
         $resolver->method('resolveByEmail')->willReturn(null);
 
-        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
-
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new InviteMemberCommandHandler($tenantRepo, $membershipRepo, $resolver, $checker);
+        $handler = new InviteMemberCommandHandler(
+            $tenantRepo,
+            $membershipRepo,
+            $resolver,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $this->expectException(TenantException::class);
 
@@ -126,7 +118,7 @@ final class InviteMemberHandlerTest extends TestCase
             membershipId: new Ulid(),
             tenantId: $this->tenantId,
             inviteeEmail: 'nonexistent@example.com',
-            role: TenantMembershipRole::MEMBER,
+            groupSlug: 'member',
             actorUserId: $this->actorUserId,
         ));
     }
@@ -139,7 +131,6 @@ final class InviteMemberHandlerTest extends TestCase
         $existingMembership = TenantMembership::create(
             tenant: $this->tenant,
             userId: $inviteeId,
-            role: TenantMembershipRole::MEMBER,
         );
 
         $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
@@ -150,8 +141,12 @@ final class InviteMemberHandlerTest extends TestCase
 
         $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
 
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new InviteMemberCommandHandler($tenantRepo, $membershipRepo, $resolver, $checker);
+        $handler = new InviteMemberCommandHandler(
+            $tenantRepo,
+            $membershipRepo,
+            $resolver,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $this->expectException(TenantException::class);
 
@@ -159,16 +154,8 @@ final class InviteMemberHandlerTest extends TestCase
             membershipId: new Ulid(),
             tenantId: $this->tenantId,
             inviteeEmail: 'invitee@example.com',
-            role: TenantMembershipRole::MEMBER,
+            groupSlug: 'member',
             actorUserId: $this->actorUserId,
         ));
-    }
-
-    private function createCheckerStub(?TenantMembership $actorMembership): TenantAuthorizationChecker
-    {
-        $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
-        $repo->method('findByTenantIdAndUserId')->willReturn($actorMembership);
-
-        return new TenantAuthorizationChecker($repo);
     }
 }

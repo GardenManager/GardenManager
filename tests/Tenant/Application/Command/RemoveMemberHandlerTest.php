@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Tenant\Application\Command;
 
+use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInterface;
+use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
 use GardenManager\Tenant\Application\Command\RemoveMemberCommand;
 use GardenManager\Tenant\Application\Command\RemoveMemberCommandHandler;
-use GardenManager\Tenant\Domain\Enum\TenantMembershipRole;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\Security\TenantAuthorizationChecker;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -30,21 +31,21 @@ final class RemoveMemberHandlerTest extends TestCase
         $this->tenantId = new Ulid();
         $this->actorUserId = new Ulid();
         $this->tenant = Tenant::create(name: 'Test Tenant', id: $this->tenantId);
+        $this->tenant->updatePermissionsConfig(TenantPermissionConfig::createEmpty());
         $this->actorMembership = TenantMembership::create(
             tenant: $this->tenant,
             userId: $this->actorUserId,
-            role: TenantMembershipRole::OWNER,
+            isOwner: true,
         );
     }
 
     #[Test]
-    public function ownerCanRemoveMember(): void
+    public function removesNonOwnerMember(): void
     {
         $memberUserId = new Ulid();
         $memberMembership = TenantMembership::create(
             tenant: $this->tenant,
             userId: $memberUserId,
-            role: TenantMembershipRole::MEMBER,
         );
 
         $membershipRepo = $this->createMock(TenantMembershipRepositoryInterface::class);
@@ -55,35 +56,19 @@ final class RemoveMemberHandlerTest extends TestCase
             ->method('remove')
             ->with($memberMembership);
 
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new RemoveMemberCommandHandler($membershipRepo, $checker);
+        $tenantRepo = $this->createMock(TenantRepositoryInterface::class);
+        $tenantRepo->method('getById')->willReturn($this->tenant);
+        $tenantRepo->expects(self::once())->method('save');
+
+        $handler = new RemoveMemberCommandHandler(
+            $membershipRepo,
+            $tenantRepo,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $handler(new RemoveMemberCommand(
             tenantId: $this->tenantId,
             memberUserId: $memberUserId,
-            actorUserId: $this->actorUserId,
-        ));
-    }
-
-    #[Test]
-    public function nonOwnerCannotRemoveMember(): void
-    {
-        $actorMembership = TenantMembership::create(
-            tenant: $this->tenant,
-            userId: $this->actorUserId,
-            role: TenantMembershipRole::MEMBER,
-        );
-
-        $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
-
-        $checker = $this->createCheckerStub($actorMembership);
-        $handler = new RemoveMemberCommandHandler($membershipRepo, $checker);
-
-        $this->expectException(TenantException::class);
-
-        $handler(new RemoveMemberCommand(
-            tenantId: $this->tenantId,
-            memberUserId: new Ulid(),
             actorUserId: $this->actorUserId,
         ));
     }
@@ -95,9 +80,13 @@ final class RemoveMemberHandlerTest extends TestCase
 
         $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
         $membershipRepo->method('findByTenantIdAndUserId')->willReturn(null);
+        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
 
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new RemoveMemberCommandHandler($membershipRepo, $checker);
+        $handler = new RemoveMemberCommandHandler(
+            $membershipRepo,
+            $tenantRepo,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $this->expectException(TenantException::class);
 
@@ -114,9 +103,13 @@ final class RemoveMemberHandlerTest extends TestCase
         $membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
         $membershipRepo->method('findByTenantIdAndUserId')->willReturn($this->actorMembership);
         $membershipRepo->method('findByTenantId')->willReturn([$this->actorMembership]);
+        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
 
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new RemoveMemberCommandHandler($membershipRepo, $checker);
+        $handler = new RemoveMemberCommandHandler(
+            $membershipRepo,
+            $tenantRepo,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $this->expectException(TenantException::class);
 
@@ -134,7 +127,7 @@ final class RemoveMemberHandlerTest extends TestCase
         $secondOwnerMembership = TenantMembership::create(
             tenant: $this->tenant,
             userId: $secondOwnerId,
-            role: TenantMembershipRole::OWNER,
+            isOwner: true,
         );
 
         $membershipRepo = $this->createMock(TenantMembershipRepositoryInterface::class);
@@ -147,21 +140,20 @@ final class RemoveMemberHandlerTest extends TestCase
             ->method('remove')
             ->with($secondOwnerMembership);
 
-        $checker = $this->createCheckerStub($this->actorMembership);
-        $handler = new RemoveMemberCommandHandler($membershipRepo, $checker);
+        $tenantRepo = $this->createMock(TenantRepositoryInterface::class);
+        $tenantRepo->method('getById')->willReturn($this->tenant);
+        $tenantRepo->expects(self::once())->method('save');
+
+        $handler = new RemoveMemberCommandHandler(
+            $membershipRepo,
+            $tenantRepo,
+            $this->createStub(PermissionCacheInvalidatorInterface::class),
+        );
 
         $handler(new RemoveMemberCommand(
             tenantId: $this->tenantId,
             memberUserId: $secondOwnerId,
             actorUserId: $this->actorUserId,
         ));
-    }
-
-    private function createCheckerStub(?TenantMembership $actorMembership): TenantAuthorizationChecker
-    {
-        $repo = $this->createStub(TenantMembershipRepositoryInterface::class);
-        $repo->method('findByTenantIdAndUserId')->willReturn($actorMembership);
-
-        return new TenantAuthorizationChecker($repo);
     }
 }
