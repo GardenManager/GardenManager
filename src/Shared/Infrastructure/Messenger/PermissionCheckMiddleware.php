@@ -8,6 +8,7 @@ use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
 use GardenManager\Shared\Application\Attribute\RequiresPermission;
 use GardenManager\Shared\Application\AuthorizedMessageInterface;
+use ReflectionClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -24,7 +25,7 @@ final readonly class PermissionCheckMiddleware implements MiddlewareInterface
         $message = $envelope->getMessage();
 
         if ($message instanceof AuthorizedMessageInterface) {
-            $attributes = new \ReflectionClass($message)->getAttributes(RequiresPermission::class);
+            $attributes = new ReflectionClass($message)->getAttributes(RequiresPermission::class);
 
             if ($attributes !== []) {
                 /** @var RequiresPermission $requiredPermission */

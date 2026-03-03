@@ -16,7 +16,8 @@ final readonly class PermissionRuntime implements RuntimeExtensionInterface
         private PermissionResolverInterface $permissionResolver,
         private ActiveTenantProviderInterface $activeTenantProvider,
         private Security $security,
-    ) {}
+    ) {
+    }
 
     public function hasPermission(string $permission): bool
     {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace GardenManager\Shared\Application\Attribute;
 
-#[\Attribute(\Attribute::TARGET_CLASS)]
+use Attribute;
+
+#[Attribute(Attribute::TARGET_CLASS)]
 final readonly class RequiresPermission
 {
     public function __construct(

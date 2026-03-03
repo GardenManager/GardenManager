@@ -44,7 +44,7 @@ final class PermissionMatcher
         if (end($patternSegments) === '**') {
             $concreteSegments = \array_slice($patternSegments, 0, -1);
 
-            if (count($requestedSegments) <= count($concreteSegments)) {
+            if (\count($requestedSegments) <= \count($concreteSegments)) {
                 return false;
             }
 
@@ -61,7 +61,7 @@ final class PermissionMatcher
             return true;
         }
 
-        if (count($patternSegments) !== count($requestedSegments)) {
+        if (\count($patternSegments) !== \count($requestedSegments)) {
             return false;
         }
 
@@ -85,7 +85,7 @@ final class PermissionMatcher
         }
 
         $segments = explode('.', $pattern);
-        $score = count($segments) * 10;
+        $score = \count($segments) * 10;
 
         foreach ($segments as $segment) {
             if ($segment !== '*' && $segment !== '**') {

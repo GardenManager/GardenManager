@@ -71,7 +71,9 @@ final readonly class PermissionResolver implements PermissionResolverInterface
 
     /**
      * @param array<string, array{slug: string, priority: int, permissions: array<string, bool>}> $collected
+     *
      * @param-out array<string, array{slug: string, priority: int, permissions: array<string, bool>}> $collected
+     *
      * @param array<string, true> $visited
      */
     private function resolveGroupHierarchy(

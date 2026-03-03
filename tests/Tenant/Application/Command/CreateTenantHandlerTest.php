@@ -8,13 +8,13 @@ use GardenManager\Permission\Application\Service\DefaultGroupProvisioningService
 use GardenManager\Permission\Domain\PermissionProviderInterface;
 use GardenManager\Plant\Domain\PlantPermissionProvider;
 use GardenManager\Seller\Domain\SellerPermissionProvider;
-use GardenManager\Tenant\Domain\MemberPermissionProvider;
-use GardenManager\Tenant\Domain\TenantPermissionProvider;
 use GardenManager\Tenant\Application\Command\CreateTenantCommand;
 use GardenManager\Tenant\Application\Command\CreateTenantCommandHandler;
+use GardenManager\Tenant\Domain\MemberPermissionProvider;
 use GardenManager\Tenant\Domain\Tenant;
 use GardenManager\Tenant\Domain\TenantMembership;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\TenantPermissionProvider;
 use GardenManager\Tenant\Domain\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

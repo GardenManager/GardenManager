@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Application\Query;
 
-use GardenManager\Permission\Application\View\MemberPermissionView;
 use GardenManager\Permission\Application\View\MemberPermissionOverrideView;
+use GardenManager\Permission\Application\View\MemberPermissionView;
 use GardenManager\Tenant\Application\Port\MemberUserResolverInterface;
 use GardenManager\Tenant\Domain\Exception\TenantException;
 use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;

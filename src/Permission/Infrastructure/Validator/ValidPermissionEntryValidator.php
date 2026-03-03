@@ -27,7 +27,7 @@ final class ValidPermissionEntryValidator extends ConstraintValidator
             return;
         }
 
-        if (strlen((string) $value) < 4) {
+        if (\strlen((string) $value) < 4) {
             $this->context->buildViolation($constraint->invalidPermissionMessage)
                 ->addViolation();
 

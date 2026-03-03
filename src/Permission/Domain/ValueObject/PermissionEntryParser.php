@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Domain\ValueObject;
 
+use InvalidArgumentException;
+
 final class PermissionEntryParser
 {
     public static function parse(string $entry): PermissionEntry
@@ -14,7 +16,7 @@ final class PermissionEntryParser
         return match ($prefix) {
             '+' => new PermissionEntry($permissionRaw, true),
             '-' => new PermissionEntry($permissionRaw, false),
-            default => throw new \InvalidArgumentException(\sprintf('Permission entry "%s" must start with "+" or "-".', $entry)),
+            default => throw new InvalidArgumentException(\sprintf('Permission entry "%s" must start with "+" or "-".', $entry)),
         };
     }
 

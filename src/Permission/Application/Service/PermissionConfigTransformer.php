@@ -79,7 +79,7 @@ final readonly class PermissionConfigTransformer
         $errors = [];
 
         foreach (['userAssignments', 'userOverrides'] as $section) {
-            if (!isset($data[$section]) || !is_array($data[$section])) {
+            if (!isset($data[$section]) || !\is_array($data[$section])) {
                 continue;
             }
 

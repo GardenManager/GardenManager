@@ -10,8 +10,8 @@ final readonly class TenantPermissionConfig
 {
     /**
      * @param array<string, PermissionGroupData> $groups
-     * @param array<string, list<string>>        $userAssignments
-     * @param array<string, list<string>>        $userOverrides
+     * @param array<string, list<string>> $userAssignments
+     * @param array<string, list<string>> $userOverrides
      */
     public function __construct(
         private array $groups = [],
@@ -201,30 +201,30 @@ final readonly class TenantPermissionConfig
      */
     public static function fromArray(array $data): self
     {
-        if (isset($data['groups']) && !is_array($data['groups'])) {
+        if (isset($data['groups']) && !\is_array($data['groups'])) {
             throw PermissionException::invalidConfig(['The "groups" key must be an array.']);
         }
 
-        if (isset($data['userAssignments']) && !is_array($data['userAssignments'])) {
+        if (isset($data['userAssignments']) && !\is_array($data['userAssignments'])) {
             throw PermissionException::invalidConfig(['The "userAssignments" key must be an array.']);
         }
 
-        if (isset($data['userOverrides']) && !is_array($data['userOverrides'])) {
+        if (isset($data['userOverrides']) && !\is_array($data['userOverrides'])) {
             throw PermissionException::invalidConfig(['The "userOverrides" key must be an array.']);
         }
 
         $groups = [];
         foreach ($data['groups'] ?? [] as $slug => $groupData) {
-            if (!is_array($groupData)) {
-                throw PermissionException::invalidConfig([sprintf('Group "%s" must be an array.', $slug)]);
+            if (!\is_array($groupData)) {
+                throw PermissionException::invalidConfig([\sprintf('Group "%s" must be an array.', $slug)]);
             }
 
-            if (!isset($groupData['name']) || !is_string($groupData['name'])) {
-                throw PermissionException::invalidConfig([sprintf('Group "%s" is missing a valid "name".', $slug)]);
+            if (!isset($groupData['name']) || !\is_string($groupData['name'])) {
+                throw PermissionException::invalidConfig([\sprintf('Group "%s" is missing a valid "name".', $slug)]);
             }
 
-            if (!isset($groupData['priority']) || !is_int($groupData['priority'])) {
-                throw PermissionException::invalidConfig([sprintf('Group "%s" is missing a valid "priority".', $slug)]);
+            if (!isset($groupData['priority']) || !\is_int($groupData['priority'])) {
+                throw PermissionException::invalidConfig([\sprintf('Group "%s" is missing a valid "priority".', $slug)]);
             }
 
             $groups[$slug] = PermissionGroupData::fromArray($groupData);
@@ -263,6 +263,11 @@ final readonly class TenantPermissionConfig
         return null;
     }
 
+    public static function parsePermissionEntry(string $entry): PermissionEntry
+    {
+        return PermissionEntryParser::parse($entry);
+    }
+
     /**
      * @param array<string, PermissionGroupData> $groups
      * @param array<string, int> $color
@@ -277,7 +282,7 @@ final readonly class TenantPermissionConfig
             }
 
             if ($color[$parentSlug] === $gray) {
-                return sprintf('Circular inheritance detected: group "%s" has a cycle through "%s".', $slug, $parentSlug);
+                return \sprintf('Circular inheritance detected: group "%s" has a cycle through "%s".', $slug, $parentSlug);
             }
 
             if ($color[$parentSlug] === $black) {
@@ -293,10 +298,5 @@ final readonly class TenantPermissionConfig
         $color[$slug] = $black;
 
         return null;
-    }
-
-    public static function parsePermissionEntry(string $entry): PermissionEntry
-    {
-        return PermissionEntryParser::parse($entry);
     }
 }

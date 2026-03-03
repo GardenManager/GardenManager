@@ -8,6 +8,7 @@ use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Permission\Domain\Service\PermissionMatcher;
 use GardenManager\Permission\Domain\ValueObject\PermissionEntryParser;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
+use InvalidArgumentException;
 
 final readonly class PermissionConfigValidator
 {
@@ -38,7 +39,7 @@ final readonly class PermissionConfigValidator
         foreach ($config->getGroups() as $slug => $group) {
             foreach ($group->parents as $parentSlug) {
                 if (!$config->hasGroup($parentSlug)) {
-                    $errors[] = sprintf('Group "%s" references nonexistent parent group "%s".', $slug, $parentSlug);
+                    $errors[] = \sprintf('Group "%s" references nonexistent parent group "%s".', $slug, $parentSlug);
                 }
             }
 
@@ -46,22 +47,22 @@ final readonly class PermissionConfigValidator
                 try {
                     $parsed = PermissionEntryParser::parse($entry);
                     $permission = $parsed->permission;
-                } catch (\InvalidArgumentException) {
-                    $errors[] = sprintf('Group "%s" has permission entry "%s" without a "+" or "-" prefix.', $slug, $entry);
+                } catch (InvalidArgumentException) {
+                    $errors[] = \sprintf('Group "%s" has permission entry "%s" without a "+" or "-" prefix.', $slug, $entry);
 
                     continue;
                 }
 
                 if (!$this->matchesAnyKnown($permission, $knownPermissions)) {
-                    $errors[] = sprintf('Group "%s" has unrecognized permission "%s".', $slug, $permission);
+                    $errors[] = \sprintf('Group "%s" has unrecognized permission "%s".', $slug, $permission);
                 }
             }
         }
 
         foreach ($config->getAllUserAssignments() as $userId => $assignedSlugs) {
             foreach ($assignedSlugs as $assignedSlug) {
-                if (!in_array($assignedSlug, $groupSlugs, true)) {
-                    $errors[] = sprintf('User "%s" is assigned to nonexistent group "%s".', $userId, $assignedSlug);
+                if (!\in_array($assignedSlug, $groupSlugs, true)) {
+                    $errors[] = \sprintf('User "%s" is assigned to nonexistent group "%s".', $userId, $assignedSlug);
                 }
             }
         }
@@ -71,14 +72,14 @@ final readonly class PermissionConfigValidator
                 try {
                     $parsed = PermissionEntryParser::parse($entry);
                     $permission = $parsed->permission;
-                } catch (\InvalidArgumentException) {
-                    $errors[] = sprintf('User "%s" has override "%s" without a "+" or "-" prefix.', $userId, $entry);
+                } catch (InvalidArgumentException) {
+                    $errors[] = \sprintf('User "%s" has override "%s" without a "+" or "-" prefix.', $userId, $entry);
 
                     continue;
                 }
 
                 if (!$this->matchesAnyKnown($permission, $knownPermissions)) {
-                    $errors[] = sprintf('User "%s" has unrecognized override permission "%s".', $userId, $permission);
+                    $errors[] = \sprintf('User "%s" has unrecognized override permission "%s".', $userId, $permission);
                 }
             }
         }
@@ -101,15 +102,16 @@ final readonly class PermissionConfigValidator
      */
     private function matchesAnyKnown(string $permission, array $knownPermissions): bool
     {
-        if ($permission === '**' || in_array($permission, $knownPermissions, true)) {
+        if ($permission === '**' || \in_array($permission, $knownPermissions, true)) {
             return true;
         }
 
         if (!str_contains($permission, '*')) {
             return false;
         }
+
         return array_any(
-            $knownPermissions, fn(string $known): bool => $this->permissionMatcher->matches($permission, $known)
+            $knownPermissions, fn (string $known): bool => $this->permissionMatcher->matches($permission, $known),
         );
     }
 }

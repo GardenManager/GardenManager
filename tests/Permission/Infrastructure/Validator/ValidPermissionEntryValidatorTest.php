@@ -16,11 +16,6 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 #[Group('unit')]
 final class ValidPermissionEntryValidatorTest extends ConstraintValidatorTestCase
 {
-    protected function createValidator(): ConstraintValidatorInterface
-    {
-        return new ValidPermissionEntryValidator();
-    }
-
     #[Test]
     public function nullValueRaisesBlankViolation(): void
     {
@@ -132,5 +127,10 @@ final class ValidPermissionEntryValidatorTest extends ConstraintValidatorTestCas
 
         $this->buildViolation($constraint->blankMessage)
             ->assertRaised();
+    }
+
+    protected function createValidator(): ConstraintValidatorInterface
+    {
+        return new ValidPermissionEntryValidator();
     }
 }

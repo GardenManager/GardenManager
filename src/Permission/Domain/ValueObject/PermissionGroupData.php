@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Domain\ValueObject;
 
+use InvalidArgumentException;
+
 final readonly class PermissionGroupData
 {
     /**
@@ -50,12 +52,12 @@ final readonly class PermissionGroupData
      */
     public static function fromArray(array $data): self
     {
-        if (!isset($data['name']) || !is_string($data['name'])) {
-            throw new \InvalidArgumentException('PermissionGroupData requires a string "name" key.');
+        if (!isset($data['name']) || !\is_string($data['name'])) {
+            throw new InvalidArgumentException('PermissionGroupData requires a string "name" key.');
         }
 
-        if (!isset($data['priority']) || !is_int($data['priority'])) {
-            throw new \InvalidArgumentException('PermissionGroupData requires an integer "priority" key.');
+        if (!isset($data['priority']) || !\is_int($data['priority'])) {
+            throw new InvalidArgumentException('PermissionGroupData requires an integer "priority" key.');
         }
 
         return new self(

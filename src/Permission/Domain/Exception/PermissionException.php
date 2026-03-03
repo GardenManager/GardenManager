@@ -17,7 +17,7 @@ final class PermissionException extends CoreException
     public static function accessDenied(string $permission, Ulid $userId): self
     {
         return new self(
-            message: sprintf('Access denied: user %s lacks permission "%s"', $userId, $permission),
+            message: \sprintf('Access denied: user %s lacks permission "%s"', $userId, $permission),
             context: [
                 'permission' => $permission,
                 'userId' => $userId->toString(),

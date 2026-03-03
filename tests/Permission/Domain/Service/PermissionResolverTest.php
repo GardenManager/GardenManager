@@ -32,17 +32,6 @@ final class PermissionResolverTest extends TestCase
         $this->membershipRepo = $this->createStub(TenantMembershipRepositoryInterface::class);
     }
 
-    private function createResolver(TenantPermissionConfig $config): PermissionResolver
-    {
-        $tenant = Tenant::create(name: 'Test', id: $this->tenantId);
-        $tenant->updatePermissionsConfig($config);
-
-        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
-        $tenantRepo->method('getById')->willReturn($tenant);
-
-        return new PermissionResolver($tenantRepo, $this->membershipRepo, new PermissionMatcher());
-    }
-
     #[Test]
     public function ownerBypassesAllPermissionChecks(): void
     {
@@ -212,5 +201,16 @@ final class PermissionResolverTest extends TestCase
         self::assertTrue($resolver->hasPermission($this->userId, $this->tenantId, 'plant.edit'));
         self::assertTrue($resolver->hasPermission($this->userId, $this->tenantId, 'plant.delete'));
         self::assertFalse($resolver->hasPermission($this->userId, $this->tenantId, 'seller.edit'));
+    }
+
+    private function createResolver(TenantPermissionConfig $config): PermissionResolver
+    {
+        $tenant = Tenant::create(name: 'Test', id: $this->tenantId);
+        $tenant->updatePermissionsConfig($config);
+
+        $tenantRepo = $this->createStub(TenantRepositoryInterface::class);
+        $tenantRepo->method('getById')->willReturn($tenant);
+
+        return new PermissionResolver($tenantRepo, $this->membershipRepo, new PermissionMatcher());
     }
 }

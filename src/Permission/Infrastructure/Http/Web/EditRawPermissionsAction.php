@@ -12,11 +12,11 @@ use GardenManager\Permission\Infrastructure\Form\RawPermissionsFormType;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class EditRawPermissionsAction extends AbstractController
 {
@@ -53,7 +53,7 @@ final class EditRawPermissionsAction extends AbstractController
 
             try {
                 $data = json_decode((string) $rawJson, true, 512, \JSON_THROW_ON_ERROR);
-            } catch (\JsonException $e) {
+            } catch (JsonException $e) {
                 throw PermissionException::invalidConfig(['Invalid JSON: ' . $e->getMessage()]);
             }
 

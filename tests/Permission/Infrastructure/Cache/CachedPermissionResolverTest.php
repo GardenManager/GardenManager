@@ -111,8 +111,8 @@ final class CachedPermissionResolverTest extends TestCase
         $inner = $this->createMock(PermissionResolverInterface::class);
         $inner->expects(self::exactly(2))
             ->method('resolvePermissions')
-            ->willReturnCallback(function () use (&$callCount, $permissions1, $permissions2): array {
-                $callCount++;
+            ->willReturnCallback(static function () use (&$callCount, $permissions1, $permissions2): array {
+                ++$callCount;
 
                 return $callCount === 1 ? $permissions1 : $permissions2;
             });

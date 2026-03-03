@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Permission\Domain\Service;
 
 use GardenManager\Permission\Domain\Service\PermissionMatcher;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

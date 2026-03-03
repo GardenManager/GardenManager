@@ -10,8 +10,8 @@ use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInter
 use GardenManager\Permission\Application\Service\PermissionConfigValidator;
 use GardenManager\Permission\Application\Service\PermissionRegistryService;
 use GardenManager\Permission\Domain\Exception\PermissionException;
-use GardenManager\Permission\Domain\Service\PermissionMatcher;
 use GardenManager\Permission\Domain\PermissionProviderInterface;
+use GardenManager\Permission\Domain\Service\PermissionMatcher;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
 use GardenManager\Plant\Domain\PlantPermissionProvider;
 use GardenManager\Seller\Domain\SellerPermissionProvider;
