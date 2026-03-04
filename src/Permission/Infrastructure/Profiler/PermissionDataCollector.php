@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 #[When('dev')]
 #[AutoconfigureTag('data_collector', [
@@ -23,7 +24,7 @@ final class PermissionDataCollector extends DataCollector
     ) {
     }
 
-    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         if ($this->dataStore === null) {
             $this->data = [
@@ -53,12 +54,12 @@ final class PermissionDataCollector extends DataCollector
 
     public function getTotalChecks(): int
     {
-        return count($this->data['checks']);
+        return \count($this->data['checks']);
     }
 
     public function getDeniedCount(): int
     {
-        return count(array_filter($this->data['checks'], static fn (array $check): bool => !$check['result']));
+        return \count(array_filter($this->data['checks'], static fn (array $check): bool => !$check['result']));
     }
 
     /**

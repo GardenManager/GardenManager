@@ -17,13 +17,13 @@ use Twig\Template;
 
 #[When('dev')]
 #[AsDecorator(decorates: PermissionResolverInterface::class, priority: -1)]
-final class ProfilingPermissionResolver implements PermissionResolverInterface
+final readonly class ProfilingPermissionResolver implements PermissionResolverInterface
 {
     public function __construct(
         #[AutowireDecorated]
-        private readonly PermissionResolverInterface $innerResolver,
-        private readonly PermissionProfilerDataStore $dataStore,
-        private readonly PermissionMatcher $matcher,
+        private PermissionResolverInterface $innerResolver,
+        private PermissionProfilerDataStore $dataStore,
+        private PermissionMatcher $matcher,
     ) {
     }
 
@@ -38,6 +38,24 @@ final class ProfilingPermissionResolver implements PermissionResolverInterface
         $this->dataStore->recordCheck($permission, $resolveKey, $result, $caller['file'], $caller['line']);
 
         return $result;
+    }
+
+    /** @return array<string, bool> */
+    public function resolvePermissions(Ulid $userId, Ulid $tenantId): array
+    {
+        $resolved = $this->innerResolver->resolvePermissions($userId, $tenantId);
+
+        $resolveKey = $tenantId->toString() . ':' . $userId->toString();
+
+        if (!isset($this->dataStore->getResolves()[$resolveKey])) {
+            $this->dataStore->recordResolve($resolveKey, [
+                'is_owner' => isset($resolved['**']) && $resolved['**'] === true,
+                'from_cache' => true,
+                'resolved_permissions' => $resolved,
+            ]);
+        }
+
+        return $resolved;
     }
 
     /**
@@ -60,15 +78,19 @@ final class ProfilingPermissionResolver implements PermissionResolverInterface
             PermissionCheckMiddleware::class,
         ];
 
-        // Look for a Twig\Template instance first
-        for ($i = 0, $count = \count($trace); $i < $count; ++$i) {
+        // Look for a Twig\Template instance first (uses Twig internals intentionally)
+        for ($i = 1, $count = \count($trace); $i < $count; ++$i) {
             if (isset($trace[$i]['object']) && $trace[$i]['object'] instanceof Template) {
                 $template = $trace[$i]['object'];
+
+                /** @psalm-suppress InternalMethod */
                 $debugInfo = $template->getDebugInfo();
+                /** @psalm-suppress PossiblyUndefinedArrayOffset - debug_backtrace frame may lack 'line' */
                 $phpLine = $trace[$i - 1]['line'] ?? 0;
 
                 foreach ($debugInfo as $codeLine => $templateLine) {
                     if ($codeLine <= $phpLine) {
+                        /** @psalm-suppress InternalMethod */
                         return [
                             'file' => $template->getSourceContext()->getName(),
                             'line' => $templateLine,
@@ -76,6 +98,7 @@ final class ProfilingPermissionResolver implements PermissionResolverInterface
                     }
                 }
 
+                /** @psalm-suppress InternalMethod */
                 return [
                     'file' => $template->getSourceContext()->getName(),
                     'line' => null,
@@ -96,23 +119,5 @@ final class ProfilingPermissionResolver implements PermissionResolverInterface
         }
 
         return ['file' => null, 'line' => null];
-    }
-
-    /** @return array<string, bool> */
-    public function resolvePermissions(Ulid $userId, Ulid $tenantId): array
-    {
-        $resolved = $this->innerResolver->resolvePermissions($userId, $tenantId);
-
-        $resolveKey = $tenantId->toString() . ':' . $userId->toString();
-
-        if (!isset($this->dataStore->getResolves()[$resolveKey])) {
-            $this->dataStore->recordResolve($resolveKey, [
-                'is_owner' => isset($resolved['**']) && $resolved['**'] === true,
-                'from_cache' => true,
-                'resolved_permissions' => $resolved,
-            ]);
-        }
-
-        return $resolved;
     }
 }

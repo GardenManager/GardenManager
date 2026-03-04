@@ -36,7 +36,7 @@ final class InvalidatePermissionCacheCommandTest extends TestCase
         $invalidator = $this->createMock(PermissionCacheInvalidatorInterface::class);
         $invalidator->expects(self::once())
             ->method('invalidateForTenant')
-            ->with(self::callback(fn (Ulid $id) => $id->equals($tenantId)));
+            ->with(self::callback(static fn (Ulid $id): bool => $id->equals($tenantId)));
 
         $tester = new CommandTester(new InvalidatePermissionCacheCommand($invalidator, 'dev'));
         $tester->execute(['--tenantId' => $tenantId->toString()]);
@@ -55,8 +55,8 @@ final class InvalidatePermissionCacheCommandTest extends TestCase
         $invalidator->expects(self::once())
             ->method('invalidateForUser')
             ->with(
-                self::callback(fn (Ulid $id) => $id->equals($userId)),
-                self::callback(fn (Ulid $id) => $id->equals($tenantId)),
+                self::callback(static fn (Ulid $id): bool => $id->equals($userId)),
+                self::callback(static fn (Ulid $id): bool => $id->equals($tenantId)),
             );
 
         $tester = new CommandTester(new InvalidatePermissionCacheCommand($invalidator, 'dev'));
@@ -72,7 +72,7 @@ final class InvalidatePermissionCacheCommandTest extends TestCase
         $invalidator = $this->createStub(PermissionCacheInvalidatorInterface::class);
 
         $tester = new CommandTester(new InvalidatePermissionCacheCommand($invalidator, 'dev'));
-        $tester->execute(['--userId' => (new Ulid())->toString()]);
+        $tester->execute(['--userId' => new Ulid()->toString()]);
 
         self::assertSame(1, $tester->getStatusCode());
         self::assertStringContainsString('--userId option requires --tenantId', $tester->getDisplay());

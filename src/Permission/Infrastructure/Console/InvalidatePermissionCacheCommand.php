@@ -48,13 +48,13 @@ final class InvalidatePermissionCacheCommand extends Command
         }
 
         if ($tenantIdInput !== null && !Ulid::isValid($tenantIdInput)) {
-            $io->error(sprintf('Invalid tenant ULID: %s', $tenantIdInput));
+            $io->error(\sprintf('Invalid tenant ULID: %s', $tenantIdInput));
 
             return Command::FAILURE;
         }
 
         if ($userIdInput !== null && !Ulid::isValid($userIdInput)) {
-            $io->error(sprintf('Invalid user ULID: %s', $userIdInput));
+            $io->error(\sprintf('Invalid user ULID: %s', $userIdInput));
 
             return Command::FAILURE;
         }
@@ -62,16 +62,16 @@ final class InvalidatePermissionCacheCommand extends Command
         if ($tenantIdInput !== null && $userIdInput !== null) {
             $this->cacheInvalidator->invalidateForUser(
                 Ulid::fromString($userIdInput),
-                Ulid::fromString($tenantIdInput)
+                Ulid::fromString($tenantIdInput),
             );
-            $io->success(sprintf('Permission cache invalidated for user %s in tenant %s.', $userIdInput, $tenantIdInput));
+            $io->success(\sprintf('Permission cache invalidated for user %s in tenant %s.', $userIdInput, $tenantIdInput));
 
             return Command::SUCCESS;
         }
 
         if ($tenantIdInput !== null) {
             $this->cacheInvalidator->invalidateForTenant(Ulid::fromString($tenantIdInput));
-            $io->success(sprintf('Permission cache invalidated for tenant %s.', $tenantIdInput));
+            $io->success(\sprintf('Permission cache invalidated for tenant %s.', $tenantIdInput));
 
             return Command::SUCCESS;
         }

@@ -25,16 +25,6 @@ final class PermissionCacheInvalidatorTest extends TestCase
         $this->keyGenerator = new PermissionCacheKeyGenerator();
     }
 
-    private function createCachedResolver(): CachedPermissionResolver
-    {
-        return new CachedPermissionResolver(
-            $this->createStub(PermissionResolverInterface::class),
-            $this->createStub(TagAwareCacheInterface::class),
-            new PermissionMatcher(),
-            $this->keyGenerator,
-        );
-    }
-
     #[Test]
     public function invalidateForTenantCallsInvalidateTagsWithTenantTag(): void
     {
@@ -74,5 +64,15 @@ final class PermissionCacheInvalidatorTest extends TestCase
 
         $invalidator = new PermissionCacheInvalidator($cache, $this->createCachedResolver(), $this->keyGenerator);
         $invalidator->invalidateAll();
+    }
+
+    private function createCachedResolver(): CachedPermissionResolver
+    {
+        return new CachedPermissionResolver(
+            $this->createStub(PermissionResolverInterface::class),
+            $this->createStub(TagAwareCacheInterface::class),
+            new PermissionMatcher(),
+            $this->keyGenerator,
+        );
     }
 }
