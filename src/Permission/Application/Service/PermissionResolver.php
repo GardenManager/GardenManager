@@ -17,6 +17,7 @@ final readonly class PermissionResolver implements PermissionResolverInterface
         private TenantRepositoryInterface $tenantRepository,
         private TenantMembershipRepositoryInterface $membershipRepository,
         private PermissionMatcher $matcher,
+        private ?PermissionResolutionTracerInterface $tracer = null,
     ) {
     }
 
@@ -32,9 +33,19 @@ final readonly class PermissionResolver implements PermissionResolverInterface
      */
     public function resolvePermissions(Ulid $userId, Ulid $tenantId): array
     {
+        $resolveKey = $tenantId->toString() . ':' . $userId->toString();
+
         // Check tenant owner — owners have irrevocable full access
         $membership = $this->membershipRepository->findByTenantIdAndUserId($tenantId, $userId);
         if ($membership !== null && $membership->isOwner()) {
+            $this->tracer?->recordResolve($resolveKey, [
+                'is_owner' => true,
+                'assigned_groups' => [],
+                'hierarchy_resolved' => [],
+                'groups_applied' => [],
+                'user_overrides' => [],
+            ]);
+
             return ['**' => true];
         }
 
@@ -55,16 +66,34 @@ final readonly class PermissionResolver implements PermissionResolverInterface
 
         // Flatten permissions from groups
         $map = [];
+        $groupsApplied = [];
         foreach ($allGroups as $groupEntry) {
+            $groupPermissions = [];
             foreach ($groupEntry['permissions'] as $permission => $granted) {
                 $map[$permission] = $granted;
+                $groupPermissions[$permission] = $granted;
             }
+            $groupsApplied[] = [
+                'slug' => $groupEntry['slug'],
+                'priority' => $groupEntry['priority'],
+                'permissions' => $groupPermissions,
+            ];
         }
 
         // Apply user overrides (most specific wins over groups)
+        $userOverrides = [];
         foreach ($config->getResolvedUserOverrides((string) $userId) as $permission => $granted) {
             $map[$permission] = $granted;
+            $userOverrides[$permission] = $granted;
         }
+
+        $this->tracer?->recordResolve($resolveKey, [
+            'is_owner' => false,
+            'assigned_groups' => $assignedSlugs,
+            'hierarchy_resolved' => array_keys($visited),
+            'groups_applied' => $groupsApplied,
+            'user_overrides' => $userOverrides,
+        ]);
 
         return $map;
     }

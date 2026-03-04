@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Permission\Infrastructure\Validator;
 
-use GardenManager\Permission\Infrastructure\Validator\ValidPermissionEntry;
-use GardenManager\Permission\Infrastructure\Validator\ValidPermissionEntryValidator;
+use GardenManager\Permission\Application\Validator\ValidPermissionEntry;
+use GardenManager\Permission\Application\Validator\ValidPermissionEntryValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

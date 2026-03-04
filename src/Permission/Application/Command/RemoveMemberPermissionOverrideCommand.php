@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Application\Command;
 
-use GardenManager\Permission\Infrastructure\Validator\ValidPermissionEntry;
+use GardenManager\Permission\Application\Validator\ValidPermissionEntry;
 use GardenManager\Shared\Application\Attribute\RequiresPermission;
 use GardenManager\Shared\Application\AuthorizedMessageInterface;
 use GardenManager\Shared\Application\CommandInterface;

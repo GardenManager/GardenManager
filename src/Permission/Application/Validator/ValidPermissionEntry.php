@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Permission\Infrastructure\Validator;
+namespace GardenManager\Permission\Application\Validator;
 
 use Attribute;
 use Symfony\Component\Validator\Constraint;

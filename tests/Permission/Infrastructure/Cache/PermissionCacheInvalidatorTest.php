@@ -8,6 +8,7 @@ use GardenManager\Permission\Domain\Service\PermissionMatcher;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
 use GardenManager\Permission\Infrastructure\Cache\CachedPermissionResolver;
 use GardenManager\Permission\Infrastructure\Cache\PermissionCacheInvalidator;
+use GardenManager\Permission\Infrastructure\Cache\PermissionCacheKeyGenerator;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,13 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 #[Group('unit')]
 final class PermissionCacheInvalidatorTest extends TestCase
 {
+    private PermissionCacheKeyGenerator $keyGenerator;
+
+    protected function setUp(): void
+    {
+        $this->keyGenerator = new PermissionCacheKeyGenerator();
+    }
+
     #[Test]
     public function invalidateForTenantCallsInvalidateTagsWithTenantTag(): void
     {
@@ -25,16 +33,25 @@ final class PermissionCacheInvalidatorTest extends TestCase
         $cache = $this->createMock(TagAwareCacheInterface::class);
         $cache->expects(self::once())
             ->method('invalidateTags')
-            ->with(['perm_tenant_' . $tenantId]);
+            ->with([$this->keyGenerator->tenantTag($tenantId)]);
 
-        $cachedResolver = new CachedPermissionResolver(
-            $this->createStub(PermissionResolverInterface::class),
-            $this->createStub(TagAwareCacheInterface::class),
-            new PermissionMatcher(),
-        );
-
-        $invalidator = new PermissionCacheInvalidator($cache, $cachedResolver);
+        $invalidator = new PermissionCacheInvalidator($cache, $this->createCachedResolver(), $this->keyGenerator);
         $invalidator->invalidateForTenant($tenantId);
+    }
+
+    #[Test]
+    public function invalidateForUserDeletesSpecificCacheKey(): void
+    {
+        $tenantId = new Ulid();
+        $userId = new Ulid();
+
+        $cache = $this->createMock(TagAwareCacheInterface::class);
+        $cache->expects(self::once())
+            ->method('delete')
+            ->with($this->keyGenerator->forUser($userId, $tenantId));
+
+        $invalidator = new PermissionCacheInvalidator($cache, $this->createCachedResolver(), $this->keyGenerator);
+        $invalidator->invalidateForUser($userId, $tenantId);
     }
 
     #[Test]
@@ -43,15 +60,19 @@ final class PermissionCacheInvalidatorTest extends TestCase
         $cache = $this->createMock(TagAwareCacheInterface::class);
         $cache->expects(self::once())
             ->method('invalidateTags')
-            ->with(['perm_all']);
+            ->with([$this->keyGenerator->globalTag()]);
 
-        $cachedResolver = new CachedPermissionResolver(
+        $invalidator = new PermissionCacheInvalidator($cache, $this->createCachedResolver(), $this->keyGenerator);
+        $invalidator->invalidateAll();
+    }
+
+    private function createCachedResolver(): CachedPermissionResolver
+    {
+        return new CachedPermissionResolver(
             $this->createStub(PermissionResolverInterface::class),
             $this->createStub(TagAwareCacheInterface::class),
             new PermissionMatcher(),
+            $this->keyGenerator,
         );
-
-        $invalidator = new PermissionCacheInvalidator($cache, $cachedResolver);
-        $invalidator->invalidateAll();
     }
 }
