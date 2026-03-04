@@ -1,0 +1,299 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block page_title 'Permissions' %}
+
+{% block head %}
+    {{ parent() }}
+
+    <style>
+        #collector-content .permission-metrics {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        #collector-content .permission-metrics .metric-card {
+            background: var(--metric-card-bg, var(--gray-100));
+            border-radius: 8px;
+            padding: 12px 20px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        #collector-content .permission-metrics .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            display: block;
+        }
+
+        #collector-content .permission-metrics .metric-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #collector-content .permission-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        #collector-content .badge-granted {
+            background-color: var(--green-500);
+        }
+
+        #collector-content .badge-denied {
+            background-color: var(--red-500);
+        }
+
+        #collector-content .badge-source {
+            background-color: var(--blue-500, #3b82f6);
+        }
+
+        #collector-content .badge-source-middleware {
+            background-color: var(--purple-500, #8b5cf6);
+        }
+
+        #collector-content .badge-source-twig {
+            background-color: var(--teal-500, #598e8e);
+        }
+
+        #collector-content .badge-cache-l1 {
+            background-color: var(--green-500);
+        }
+
+        #collector-content .badge-cache-l2 {
+            background-color: var(--blue-500, #3b82f6);
+        }
+
+        #collector-content .badge-cache-miss {
+            background-color: var(--yellow-600);
+        }
+
+        #collector-content .resolve-trace {
+            margin: 0;
+            padding: 8px 12px;
+        }
+
+        #collector-content .resolve-trace dt {
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        #collector-content .resolve-trace dt:first-child {
+            margin-top: 0;
+        }
+
+        #collector-content .resolve-trace dd {
+            margin-left: 16px;
+            font-family: var(--font-family-monospace);
+            font-size: 13px;
+        }
+
+        #collector-content .group-detail {
+            margin: 4px 0;
+            padding: 4px 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
+
+{% block toolbar %}
+    {% set icon %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span class="sf-toolbar-value">{{ collector.totalChecks }}</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-group">
+            <div class="sf-toolbar-info-piece">
+                <b>Permission checks</b>
+                <span class="sf-toolbar-status">{{ collector.totalChecks }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Denied</b>
+                <span class="sf-toolbar-status {{ collector.deniedCount > 0 ? 'sf-toolbar-status-red' }}">{{ collector.deniedCount }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Cache hit ratio</b>
+                <span>{{ collector.cacheHitRatio|number_format(0) }}%</span>
+            </div>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: collector.deniedCount > 0 ? 'yellow' : '' }) }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label {{ collector.deniedCount > 0 ? 'label-status-warning' }}">
+        <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+        </span>
+        <strong>Permissions</strong>
+        <span class="count">
+            <span>{{ collector.totalChecks }}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Permission Checks</h2>
+
+    {% if collector.totalChecks == 0 %}
+        <div class="empty">
+            <p>No permission checks were performed during this request.</p>
+        </div>
+    {% else %}
+        <div class="permission-metrics">
+            <div class="metric-card">
+                <span class="metric-value">{{ collector.totalChecks }}</span>
+                <span class="metric-label">Total checks</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value" style="{{ collector.deniedCount > 0 ? 'color: var(--red-500)' }}">{{ collector.deniedCount }}</span>
+                <span class="metric-label">Denied</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ collector.l1Hits }}</span>
+                <span class="metric-label">L1 hits</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ collector.l2Hits }}</span>
+                <span class="metric-label">L2 hits</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ collector.cacheMisses }}</span>
+                <span class="metric-label">Cache misses</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ collector.cacheHitRatio|number_format(0) }}%</span>
+                <span class="metric-label">Hit ratio</span>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Permission</th>
+                    <th>Location</th>
+                    <th>Source</th>
+                    <th>Cache</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i, check in collector.checks %}
+                    {% set trace = collector.resolves[check.resolveKey] ?? null %}
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td><code>{{ check.permission }}</code></td>
+                        <td>
+                            {% if check.callerFile and check.callerLine %}
+                                <code>{{ check.callerFile }}:{{ check.callerLine }}</code>
+                            {% elseif check.callerFile %}
+                                <code>{{ check.callerFile }}</code>
+                            {% else %}
+                                &mdash;
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if check.source == 'middleware' %}
+                                <span class="permission-badge badge-source-middleware">middleware</span>
+                            {% elseif check.source == 'twig' %}
+                                <span class="permission-badge badge-source-twig">twig</span>
+                            {% else %}
+                                <span class="permission-badge badge-source">{{ check.source }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if check.cacheStatus == 'l1' %}
+                                <span class="permission-badge badge-cache-l1">L1</span>
+                            {% elseif check.cacheStatus == 'l2' %}
+                                <span class="permission-badge badge-cache-l2">L2</span>
+                            {% else %}
+                                <span class="permission-badge badge-cache-miss">miss</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if check.result %}
+                                <span class="permission-badge badge-granted">GRANTED</span>
+                            {% else %}
+                                <span class="permission-badge badge-denied">DENIED</span>
+                            {% endif %}
+                            {% if trace %}
+                                <button type="button" class="btn btn-link text-small sf-toggle"
+                                        data-toggle-selector="#resolve-trace-{{ i }}"
+                                        data-toggle-alt-content="Hide trace">Show trace</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if trace %}
+                        <tr>
+                            <td colspan="6" style="border-top: 0; padding-top: 0;">
+                                <div id="resolve-trace-{{ i }}" class="sf-toggle-content sf-toggle-hidden">
+                                    <dl class="resolve-trace">
+                                        <dt>Owner check</dt>
+                                        <dd>{{ trace.is_owner ? 'Yes (full access via **)' : 'No' }}</dd>
+
+                                        {% if trace.from_cache is defined and trace.from_cache %}
+                                            <dt>Resolution</dt>
+                                            <dd>Served from cache</dd>
+
+                                            <dt>Resolved permissions</dt>
+                                            <dd>
+                                                {% for perm, granted in trace.resolved_permissions %}
+                                                    {{ granted ? '+' : '-' }}{{ perm }}<br>
+                                                {% endfor %}
+                                            </dd>
+                                        {% elseif not trace.is_owner %}
+                                            <dt>Assigned groups</dt>
+                                            <dd>{{ trace.assigned_groups|join(', ') ?: '(none)' }}</dd>
+
+                                            <dt>Hierarchy resolved</dt>
+                                            <dd>{{ trace.hierarchy_resolved|join(' -> ') ?: '(none)' }}</dd>
+
+                                            {% if trace.groups_applied is not empty %}
+                                                <dt>Groups applied</dt>
+                                                <dd>
+                                                    {% for group in trace.groups_applied %}
+                                                        <div class="group-detail">
+                                                            <strong>{{ group.slug }}</strong> (priority: {{ group.priority }})
+                                                            {% for perm, granted in group.permissions %}
+                                                                <br>{{ granted ? '+' : '-' }}{{ perm }}
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endfor %}
+                                                </dd>
+                                            {% endif %}
+
+                                            {% if trace.user_overrides is not empty %}
+                                                <dt>User overrides</dt>
+                                                <dd>
+                                                    {% for perm, granted in trace.user_overrides %}
+                                                        {{ granted ? '+' : '-' }}{{ perm }}<br>
+                                                    {% endfor %}
+                                                </dd>
+                                            {% endif %}
+                                        {% endif %}
+                                    </dl>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

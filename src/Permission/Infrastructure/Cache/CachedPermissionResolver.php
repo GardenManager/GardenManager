@@ -6,6 +6,7 @@ namespace GardenManager\Permission\Infrastructure\Cache;
 
 use GardenManager\Permission\Domain\Service\PermissionMatcher;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
+use GardenManager\Permission\Infrastructure\Profiler\PermissionProfilerDataStore;
 use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireDecorated;
@@ -25,6 +26,8 @@ final class CachedPermissionResolver implements PermissionResolverInterface
         #[Autowire(service: 'permission.cache')]
         private readonly TagAwareCacheInterface $cache,
         private readonly PermissionMatcher $matcher,
+        private readonly PermissionCacheKeyGenerator $keyGenerator,
+        private readonly ?PermissionProfilerDataStore $dataStore = null,
     ) {
     }
 
@@ -38,18 +41,25 @@ final class CachedPermissionResolver implements PermissionResolverInterface
     /** @return array<string, bool> */
     public function resolvePermissions(Ulid $userId, Ulid $tenantId): array
     {
-        $cacheKey = 't_' . $tenantId->toString() . '-u_' . $userId->toString();
+        $cacheKey = $this->keyGenerator->forUser($userId, $tenantId);
 
         if (isset($this->l1Cache[$cacheKey])) {
+            $this->dataStore?->recordCacheStatus('l1');
+
             return $this->l1Cache[$cacheKey];
         }
 
+        $wasMiss = false;
+
         /** @var array<string, bool> $resolved */
-        $resolved = $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId, $tenantId): array {
-            $item->tag(['perm_all', 'perm_tenant_' . $tenantId->toString()]);
+        $resolved = $this->cache->get($cacheKey, function (ItemInterface $item) use ($userId, $tenantId, &$wasMiss): array {
+            $wasMiss = true;
+            $item->tag([$this->keyGenerator->globalTag(), $this->keyGenerator->tenantTag($tenantId)]);
 
             return $this->innerResolver->resolvePermissions($userId, $tenantId);
         });
+
+        $this->dataStore?->recordCacheStatus($wasMiss ? 'miss' : 'l2');
 
         $this->l1Cache[$cacheKey] = $resolved;
 

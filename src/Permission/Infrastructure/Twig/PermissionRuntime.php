@@ -6,6 +6,7 @@ namespace GardenManager\Permission\Infrastructure\Twig;
 
 use GardenManager\Auth\Domain\AuthUser;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
+use GardenManager\Permission\Infrastructure\Profiler\PermissionProfilerDataStore;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -16,6 +17,7 @@ final readonly class PermissionRuntime implements RuntimeExtensionInterface
         private PermissionResolverInterface $permissionResolver,
         private ActiveTenantProviderInterface $activeTenantProvider,
         private Security $security,
+        private ?PermissionProfilerDataStore $dataStore = null,
     ) {
     }
 
@@ -31,10 +33,16 @@ final readonly class PermissionRuntime implements RuntimeExtensionInterface
             return false;
         }
 
-        return $this->permissionResolver->hasPermission(
-            $user->getId(),
-            $this->activeTenantProvider->getActiveTenantId(),
-            $permission,
-        );
+        $this->dataStore?->setCurrentSource('twig');
+
+        try {
+            return $this->permissionResolver->hasPermission(
+                $user->getId(),
+                $this->activeTenantProvider->getActiveTenantId(),
+                $permission,
+            );
+        } finally {
+            $this->dataStore?->setCurrentSource(null);
+        }
     }
 }

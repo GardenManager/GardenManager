@@ -8,6 +8,8 @@ use Symfony\Component\Uid\Ulid;
 
 interface PermissionCacheInvalidatorInterface
 {
+    public function invalidateForUser(Ulid $userId, Ulid $tenantId): void;
+
     public function invalidateForTenant(Ulid $tenantId): void;
 
     public function invalidateAll(): void;

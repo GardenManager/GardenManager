@@ -15,18 +15,25 @@ final readonly class PermissionCacheInvalidator implements PermissionCacheInvali
         #[Autowire(service: 'permission.cache')]
         private TagAwareCacheInterface $cache,
         private CachedPermissionResolver $cachedResolver,
+        private PermissionCacheKeyGenerator $keyGenerator,
     ) {
+    }
+
+    public function invalidateForUser(Ulid $userId, Ulid $tenantId): void
+    {
+        $this->cache->delete($this->keyGenerator->forUser($userId, $tenantId));
+        $this->cachedResolver->clearL1Cache();
     }
 
     public function invalidateForTenant(Ulid $tenantId): void
     {
-        $this->cache->invalidateTags(['perm_tenant_' . $tenantId->toString()]);
+        $this->cache->invalidateTags([$this->keyGenerator->tenantTag($tenantId)]);
         $this->cachedResolver->clearL1Cache();
     }
 
     public function invalidateAll(): void
     {
-        $this->cache->invalidateTags(['perm_all']);
+        $this->cache->invalidateTags([$this->keyGenerator->globalTag()]);
         $this->cachedResolver->clearL1Cache();
     }
 }
