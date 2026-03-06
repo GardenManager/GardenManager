@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\CustomAttribute\Application\Command\SetAttributeValuesCommand;
+use GardenManager\CustomAttribute\Application\Query\GetAttributeValuesQuery;
+use GardenManager\CustomAttribute\Application\View\AttributeValueView;
 use GardenManager\Plant\Application\Command\UpdatePlantCommand;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Application\Query\GetPlantQuery;
@@ -46,6 +49,22 @@ final class UpdatePlantAction extends AbstractController
             'submit_label' => 'Save Changes',
         ]);
 
+        /** @var list<AttributeValueView> $attributeValues */
+        $attributeValues = $this->queryDispatcher->query(new GetAttributeValuesQuery(
+            entityType: 'plant',
+            entityId: $plantId,
+            tenantId: $tenantId,
+            actorUserId: $user->getId(),
+        ));
+
+        $customAttributesForm = $form->get('customAttributes');
+        foreach ($attributeValues as $attrView) {
+            $defIdString = (string) $attrView->definitionId;
+            if ($customAttributesForm->has($defIdString)) {
+                $customAttributesForm->get($defIdString)->setData($attrView->value);
+            }
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -62,6 +81,20 @@ final class UpdatePlantAction extends AbstractController
             );
 
             $this->commandDispatcher->dispatchCommand($command);
+
+            $values = [];
+            foreach ($customAttributesForm->all() as $name => $field) {
+                $values[$name] = $field->getData();
+            }
+
+            $this->commandDispatcher->dispatchCommand(new SetAttributeValuesCommand(
+                tenantId: $tenantId,
+                actorUserId: $user->getId(),
+                entityType: 'plant',
+                entityId: $plantId,
+                values: $values,
+            ));
+
             $this->addFlash('success', 'Plant updated successfully.');
 
             return $this->redirectToRoute('plant_show', ['plantId' => $plantId]);

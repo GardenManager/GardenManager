@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Infrastructure\Form;
 
+use GardenManager\CustomAttribute\Infrastructure\Form\CustomAttributeValuesType;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use Symfony\Component\Form\AbstractType;
@@ -71,6 +72,12 @@ final class PlantFormType extends AbstractType
                     'placeholder' => 'Select a status',
                 ],
             )
+            ->add('customAttributes', CustomAttributeValuesType::class, [
+                'entity_type' => 'plant',
+                'mapped' => false,
+                'label' => 'Custom Attributes',
+                'required' => false,
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => $options['submit_label'],
                 'row_attr' => ['class' => 'flex justify-end mt-4'],

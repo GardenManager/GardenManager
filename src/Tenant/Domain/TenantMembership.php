@@ -10,7 +10,8 @@ use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'tenant_membership')]
-#[ORM\UniqueConstraint(name: 'uniq_tenant_user', columns: ['tenant_id', 'user_id'])]
+#[ORM\UniqueConstraint(name: 'uq_tenant_id_user_id', columns: ['tenant_id', 'user_id'])]
+#[ORM\Index(name: 'idx_tenant_id', columns: ['tenant_id'])]
 class TenantMembership
 {
     #[ORM\Id]

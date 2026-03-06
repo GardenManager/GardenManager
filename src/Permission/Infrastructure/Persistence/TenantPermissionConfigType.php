@@ -5,17 +5,12 @@ declare(strict_types=1);
 namespace GardenManager\Permission\Infrastructure\Persistence;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\JsonbType;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
 
-final class TenantPermissionConfigType extends Type
+final class TenantPermissionConfigType extends JsonbType
 {
     public const string NAME = 'tenant_permission_config';
-
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
-    {
-        return 'jsonb';
-    }
 
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): TenantPermissionConfig
     {

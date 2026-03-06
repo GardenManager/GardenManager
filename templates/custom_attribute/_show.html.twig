@@ -1,0 +1,25 @@
+{% if customAttributes is defined and customAttributes is not empty %}
+    <h2 class="text-lg font-semibold mt-8 mb-4 text-gray-900 dark:text-white">Custom Attributes</h2>
+    <twig:Card>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <tbody>
+                    {% for attr in customAttributes %}
+                        <tr class="{{ not loop.last ? 'border-b border-gray-200 dark:border-gray-700' : '' }}">
+                            <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ attr.label }}</th>
+                            <td class="px-6 py-4">
+                                {% if attr.type.value == 'boolean' %}
+                                    {{ attr.value ? 'Yes' : 'No' }}
+                                {% elseif attr.type.value == 'date' and attr.value is not null %}
+                                    {{ attr.value|date('F j, Y') }}
+                                {% else %}
+                                    {{ attr.value }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </twig:Card>
+{% endif %}

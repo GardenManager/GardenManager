@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\CustomAttribute\Application\Query\GetAttributeValuesQuery;
 use GardenManager\Plant\Application\Query\GetPlantQuery;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
@@ -30,15 +31,24 @@ final class ShowPlantAction extends AbstractController
     {
         /** @var AuthUser $user */
         $user = $this->getUser();
+        $tenantId = $this->activeTenantProvider->getActiveTenantId();
 
         $plantView = $this->queryDispatcher->query(new GetPlantQuery(
             $plantId,
-            $this->activeTenantProvider->getActiveTenantId(),
+            $tenantId,
             $user->getId(),
+        ));
+
+        $customAttributes = $this->queryDispatcher->query(new GetAttributeValuesQuery(
+            entityType: 'plant',
+            entityId: $plantId,
+            tenantId: $tenantId,
+            actorUserId: $user->getId(),
         ));
 
         return $this->render('plant/show.html.twig', [
             'plant' => $plantView,
+            'customAttributes' => $customAttributes,
         ]);
     }
 }

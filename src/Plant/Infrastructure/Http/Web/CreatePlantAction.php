@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\CustomAttribute\Application\Command\SetAttributeValuesCommand;
 use GardenManager\Plant\Application\Command\CreatePlantCommand;
 use GardenManager\Plant\Application\Dto\PlantFormDto;
 use GardenManager\Plant\Infrastructure\Form\PlantFormType;
@@ -38,9 +39,12 @@ final class CreatePlantAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tenantId = $this->activeTenantProvider->getActiveTenantId();
+            $plantId = new Ulid();
+
             $command = new CreatePlantCommand(
-                plantId: new Ulid(),
-                tenantId: $this->activeTenantProvider->getActiveTenantId(),
+                plantId: $plantId,
+                tenantId: $tenantId,
                 actorUserId: $user->getId(),
                 localName: $dto->localName ?? '',
                 isHybrid: $dto->isHybrid,
@@ -51,9 +55,26 @@ final class CreatePlantAction extends AbstractController
             );
 
             $this->commandDispatcher->dispatchCommand($command);
+
+            $customAttributesForm = $form->get('customAttributes');
+            $values = [];
+            foreach ($customAttributesForm->all() as $name => $field) {
+                $values[$name] = $field->getData();
+            }
+
+            if ($values !== []) {
+                $this->commandDispatcher->dispatchCommand(new SetAttributeValuesCommand(
+                    tenantId: $tenantId,
+                    actorUserId: $user->getId(),
+                    entityType: 'plant',
+                    entityId: $plantId,
+                    values: $values,
+                ));
+            }
+
             $this->addFlash('success', 'Plant created successfully.');
 
-            return $this->redirectToRoute('plant_show', ['plantId' => $command->plantId]);
+            return $this->redirectToRoute('plant_show', ['plantId' => $plantId]);
         }
 
         return $this->render('plant/new.html.twig', [
