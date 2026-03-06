@@ -8,7 +8,6 @@ use GardenManager\CustomAttribute\Domain\Entity\CustomAttributeValue;
 use GardenManager\CustomAttribute\Domain\Persistence\CustomAttributeDefinitionRepositoryInterface;
 use GardenManager\CustomAttribute\Domain\Persistence\CustomAttributeValueRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler(bus: 'command.bus')]
 final readonly class SetAttributeValuesHandler

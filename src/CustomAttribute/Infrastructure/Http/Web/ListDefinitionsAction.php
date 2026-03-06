@@ -24,7 +24,7 @@ final class ListDefinitionsAction extends AbstractController
     #[Route(
         path: '/settings/custom-attributes',
         name: 'custom_attribute_index',
-        methods: ['GET']
+        methods: ['GET'],
     )]
     public function __invoke(Request $request): Response
     {

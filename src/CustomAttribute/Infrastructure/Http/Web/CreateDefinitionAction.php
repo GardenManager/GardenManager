@@ -27,7 +27,7 @@ final class CreateDefinitionAction extends AbstractController
     #[Route(
         path: '/settings/custom-attributes/new',
         name: 'custom_attribute_new',
-        methods: ['GET', 'POST']
+        methods: ['GET', 'POST'],
     )]
     public function __invoke(Request $request): Response
     {
@@ -42,6 +42,8 @@ final class CreateDefinitionAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            \assert($dto->name !== null && $dto->label !== null && $dto->entityType !== null && $dto->type !== null);
+
             $command = new CreateDefinitionCommand(
                 definitionId: new Ulid(),
                 tenantId: $this->activeTenantProvider->getActiveTenantId(),

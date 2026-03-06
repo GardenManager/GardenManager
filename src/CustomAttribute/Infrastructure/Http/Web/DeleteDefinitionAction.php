@@ -24,7 +24,7 @@ final class DeleteDefinitionAction extends AbstractController
     #[Route(
         path: '/settings/custom-attributes/{id}/delete',
         name: 'custom_attribute_delete',
-        methods: ['POST']
+        methods: ['POST'],
     )]
     public function __invoke(Ulid $id): RedirectResponse
     {

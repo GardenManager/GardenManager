@@ -54,7 +54,7 @@ final class DefinitionFormDto
         }
 
         return array_values(array_filter(
-            array_map('trim', explode("\n", $this->optionsText)),
+            array_map(trim(...), explode("\n", $this->optionsText)),
             static fn (string $line): bool => $line !== '',
         ));
     }

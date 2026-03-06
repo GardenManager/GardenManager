@@ -31,7 +31,7 @@ final readonly class GetAttributeValuesQueryHandler
 
         usort(
             $views,
-            static fn (AttributeValueView $a, AttributeValueView $b): int => $a->sortOrder <=> $b->sortOrder
+            static fn (AttributeValueView $a, AttributeValueView $b): int => $a->sortOrder <=> $b->sortOrder,
         );
 
         return $views;

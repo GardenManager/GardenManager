@@ -11,13 +11,10 @@ use GardenManager\CustomAttribute\Domain\Exception\CustomAttributeException;
 use GardenManager\CustomAttribute\Domain\Persistence\CustomAttributeDefinitionRepositoryInterface;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Infrastructure\Pagination\PaginationFactory;
-use Override;
 use Symfony\Component\Uid\Ulid;
 
 /** @extends ServiceEntityRepository<CustomAttributeDefinition> */
-final class CustomAttributeDefinitionDoctrineRepository
-    extends ServiceEntityRepository
-    implements CustomAttributeDefinitionRepositoryInterface
+final class CustomAttributeDefinitionDoctrineRepository extends ServiceEntityRepository implements CustomAttributeDefinitionRepositoryInterface
 {
     public function __construct(
         ManagerRegistry $registry,

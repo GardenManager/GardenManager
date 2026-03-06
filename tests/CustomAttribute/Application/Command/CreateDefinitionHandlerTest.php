@@ -26,7 +26,7 @@ final class CreateDefinitionHandlerTest extends TestCase
         $savedDefinition = null;
 
         $repo = $this->createMock(CustomAttributeDefinitionRepositoryInterface::class);
-        $repo->method('existsByTenantEntityTypeAndName')->willReturn(false);
+        $repo->method('existsByEntityTypeAndName')->willReturn(false);
         $repo->expects(self::once())
             ->method('save')
             ->willReturnCallback(static function (CustomAttributeDefinition $definition) use (&$savedDefinition): void {
@@ -62,7 +62,7 @@ final class CreateDefinitionHandlerTest extends TestCase
     public function throwsOnDuplicateName(): void
     {
         $repo = $this->createStub(CustomAttributeDefinitionRepositoryInterface::class);
-        $repo->method('existsByTenantEntityTypeAndName')->willReturn(true);
+        $repo->method('existsByEntityTypeAndName')->willReturn(true);
 
         $handler = new CreateDefinitionHandler($repo);
 

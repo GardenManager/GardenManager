@@ -31,7 +31,7 @@ final class EditDefinitionAction extends AbstractController
     #[Route(
         path: '/settings/custom-attributes/{id}/edit',
         name: 'custom_attribute_edit',
-        methods: ['GET', 'POST']
+        methods: ['GET', 'POST'],
     )]
     public function __invoke(Request $request, Ulid $id): Response
     {
@@ -51,6 +51,8 @@ final class EditDefinitionAction extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            \assert($dto->label !== null);
+
             $command = new UpdateDefinitionCommand(
                 definitionId: $id,
                 tenantId: $tenantId,

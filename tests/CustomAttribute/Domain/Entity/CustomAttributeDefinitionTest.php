@@ -53,7 +53,7 @@ final class CustomAttributeDefinitionTest extends TestCase
             type: AttributeTypeEnum::INTEGER,
         );
 
-        self::assertInstanceOf(Ulid::class, $definition->getId());
+        self::assertTrue(Ulid::isValid($definition->getId()->toString()));
     }
 
     #[Test]

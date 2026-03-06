@@ -8,13 +8,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use GardenManager\CustomAttribute\Domain\Entity\CustomAttributeValue;
 use GardenManager\CustomAttribute\Domain\Persistence\CustomAttributeValueRepositoryInterface;
-use Override;
 use Symfony\Component\Uid\Ulid;
 
 /** @extends ServiceEntityRepository<CustomAttributeValue> */
-final class CustomAttributeValueDoctrineRepository
-    extends ServiceEntityRepository
-    implements CustomAttributeValueRepositoryInterface
+final class CustomAttributeValueDoctrineRepository extends ServiceEntityRepository implements CustomAttributeValueRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

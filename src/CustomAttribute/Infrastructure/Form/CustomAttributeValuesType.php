@@ -11,6 +11,11 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<mixed>
+ *
+ * @psalm-suppress TooManyTemplateParams
+ */
 final class CustomAttributeValuesType extends AbstractType
 {
     public function __construct(
@@ -36,33 +41,33 @@ final class CustomAttributeValuesType extends AbstractType
                 AttributeTypeEnum::STRING => $builder->add(
                     $definitionId,
                     Type\TextType::class,
-                    $fieldOptions
+                    $fieldOptions,
                 ),
                 AttributeTypeEnum::INTEGER => $builder->add(
                     $definitionId,
                     Type\IntegerType::class,
-                    $fieldOptions
+                    $fieldOptions,
                 ),
                 AttributeTypeEnum::DECIMAL => $builder->add(
                     $definitionId,
                     Type\NumberType::class,
                     $fieldOptions + [
                         'scale' => 4,
-                    ]
+                    ],
                 ),
                 AttributeTypeEnum::DATE => $builder->add(
                     $definitionId,
                     Type\DateType::class,
                     $fieldOptions + [
                         'widget' => 'single_text',
-                    ]
+                    ],
                 ),
                 AttributeTypeEnum::BOOLEAN => $builder->add(
                     $definitionId,
                     Type\CheckboxType::class,
                     $fieldOptions + [
                         'required' => false,
-                    ]
+                    ],
                 ),
                 AttributeTypeEnum::SELECT => $builder->add(
                     $definitionId,
@@ -70,7 +75,7 @@ final class CustomAttributeValuesType extends AbstractType
                     $fieldOptions + [
                         'choices' => array_combine($definition->getOptions() ?? [], $definition->getOptions() ?? []),
                         'placeholder' => 'Select...',
-                    ]
+                    ],
                 ),
             };
         }

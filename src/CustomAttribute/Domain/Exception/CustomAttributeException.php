@@ -12,13 +12,13 @@ final class CustomAttributeException extends CoreException
     public static function duplicateName(string $entityType, string $name): self
     {
         return new self(
-            message: sprintf('A custom attribute with name "%s" already exists for entity type "%s".', $name, $entityType),
+            message: \sprintf('A custom attribute with name "%s" already exists for entity type "%s".', $name, $entityType),
             context: [
                 'entityType' => $entityType,
                 'name' => $name,
             ],
             httpStatusCode: 409,
-            userFacingMessage: 'A custom attribute with that name already exist for this type.'
+            userFacingMessage: 'A custom attribute with that name already exist for this type.',
         );
     }
 
@@ -26,8 +26,8 @@ final class CustomAttributeException extends CoreException
     {
         return new self(
             message: 'The custom attribute definition cannot be found.',
-            context:[
-                'definitionId' => $definitionId
+            context: [
+                'definitionId' => $definitionId,
             ],
             httpStatusCode: 404,
         );

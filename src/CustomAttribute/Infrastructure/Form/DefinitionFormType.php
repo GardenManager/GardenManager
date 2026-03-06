@@ -30,14 +30,14 @@ final class DefinitionFormType extends AbstractType
                     'label' => 'Machine name',
                     'help' => 'Lowercase letters, numbers, and underscores only. Cannot be changed after creation.',
                     'disabled' => $isEdit,
-                ]
+                ],
             )
             ->add(
                 'label',
                 Type\TextType::class,
                 [
                     'label' => 'Display label',
-                ]
+                ],
             )
             ->add(
                 'entityType',
@@ -48,7 +48,7 @@ final class DefinitionFormType extends AbstractType
                         'Plant' => 'plant',
                     ],
                     'disabled' => $isEdit,
-                ]
+                ],
             )
             ->add(
                 'type',
@@ -59,7 +59,7 @@ final class DefinitionFormType extends AbstractType
                     'choice_label' => static fn (AttributeTypeEnum $choice): string => ucfirst($choice->value),
                     'placeholder' => 'Select a type',
                     'disabled' => $isEdit,
-                ]
+                ],
             )
             ->add(
                 'required',
@@ -67,7 +67,7 @@ final class DefinitionFormType extends AbstractType
                 [
                     'label' => 'Required',
                     'required' => false,
-                ]
+                ],
             )
             ->add(
                 'sortOrder',
@@ -75,7 +75,7 @@ final class DefinitionFormType extends AbstractType
                 [
                     'label' => 'Sort order',
                     'required' => false,
-                ]
+                ],
             )
             ->add(
                 'optionsText',
@@ -84,7 +84,7 @@ final class DefinitionFormType extends AbstractType
                     'label' => 'Options (one per line)',
                     'help' => 'Only for SELECT type. Enter each option on a new line.',
                     'required' => false,
-                ]
+                ],
             )
             ->add(
                 'submit',
@@ -92,7 +92,7 @@ final class DefinitionFormType extends AbstractType
                 [
                     'label' => $options['submit_label'],
                     'row_attr' => ['class' => 'flex justify-end mt-4'],
-                ]
+                ],
             );
     }
 
