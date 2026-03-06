@@ -53,6 +53,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Tenant/Domain'
                 prefix: 'GardenManager\Tenant\Domain'
                 alias: GardenManagerTenant
+            GardenManagerCustomAttribute:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/CustomAttribute/Domain'
+                prefix: 'GardenManager\CustomAttribute\Domain'
+                alias: GardenManagerCustomAttribute
         controller_resolver:
             auto_mapping: false
 

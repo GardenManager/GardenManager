@@ -1,0 +1,85 @@
+{% extends 'layout/dashboard.html.twig' %}
+
+{% block page_title %}Custom Attributes{% endblock %}
+
+{% block title_display %}
+    <div class="flex justify-between items-center">
+        <span>Custom Attributes</span>
+        {% if has_permission('custom_attribute.create') %}
+            <twig:Button href="{{ path('custom_attribute_new') }}" color="primary" size="sm">New Attribute</twig:Button>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-4">
+        <div class="flex gap-2">
+            <a href="{{ path('custom_attribute_index') }}"
+               class="px-3 py-1.5 text-sm rounded-lg {{ currentEntityType is null ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700' }}">
+                All
+            </a>
+            <a href="{{ path('custom_attribute_index', {entityType: 'plant'}) }}"
+               class="px-3 py-1.5 text-sm rounded-lg {{ currentEntityType == 'plant' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700' }}">
+                Plant
+            </a>
+        </div>
+    </div>
+
+    {% if pager.isEmpty() %}
+        <twig:EmptyState message="No custom attributes defined yet.{{ has_permission('custom_attribute.create') ? ' Create your first one!' : '' }}">
+            {% block actions %}
+                {% if has_permission('custom_attribute.create') %}
+                    <twig:Button href="{{ path('custom_attribute_new') }}" color="primary">New Attribute</twig:Button>
+                {% endif %}
+            {% endblock %}
+        </twig:EmptyState>
+    {% else %}
+        <twig:Card>
+            {% block content %}
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th class="px-6 py-3">Name</th>
+                                <th class="px-6 py-3">Label</th>
+                                <th class="px-6 py-3">Entity Type</th>
+                                <th class="px-6 py-3">Type</th>
+                                <th class="px-6 py-3">Required</th>
+                                <th class="px-6 py-3">Order</th>
+                                <th class="px-6 py-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for definition in pager.items %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ definition.name }}</td>
+                                    <td class="px-6 py-4">{{ definition.label }}</td>
+                                    <td class="px-6 py-4"><twig:Badge>{{ definition.entityType|capitalize }}</twig:Badge></td>
+                                    <td class="px-6 py-4"><twig:Badge>{{ definition.type.value|capitalize }}</twig:Badge></td>
+                                    <td class="px-6 py-4">{{ definition.required ? 'Yes' : 'No' }}</td>
+                                    <td class="px-6 py-4">{{ definition.sortOrder }}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex gap-2">
+                                            {% if has_permission('custom_attribute.edit') %}
+                                                <a href="{{ path('custom_attribute_edit', {id: definition.id}) }}" class="text-blue-600 hover:underline dark:text-blue-500 text-sm">Edit</a>
+                                            {% endif %}
+                                            {% if has_permission('custom_attribute.delete') %}
+                                                <form method="post" action="{{ path('custom_attribute_delete', {id: definition.id}) }}" onsubmit="return confirm('Are you sure you want to delete this attribute? All stored values will be permanently removed.');">
+                                                    <button type="submit" class="text-red-600 hover:underline dark:text-red-500 text-sm">Delete</button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endblock %}
+        </twig:Card>
+
+        <div class="mt-8">
+            <twig:Pagination :pager="pager" route="custom_attribute_index" />
+        </div>
+    {% endif %}
+{% endblock %}

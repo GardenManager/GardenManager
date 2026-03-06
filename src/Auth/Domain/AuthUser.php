@@ -16,6 +16,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 #[ORM\Table(name: 'auth_user')]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\UniqueConstraint(name: 'uq_email', columns: ['email'])]
 class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

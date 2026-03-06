@@ -80,6 +80,8 @@
         {% endblock %}
     </twig:Card>
 
+    {{ include('custom_attribute/_show.html.twig') }}
+
     {% if has_permission('plant.delete') %}
         <twig:ConfirmDeleteModal
             action="{{ path('plant_delete', {plantId: plant.id}) }}"
