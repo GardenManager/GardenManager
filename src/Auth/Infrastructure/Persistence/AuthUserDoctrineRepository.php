@@ -61,7 +61,7 @@ final class AuthUserDoctrineRepository extends ServiceEntityRepository implement
 
     public function findByEmail(string $email): ?AuthUser
     {
-        return $this->findOneBy(['email' => $email]);
+        return $this->findOneBy(['email.value' => $email]);
     }
 
     public function save(AuthUser $user): void

@@ -12,7 +12,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: 'auth_oidc')]
 #[ORM\UniqueConstraint(name: 'uq_provider_subject', columns: ['provider', 'subject'])]
 #[ORM\Index(name: 'idx_user_id', columns: ['user_id'])]
-class AuthOidc
+final class AuthOidc
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]

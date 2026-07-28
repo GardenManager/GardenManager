@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use GardenManager\Shared\Domain\ValueObject\EmailAddress;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
@@ -17,15 +18,15 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: 'auth_user')]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'uq_email', columns: ['email'])]
-class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
+final class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: 'ulid', unique: true)]
     private Ulid $id;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private string $email;
+    #[ORM\Embedded(class: EmailAddress::class, columnPrefix: false)]
+    private EmailAddress $email;
 
     #[ORM\Column(length: 255)]
     private string $displayName;
@@ -61,7 +62,7 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $user = new self();
         $user->id = $id;
-        $user->email = $email;
+        $user->email = new EmailAddress($email);
         $user->displayName = $displayName;
         $user->isVerified = false;
 
@@ -76,7 +77,7 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
     ): self {
         $user = new self();
         $user->id = $id;
-        $user->email = $email;
+        $user->email = new EmailAddress($email);
         $user->displayName = $displayName;
         $user->isVerified = false;
         $user->password = $hashedPassword;
@@ -88,7 +89,7 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $user = new self();
         $user->id = $id;
-        $user->email = $email;
+        $user->email = new EmailAddress($email);
         $user->displayName = $displayName;
         $user->password = null;
         $user->isVerified = true;
@@ -103,7 +104,7 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getEmail(): string
     {
-        return $this->email;
+        return $this->email->value;
     }
 
     public function getDisplayName(): string
@@ -113,7 +114,7 @@ class AuthUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return $this->email->value;
     }
 
     /** @return list<string> */

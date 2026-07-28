@@ -12,7 +12,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 #[ORM\Table(name: 'tenant')]
 #[ORM\HasLifecycleCallbacks]
-class Tenant
+final class Tenant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]

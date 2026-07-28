@@ -15,7 +15,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\UniqueConstraint(name: 'uq_definition_tenant_entity_name', columns: ['tenant_id', 'entity_type', 'name'])]
 #[ORM\Index(name: 'idx_definition_tenant_entity', columns: ['tenant_id', 'entity_type'])]
 #[ORM\HasLifecycleCallbacks]
-class CustomAttributeDefinition implements TenantScoped
+final class CustomAttributeDefinition implements TenantScoped
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]

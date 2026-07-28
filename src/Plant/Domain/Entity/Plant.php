@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 #[ORM\Table(name: 'plant')]
 #[ORM\HasLifecycleCallbacks]
-class Plant implements SoftDeletable, TenantScoped
+final class Plant implements SoftDeletable, TenantScoped
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]

@@ -12,7 +12,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Table(name: 'tenant_membership')]
 #[ORM\UniqueConstraint(name: 'uq_tenant_id_user_id', columns: ['tenant_id', 'user_id'])]
 #[ORM\Index(name: 'idx_tenant_id', columns: ['tenant_id'])]
-class TenantMembership
+final class TenantMembership
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
