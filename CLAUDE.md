@@ -52,20 +52,42 @@ make db-diff      # Generate migration from entity changes
 make db-schema    # Validate schema mapping
 ```
 
-Entities go in `src/Entity/`, repositories in `src/Repository/`. Doctrine uses `underscore_number_aware` naming strategy and `identity` generation for PostgreSQL.
+Entities go in `src/<Module>/Domain/Entity/`, repository interfaces in `src/<Module>/Domain/Persistence/`, and Doctrine implementations in `src/<Module>/Infrastructure/Persistence/` (named `*DoctrineRepository`). Doctrine uses the `underscore_number_aware` naming strategy; entities use ULID identities generated in the domain (`GeneratedValue: NONE`).
 
 ## Architecture
 
+The codebase is a modular monolith. Each bounded context under `src/` (`Auth`, `CustomAttribute`, `Permission`, `Plant`, `Seller`, `Tenant`, plus `Shared`) follows this canonical shape:
+
+```
+src/<Module>/
+  Application/
+    Command/   <Verb><Noun>Command.php + <Verb><Noun>CommandHandler.php
+    Query/     <Verb><Noun>Query.php + <Verb><Noun>QueryHandler.php
+    View/      Read models returned by query handlers
+    Dto/       Form/input DTOs
+  Domain/
+    Entity/       Doctrine entities (final, ULID identity)
+    Persistence/  Repository interfaces
+    Enum/  Exception/  ValueObject/
+    <Module>Permissions.php + <Module>PermissionProvider.php (Domain root)
+  Infrastructure/
+    Persistence/  <Entity>DoctrineRepository.php
+    Form/  Http/Web/  Http/Api/
+```
+
+Tests mirror `src/` paths under `tests/` with the same structure. Messages (commands/queries) are `final readonly` and carry `tenantId`/`actorUserId`; authorization is declared with `#[RequiresPermission]` on the message and enforced by `PermissionCheckMiddleware` on both buses.
+
 - **Namespace:** `GardenManager\` (PSR-4 from `src/`)
-- **Routing:** Attribute-based routes on controllers (`#[Route]`)
+- **Routing:** Attribute-based routes on invokable single-action controllers (`#[Route]`)
 - **Services:** Autowired and autoconfigured by default (`config/services.yaml`)
+- **CQRS:** `command.bus` (permission → validation → doctrine_transaction middleware) and `query.bus`, dispatched via `Shared\Infrastructure\Bus\CommandDispatcher`/`QueryDispatcher`. Handlers register with `#[AsMessageHandler(bus: ...)]`.
 - **Frontend:** AssetMapper (no Webpack/Vite) with Stimulus controllers, Hotwire Turbo, and Tailwind CSS
   - JS entrypoint: `assets/app.js`
   - Stimulus controllers: `assets/controllers/`
   - Styles: `assets/styles/app.css`
   - Import map: `importmap.php`
-- **Twig Components:** PHP classes in `src/Twig/Components/` with templates in `templates/components/`. Registered under `GardenManager\Twig\Components\` namespace.
-- **Messenger:** Async transport via Valkey. Mailer and Notifier messages route to `async`. Worker runs in a separate container managed by supervisord (`.docker/worker/supervisord.conf`). The worker container also runs `tailwind:build --watch`.
+- **Twig Components:** PHP classes in `src/<Module>/Infrastructure/Twig/Components/` with templates in `templates/components/<module>/` (namespaces registered in `config/packages/twig_component.yaml`).
+- **Messenger:** Async transport via Valkey. Mailer and Notifier messages route to `async`; app commands/queries run sync. Worker runs in a separate container managed by supervisord (`.docker/worker/supervisord.conf`). The worker container also runs `tailwind:build --watch`.
 - **Templates:** Twig templates in `templates/`, base layout in `templates/base.html.twig`
 
 ## Local HTTPS
@@ -91,4 +113,9 @@ The nginx entrypoint auto-detects certs in `.docker/certs/` and switches between
 
 - 4 spaces indentation, UTF-8, LF line endings (`.editorconfig`)
 - 2 spaces for YAML compose files
-- PHP classes are `final` by convention, except entities (see existing controllers/components)
+- PHP classes are `final` by convention, including entities; messages (commands/queries) are `final readonly`
+
+## Git Workflow
+
+- NEVER commit without explicit user approval — always ask first, for every commit.
+- Do NOT add `Co-Authored-By` trailers or any AI attribution to commit messages.
