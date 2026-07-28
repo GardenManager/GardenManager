@@ -135,7 +135,7 @@ certs-trust-windows: ## Import mkcert CA into Windows certificate store (WSL2 on
 
 .PHONY: npm
 npm: ## Install npm dependencies
-	docker run --rm -v "$(PWD):/app" -w /app node:22-alpine npm install
+	docker run --rm -v "$(PWD):/app" -w /app node:22-alpine npm install --no-bin-links
 
 ##
 ## Testing & QA

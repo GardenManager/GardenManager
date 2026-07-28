@@ -9,6 +9,7 @@ services:
       - .docker.env
     volumes:
       - .:/srv/app
+      - app_var:/srv/app/var
     depends_on:
       postgres:
         condition: service_healthy
@@ -74,6 +75,7 @@ services:
     command: ["supervisord", "-c", "/srv/app/.docker/worker/supervisord.conf"]
     volumes:
       - .:/srv/app
+      - app_var:/srv/app/var
     depends_on:
       postgres:
         condition: service_healthy
@@ -105,3 +107,4 @@ services:
 volumes:
   postgres_data:
   valkey_data:
+  app_var:
