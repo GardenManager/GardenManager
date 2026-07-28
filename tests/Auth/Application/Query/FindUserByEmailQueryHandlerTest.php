@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace GardenManager\Tests\Auth\Application\Query;
 
-use GardenManager\Auth\Application\Query\AuthUserSummaryView;
 use GardenManager\Auth\Application\Query\FindUserByEmailQuery;
 use GardenManager\Auth\Application\Query\FindUserByEmailQueryHandler;
+use GardenManager\Auth\Application\View\AuthUserSummaryView;
 use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;

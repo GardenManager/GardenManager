@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Application\Query;
 
+use GardenManager\Auth\Application\View\AuthUserSummaryView;
 use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

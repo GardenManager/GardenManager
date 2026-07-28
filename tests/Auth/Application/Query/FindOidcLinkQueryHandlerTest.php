@@ -6,7 +6,7 @@ namespace GardenManager\Tests\Auth\Application\Query;
 
 use GardenManager\Auth\Application\Query\FindOidcLinkQuery;
 use GardenManager\Auth\Application\Query\FindOidcLinkQueryHandler;
-use GardenManager\Auth\Application\Query\OidcLinkView;
+use GardenManager\Auth\Application\View\OidcLinkView;
 use GardenManager\Auth\Domain\Entity\AuthOidc;
 use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;

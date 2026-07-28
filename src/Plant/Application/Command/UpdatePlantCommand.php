@@ -13,7 +13,7 @@ use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[RequiresPermission(PlantPermissions::EDIT)]
-final class UpdatePlantCommand implements CommandInterface, AuthorizedMessageInterface
+final readonly class UpdatePlantCommand implements CommandInterface, AuthorizedMessageInterface
 {
     public function __construct(
         public Ulid $plantId,

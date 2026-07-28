@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Auth\Application\Query;
+namespace GardenManager\Auth\Application\View;
 
 use GardenManager\Auth\Domain\Entity\AuthUser;
 use Symfony\Component\Uid\Ulid;

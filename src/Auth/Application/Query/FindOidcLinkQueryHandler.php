@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Application\Query;
 
+use GardenManager\Auth\Application\View\OidcLinkView;
 use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

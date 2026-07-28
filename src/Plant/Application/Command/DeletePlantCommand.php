@@ -11,7 +11,7 @@ use GardenManager\Shared\Application\CommandInterface;
 use Symfony\Component\Uid\Ulid;
 
 #[RequiresPermission(PlantPermissions::DELETE)]
-final class DeletePlantCommand implements CommandInterface, AuthorizedMessageInterface
+final readonly class DeletePlantCommand implements CommandInterface, AuthorizedMessageInterface
 {
     public function __construct(
         public Ulid $plantId,
