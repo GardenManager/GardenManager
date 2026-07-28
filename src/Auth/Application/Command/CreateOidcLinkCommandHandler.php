@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Application\Command;
 
-use GardenManager\Auth\Domain\AuthOidc;
-use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthOidc;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

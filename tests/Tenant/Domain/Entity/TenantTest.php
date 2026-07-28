@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tests\Tenant\Domain;
+namespace GardenManager\Tests\Tenant\Domain\Entity;
 
-use GardenManager\Tenant\Domain\Tenant;
+use GardenManager\Tenant\Domain\Entity\Tenant;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

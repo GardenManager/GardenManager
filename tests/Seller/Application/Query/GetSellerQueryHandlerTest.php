@@ -6,8 +6,8 @@ namespace GardenManager\Tests\Seller\Application\Query;
 
 use GardenManager\Seller\Application\Query\GetSellerQuery;
 use GardenManager\Seller\Application\Query\GetSellerQueryHandler;
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\Exception\TenantAccessException;
 use GardenManager\Shared\Domain\Security\TenantAccessChecker;

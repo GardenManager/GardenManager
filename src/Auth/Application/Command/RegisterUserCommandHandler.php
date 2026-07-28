@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace GardenManager\Auth\Application\Command;
 
 use GardenManager\Auth\Application\EmailVerificationServiceInterface;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use GardenManager\Tenant\Application\Service\TenantProvisioningService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

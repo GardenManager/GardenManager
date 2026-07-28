@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Plant\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\CustomAttribute\Application\Command\SetAttributeValuesCommand;
 use GardenManager\CustomAttribute\Application\Query\GetAttributeValuesQuery;
 use GardenManager\CustomAttribute\Application\View\AttributeValueView;

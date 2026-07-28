@@ -6,8 +6,8 @@ namespace GardenManager\Tests\Seller\Application\Command;
 
 use GardenManager\Seller\Application\Command\DeleteSellerCommand;
 use GardenManager\Seller\Application\Command\DeleteSellerCommandHandler;
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\Exception\TenantAccessException;
 use GardenManager\Shared\Domain\Security\TenantAccessChecker;

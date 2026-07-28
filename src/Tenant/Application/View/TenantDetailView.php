@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Application\View;
 
 use DateTimeImmutable;
-use GardenManager\Tenant\Domain\Tenant;
+use GardenManager\Tenant\Domain\Entity\Tenant;
 use Symfony\Component\Uid\Ulid;
 
 final readonly class TenantDetailView

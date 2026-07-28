@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tests\Seller\Domain;
+namespace GardenManager\Tests\Seller\Domain\Entity;
 
-use GardenManager\Seller\Domain\Seller;
+use GardenManager\Seller\Domain\Entity\Seller;
 use GardenManager\Shared\Domain\ValueObject\Address;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Group;

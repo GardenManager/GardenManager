@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Permission\Domain;
+namespace GardenManager\Permission\Domain\Enum;
 
 enum DefaultGroupsEnum: string
 {

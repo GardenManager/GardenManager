@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Application\Service;
 
-use GardenManager\Permission\Domain\DefaultGroupsEnum;
+use GardenManager\Permission\Domain\Enum\DefaultGroupsEnum;
 use GardenManager\Permission\Domain\PermissionProviderInterface;
 use GardenManager\Permission\Domain\ValueObject\PermissionEntryParser;
 use GardenManager\Permission\Domain\ValueObject\PermissionGroupData;

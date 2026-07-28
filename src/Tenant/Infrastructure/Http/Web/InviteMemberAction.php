@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use GardenManager\Tenant\Application\Command\InviteMemberCommand;
 use GardenManager\Tenant\Application\Dto\InviteMemberDto;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use GardenManager\Tenant\Infrastructure\Form\InviteMemberFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

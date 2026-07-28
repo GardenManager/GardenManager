@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Application\Query;
 
-use GardenManager\Auth\Domain\AuthOidc;
+use GardenManager\Auth\Domain\Entity\AuthOidc;
 use Symfony\Component\Uid\Ulid;
 
 final readonly class OidcLinkView

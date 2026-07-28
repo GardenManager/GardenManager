@@ -7,8 +7,8 @@ namespace GardenManager\Tenant\Infrastructure\Persistence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
-use GardenManager\Tenant\Domain\Tenant;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Entity\Tenant;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Uid\Ulid;
 
 /** @extends ServiceEntityRepository<Tenant> */

@@ -6,11 +6,11 @@ namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\CreateOidcLinkCommand;
 use GardenManager\Auth\Application\Command\CreateOidcLinkCommandHandler;
-use GardenManager\Auth\Domain\AuthOidc;
-use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthOidc;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

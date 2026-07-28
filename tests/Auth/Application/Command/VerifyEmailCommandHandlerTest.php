@@ -6,9 +6,9 @@ namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\VerifyEmailCommand;
 use GardenManager\Auth\Application\Command\VerifyEmailCommandHandler;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Auth\Domain\Exception\AuthException;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

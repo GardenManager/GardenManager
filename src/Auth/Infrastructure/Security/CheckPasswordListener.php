@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Infrastructure\Security;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;

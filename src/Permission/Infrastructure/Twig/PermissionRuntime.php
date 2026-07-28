@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Infrastructure\Twig;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
 use GardenManager\Permission\Infrastructure\Profiler\PermissionProfilerDataStore;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;

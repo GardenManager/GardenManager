@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tenant\Domain;
+namespace GardenManager\Tenant\Domain\Persistence;
 
+use GardenManager\Tenant\Domain\Entity\TenantMembership;
 use Symfony\Component\Uid\Ulid;
 
 interface TenantMembershipRepositoryInterface

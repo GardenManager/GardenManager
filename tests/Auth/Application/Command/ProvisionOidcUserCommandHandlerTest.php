@@ -6,10 +6,10 @@ namespace GardenManager\Tests\Auth\Application\Command;
 
 use GardenManager\Auth\Application\Command\ProvisionOidcUserCommand;
 use GardenManager\Auth\Application\Command\ProvisionOidcUserCommandHandler;
-use GardenManager\Auth\Domain\AuthOidc;
-use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthOidc;
+use GardenManager\Auth\Domain\Entity\AuthUser;
+use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use GardenManager\Shared\Application\CommandDispatcherInterface;
 use GardenManager\Tenant\Application\Service\TenantProvisioningService;
 use PHPUnit\Framework\Attributes\Group;

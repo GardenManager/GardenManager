@@ -7,7 +7,7 @@ namespace GardenManager\Permission\Application\Command;
 use Doctrine\ORM\OptimisticLockException;
 use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInterface;
 use GardenManager\Permission\Domain\Exception\PermissionException;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

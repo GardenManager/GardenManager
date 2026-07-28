@@ -6,8 +6,8 @@ namespace GardenManager\Auth\Infrastructure\Persistence;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use GardenManager\Auth\Domain\AuthOidc;
-use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthOidc;
+use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;
 
 /** @extends ServiceEntityRepository<AuthOidc> */
 final class AuthOidcDoctrineRepository extends ServiceEntityRepository implements AuthOidcRepositoryInterface

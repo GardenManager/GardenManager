@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tests\Auth\Domain;
+namespace GardenManager\Tests\Auth\Domain\Entity;
 
-use GardenManager\Auth\Domain\AuthOidc;
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthOidc;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

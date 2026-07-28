@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Permission\Application\Command\AddMemberPermissionOverrideCommand;
 use GardenManager\Permission\Application\Dto\MemberPermissionOverrideFormDto;
 use GardenManager\Permission\Application\Service\PermissionRegistryService;

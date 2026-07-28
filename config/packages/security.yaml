@@ -5,7 +5,7 @@ security:
     providers:
         app_user_provider:
             entity:
-                class: GardenManager\Auth\Domain\AuthUser
+                class: GardenManager\Auth\Domain\Entity\AuthUser
                 property: email
 
     firewalls:

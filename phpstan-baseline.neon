@@ -76,13 +76,13 @@ parameters:
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\Uid\\\\Ulid'' and Symfony\\Component\\Uid\\Ulid will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
-			path: tests/Plant/Domain/PlantTest.php
+			path: tests/Plant/Domain/Entity/PlantTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with DateTimeImmutable will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
-			path: tests/Plant/Domain/PlantTest.php
+			path: tests/Plant/Domain/Entity/PlantTest.php
 
 		-
 			message: '#^Method GardenManager\\Tests\\Shared\\Infrastructure\\Logging\\ExceptionContextLogProcessorTest\:\:createRecord\(\) has parameter \$context with no value type specified in iterable type array\.$#'

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Seller\Infrastructure\Persistence;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthUser;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use GardenManager\Shared\Domain\ValueObject\Address;
 use PHPUnit\Framework\Attributes\Group;

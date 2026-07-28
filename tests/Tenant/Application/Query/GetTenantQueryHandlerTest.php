@@ -6,11 +6,11 @@ namespace GardenManager\Tests\Tenant\Application\Query;
 
 use GardenManager\Tenant\Application\Query\GetTenantQuery;
 use GardenManager\Tenant\Application\Query\GetTenantQueryHandler;
+use GardenManager\Tenant\Domain\Entity\Tenant;
+use GardenManager\Tenant\Domain\Entity\TenantMembership;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\Tenant;
-use GardenManager\Tenant\Domain\TenantMembership;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

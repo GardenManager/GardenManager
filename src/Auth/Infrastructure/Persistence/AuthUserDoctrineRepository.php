@@ -6,8 +6,8 @@ namespace GardenManager\Auth\Infrastructure\Persistence;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthUser;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use GardenManager\Shared\Domain\Exception\EntityNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;

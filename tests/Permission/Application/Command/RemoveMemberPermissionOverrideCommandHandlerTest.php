@@ -8,8 +8,8 @@ use GardenManager\Permission\Application\Command\RemoveMemberPermissionOverrideC
 use GardenManager\Permission\Application\Command\RemoveMemberPermissionOverrideCommandHandler;
 use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInterface;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
-use GardenManager\Tenant\Domain\Tenant;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Entity\Tenant;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

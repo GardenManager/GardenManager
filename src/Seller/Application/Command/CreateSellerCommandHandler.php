@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Application\Command;
 
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

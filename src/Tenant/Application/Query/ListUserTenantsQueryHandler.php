@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Tenant\Application\Query;
 
 use GardenManager\Tenant\Application\View\UserTenantView;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'query.bus')]

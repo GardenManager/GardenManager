@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Plant\Infrastructure\Persistence;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;
 use GardenManager\Plant\Domain\Persistence\PlantRepositoryInterface;

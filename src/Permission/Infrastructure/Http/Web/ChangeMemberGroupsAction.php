@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Permission\Application\Command\ChangeMemberGroupsCommand;
 use GardenManager\Permission\Infrastructure\Form\ChangeMemberGroupsFormType;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

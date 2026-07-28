@@ -6,8 +6,8 @@ namespace GardenManager\Tests\Tenant\Application\Command;
 
 use GardenManager\Tenant\Application\Command\UpdateTenantCommand;
 use GardenManager\Tenant\Application\Command\UpdateTenantCommandHandler;
-use GardenManager\Tenant\Domain\Tenant;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Entity\Tenant;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

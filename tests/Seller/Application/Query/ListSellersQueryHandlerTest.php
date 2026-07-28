@@ -6,8 +6,8 @@ namespace GardenManager\Tests\Seller\Application\Query;
 
 use GardenManager\Seller\Application\Query\ListSellersQuery;
 use GardenManager\Seller\Application\Query\ListSellersQueryHandler;
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

@@ -10,11 +10,11 @@ use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInter
 use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Permission\Domain\ValueObject\PermissionGroupData;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
+use GardenManager\Tenant\Domain\Entity\Tenant;
+use GardenManager\Tenant\Domain\Entity\TenantMembership;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\Tenant;
-use GardenManager\Tenant\Domain\TenantMembership;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

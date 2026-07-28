@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Permission\Application\Command\UpdateRawPermissionsCommand;
 use GardenManager\Permission\Application\Service\PermissionConfigTransformer;
 use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Permission\Infrastructure\Form\RawPermissionsFormType;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

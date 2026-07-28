@@ -6,7 +6,7 @@ namespace GardenManager\Auth\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Application\Command\ConfirmOidcLinkCommand;
 use GardenManager\Auth\Application\Dto\PendingOidcLink;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use GardenManager\Auth\Infrastructure\Form\AccountLinkFormType;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

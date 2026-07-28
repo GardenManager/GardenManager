@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

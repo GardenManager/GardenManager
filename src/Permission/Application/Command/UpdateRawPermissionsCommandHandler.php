@@ -9,7 +9,7 @@ use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInter
 use GardenManager\Permission\Application\Service\PermissionConfigValidator;
 use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

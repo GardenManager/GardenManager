@@ -6,8 +6,8 @@ namespace GardenManager\Tests\Seller\Application\Command;
 
 use GardenManager\Seller\Application\Command\CreateSellerCommand;
 use GardenManager\Seller\Application\Command\CreateSellerCommandHandler;
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use GardenManager\Shared\Application\Dto\AddressData;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;

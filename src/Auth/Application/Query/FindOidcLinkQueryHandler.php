@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Auth\Application\Query;
 
-use GardenManager\Auth\Domain\AuthOidcRepositoryInterface;
+use GardenManager\Auth\Domain\Persistence\AuthOidcRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'query.bus')]

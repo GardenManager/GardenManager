@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Auth\Domain;
+namespace GardenManager\Auth\Domain\Persistence;
+
+use GardenManager\Auth\Domain\Entity\AuthOidc;
 
 interface AuthOidcRepositoryInterface
 {

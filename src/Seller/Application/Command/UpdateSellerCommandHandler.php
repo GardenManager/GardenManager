@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Application\Command;
 
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
 use GardenManager\Shared\Domain\Security\TenantAccessChecker;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

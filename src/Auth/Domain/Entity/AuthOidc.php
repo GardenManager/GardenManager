@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Auth\Domain;
+namespace GardenManager\Auth\Domain\Entity;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Permission\Application\Dto\MemberPermissionOverrideFormDto;
 use GardenManager\Permission\Application\Query\GetMemberPermissionDetailQuery;
 use GardenManager\Permission\Application\Service\PermissionRegistryService;
@@ -13,7 +13,7 @@ use GardenManager\Permission\Infrastructure\Form\ChangeMemberGroupsFormType;
 use GardenManager\Permission\Infrastructure\Form\MemberPermissionOverrideFormType;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

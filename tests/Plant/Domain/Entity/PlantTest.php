@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tests\Plant\Domain;
+namespace GardenManager\Tests\Plant\Domain\Entity;
 
 use GardenManager\Plant\Domain\Entity\Plant;
 use GardenManager\Plant\Domain\Enum\LifecycleEnum;

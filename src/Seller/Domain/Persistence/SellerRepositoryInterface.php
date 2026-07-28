@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Seller\Domain;
+namespace GardenManager\Seller\Domain\Persistence;
 
+use GardenManager\Seller\Domain\Entity\Seller;
 use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use Symfony\Component\Uid\Ulid;
 
