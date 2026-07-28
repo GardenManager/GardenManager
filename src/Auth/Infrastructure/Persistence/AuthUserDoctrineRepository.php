@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Auth\Infrastructure\Doctrine;
+namespace GardenManager\Auth\Infrastructure\Persistence;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Uid\Ulid;
 
 /** @extends ServiceEntityRepository<AuthUser> */
-final class AuthUserRepository extends ServiceEntityRepository implements AuthUserRepositoryInterface, PasswordUpgraderInterface
+final class AuthUserDoctrineRepository extends ServiceEntityRepository implements AuthUserRepositoryInterface, PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

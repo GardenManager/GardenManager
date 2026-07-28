@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tests\Permission\Infrastructure\Validator;
+namespace GardenManager\Tests\Permission\Application\Validator;
 
 use GardenManager\Permission\Application\Validator\ValidPermissionEntry;
 use GardenManager\Permission\Application\Validator\ValidPermissionEntryValidator;

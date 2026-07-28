@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GardenManager\Tests\Seller\Infrastructure\Doctrine;
+namespace GardenManager\Tests\Seller\Infrastructure\Persistence;
 
 use Doctrine\ORM\EntityManagerInterface;
 use GardenManager\Auth\Domain\AuthUser;
@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Uid\Ulid;
 
 #[Group('integration')]
-final class SellerRepositoryTest extends KernelTestCase
+final class SellerDoctrineRepositoryTest extends KernelTestCase
 {
     private SellerRepositoryInterface $repository;
     private EntityManagerInterface $em;
