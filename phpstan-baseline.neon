@@ -37,12 +37,6 @@ parameters:
 			path: src/Plant/Domain/Enum/LifecycleEnum.php
 
 		-
-			message: '#^Class GardenManager\\Plant\\Infrastructure\\Persistence\\PlantDoctrineRepository extends generic class Doctrine\\Bundle\\DoctrineBundle\\Repository\\ServiceEntityRepository but does not specify its types\: TEntityClass$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Plant/Infrastructure/Persistence/PlantDoctrineRepository.php
-
-		-
 			message: '#^Method GardenManager\\Shared\\Domain\\Exception\\Contract\\ContextCarrierExceptionInterface\:\:getContext\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
