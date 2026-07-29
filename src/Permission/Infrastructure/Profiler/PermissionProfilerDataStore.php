@@ -56,12 +56,13 @@ final class PermissionProfilerDataStore implements PermissionResolutionTracerInt
     {
         $this->currentCacheStatus = $status;
 
-        match ($status) {
-            'l1' => $this->l1Hits++,
-            'l2' => $this->l2Hits++,
-            'miss' => $this->cacheMisses++,
-            default => null,
-        };
+        if ($status === 'l1') {
+            ++$this->l1Hits;
+        } elseif ($status === 'l2') {
+            ++$this->l2Hits;
+        } elseif ($status === 'miss') {
+            ++$this->cacheMisses;
+        }
     }
 
     public function recordCheck(

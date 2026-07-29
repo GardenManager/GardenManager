@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\CustomAttribute\Domain;
 
-use GardenManager\Permission\Domain\DefaultGroupsEnum;
+use GardenManager\Permission\Domain\Enum\DefaultGroupsEnum;
 use GardenManager\Permission\Domain\PermissionProviderInterface;
 
 final class CustomAttributePermissionProvider implements PermissionProviderInterface

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Seller\Infrastructure\Http\Api;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Seller\Application\Dto\Api\SellerApiResponse;
 use GardenManager\Seller\Application\Query\ListSellersQuery;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;

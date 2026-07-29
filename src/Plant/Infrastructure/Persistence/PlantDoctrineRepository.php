@@ -13,6 +13,7 @@ use GardenManager\Shared\Domain\Pagination\PaginatedResult;
 use GardenManager\Shared\Infrastructure\Pagination\PaginationFactory;
 use Symfony\Component\Uid\Ulid;
 
+/** @extends ServiceEntityRepository<Plant> */
 final class PlantDoctrineRepository extends ServiceEntityRepository implements PlantRepositoryInterface
 {
     public function __construct(

@@ -6,7 +6,7 @@ namespace GardenManager\Tenant\Application\View;
 
 use DateTimeImmutable;
 use GardenManager\Tenant\Application\Dto\MemberUserInfoDto;
-use GardenManager\Tenant\Domain\TenantMembership;
+use GardenManager\Tenant\Domain\Entity\TenantMembership;
 use Symfony\Component\Uid\Ulid;
 
 final readonly class TenantMembershipView

@@ -15,7 +15,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Index(name: 'idx_value_entity', columns: ['entity_type', 'entity_id'])]
 #[ORM\Index(name: 'idx_definition_id', columns: ['definition_id'])]
 #[ORM\HasLifecycleCallbacks]
-class CustomAttributeValue
+final class CustomAttributeValue
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]

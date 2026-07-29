@@ -4,7 +4,8 @@ set -e
 mkdir -p var/cache var/log
 
 if [ "$(id -u)" = '0' ]; then
-    chown -R app:app var/
+    # CIFS/NFS bind mounts don't support chown; ownership is forced by mount options
+    chown -R app:app var/ 2>/dev/null || true
 
     if [ "$1" = 'php-fpm' ]; then
         exec "$@"

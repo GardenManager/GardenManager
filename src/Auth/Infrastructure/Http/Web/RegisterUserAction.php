@@ -6,7 +6,7 @@ namespace GardenManager\Auth\Infrastructure\Http\Web;
 
 use GardenManager\Auth\Application\Command\RegisterUserCommand;
 use GardenManager\Auth\Application\Dto\RegisterUserDto;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use GardenManager\Auth\Infrastructure\Form\RegistrationFormType;
 use GardenManager\Shared\Infrastructure\Bus\CommandDispatcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

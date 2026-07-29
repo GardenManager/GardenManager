@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Shared\Domain\Security\ActiveTenantProviderInterface;
 use GardenManager\Shared\Infrastructure\Bus\QueryDispatcher;
 use GardenManager\Tenant\Application\Query\ListTenantMembersQuery;

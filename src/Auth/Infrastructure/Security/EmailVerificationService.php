@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace GardenManager\Auth\Infrastructure\Security;
 
 use GardenManager\Auth\Application\EmailVerificationServiceInterface;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\Auth\Domain\Exception\AuthException;
 use GardenManager\Auth\Domain\Exception\EmailVerificationException;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;

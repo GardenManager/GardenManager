@@ -8,8 +8,8 @@ use GardenManager\Permission\Application\View\MemberPermissionOverrideView;
 use GardenManager\Permission\Application\View\MemberPermissionView;
 use GardenManager\Tenant\Application\Port\MemberUserResolverInterface;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'query.bus')]

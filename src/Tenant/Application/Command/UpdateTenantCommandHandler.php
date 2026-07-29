@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Application\Command;
 
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

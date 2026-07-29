@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\CustomAttribute\Infrastructure\Http\Web;
 
-use GardenManager\Auth\Domain\AuthUser;
+use GardenManager\Auth\Domain\Entity\AuthUser;
 use GardenManager\CustomAttribute\Application\Command\CreateDefinitionCommand;
 use GardenManager\CustomAttribute\Application\Dto\DefinitionFormDto;
 use GardenManager\CustomAttribute\Infrastructure\Form\DefinitionFormType;

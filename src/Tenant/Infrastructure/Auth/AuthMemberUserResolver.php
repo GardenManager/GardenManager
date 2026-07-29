@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GardenManager\Tenant\Infrastructure\Auth;
 
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Auth\Domain\AuthUserRepositoryInterface;
+use GardenManager\Auth\Domain\Entity\AuthUser;
+use GardenManager\Auth\Domain\Persistence\AuthUserRepositoryInterface;
 use GardenManager\Tenant\Application\Dto\MemberUserInfoDto;
 use GardenManager\Tenant\Application\Port\MemberUserResolverInterface;
 

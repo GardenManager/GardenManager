@@ -8,8 +8,8 @@ use Doctrine\ORM\OptimisticLockException;
 use GardenManager\Permission\Application\Service\PermissionCacheInvalidatorInterface;
 use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Tenant\Domain\Exception\TenantException;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler(bus: 'command.bus')]

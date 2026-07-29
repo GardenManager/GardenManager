@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace GardenManager\Seller\Application\View;
 
 use DateTimeImmutable;
-use GardenManager\Seller\Domain\Seller;
+use GardenManager\Seller\Domain\Entity\Seller;
 use GardenManager\Shared\Application\View\AddressView;
 use Symfony\Component\Uid\Ulid;
 

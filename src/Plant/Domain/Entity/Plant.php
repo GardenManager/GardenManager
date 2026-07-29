@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity]
 #[ORM\Table(name: 'plant')]
 #[ORM\HasLifecycleCallbacks]
-class Plant implements SoftDeletable, TenantScoped
+final class Plant implements SoftDeletable, TenantScoped
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
@@ -46,7 +46,7 @@ class Plant implements SoftDeletable, TenantScoped
     private DateTimeImmutable $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private ?DateTimeImmutable $updatedAt = null;
+    private ?DateTimeImmutable $updatedAt;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;

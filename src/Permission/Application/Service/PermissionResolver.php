@@ -7,8 +7,8 @@ namespace GardenManager\Permission\Application\Service;
 use GardenManager\Permission\Domain\Service\PermissionMatcher;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
 use GardenManager\Permission\Domain\ValueObject\TenantPermissionConfig;
-use GardenManager\Tenant\Domain\TenantMembershipRepositoryInterface;
-use GardenManager\Tenant\Domain\TenantRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantMembershipRepositoryInterface;
+use GardenManager\Tenant\Domain\Persistence\TenantRepositoryInterface;
 use Symfony\Component\Uid\Ulid;
 
 final readonly class PermissionResolver implements PermissionResolverInterface

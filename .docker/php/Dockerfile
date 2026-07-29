@@ -20,7 +20,8 @@ RUN apk add --no-cache \
         sockets \
         redis
 
-RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
+RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app \
+    && sed -i -e 's/^user = .*/user = app/' -e 's/^group = .*/group = app/' /usr/local/etc/php-fpm.d/www.conf
 
 WORKDIR /srv/app
 

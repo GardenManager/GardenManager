@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace GardenManager\Tests\Seller\Infrastructure\Http\Web;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GardenManager\Auth\Domain\AuthUser;
-use GardenManager\Seller\Domain\Seller;
-use GardenManager\Seller\Domain\SellerRepositoryInterface;
-use GardenManager\Tenant\Domain\Tenant;
-use GardenManager\Tenant\Domain\TenantMembership;
+use GardenManager\Auth\Domain\Entity\AuthUser;
+use GardenManager\Seller\Domain\Entity\Seller;
+use GardenManager\Seller\Domain\Persistence\SellerRepositoryInterface;
+use GardenManager\Tenant\Domain\Entity\Tenant;
+use GardenManager\Tenant\Domain\Entity\TenantMembership;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;

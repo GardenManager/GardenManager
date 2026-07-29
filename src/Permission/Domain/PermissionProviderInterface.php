@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GardenManager\Permission\Domain;
 
+use GardenManager\Permission\Domain\Enum\DefaultGroupsEnum;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('app.permission_provider')]
