@@ -75,7 +75,7 @@ src/<Module>/
     Form/  Http/Web/  Http/Api/
 ```
 
-Tests mirror `src/` paths under `tests/` with the same structure. Messages (commands/queries) are `final readonly` and carry `tenantId`/`actorUserId`; authorization is declared with `#[RequiresPermission]` on the message and enforced by `PermissionCheckMiddleware` on both buses.
+Tests mirror `src/` paths under `tests/` with the same structure; cross-cutting rules live in `tests/Architecture/`. Messages (commands/queries) are `final readonly` and carry `tenantId`/`actorUserId`. Authorization is **fail-closed**: every command/query must either declare `#[RequiresPermission('...')]` **and** implement `AuthorizedMessageInterface`, or carry `#[NoPermissionRequired(reason: '...')]` for genuinely exempt flows (pre-authentication, tenant bootstrap, cross-tenant lookups). `PermissionCheckMiddleware` throws `MissingPermissionDeclarationException` (a 500 `CoreException` with no user-facing message) for anything else on `command.bus`/`query.bus`, and `tests/Architecture/MessageAuthorizationTest.php` enforces the rule statically, including that every required permission is registered by a `PermissionProvider`.
 
 - **Namespace:** `GardenManager\` (PSR-4 from `src/`)
 - **Routing:** Attribute-based routes on invokable single-action controllers (`#[Route]`)

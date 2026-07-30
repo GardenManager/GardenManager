@@ -6,9 +6,11 @@ namespace GardenManager\Tests\Shared\Infrastructure\Messenger;
 
 use GardenManager\Permission\Domain\Exception\PermissionException;
 use GardenManager\Permission\Domain\Service\PermissionResolverInterface;
+use GardenManager\Shared\Application\Attribute\NoPermissionRequired;
 use GardenManager\Shared\Application\Attribute\RequiresPermission;
 use GardenManager\Shared\Application\AuthorizedMessageInterface;
 use GardenManager\Shared\Application\CommandInterface;
+use GardenManager\Shared\Infrastructure\Messenger\Exception\MissingPermissionDeclarationException;
 use GardenManager\Shared\Infrastructure\Messenger\PermissionCheckMiddleware;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -22,7 +24,7 @@ use Symfony\Component\Uid\Ulid;
 final class PermissionCheckMiddlewareTest extends TestCase
 {
     #[Test]
-    public function passesThroughWhenNoAttributeOnMessage(): void
+    public function throwsWhenMessageDeclaresNoAuthorizationPolicy(): void
     {
         $resolver = $this->createStub(PermissionResolverInterface::class);
         $middleware = new PermissionCheckMiddleware($resolver);
@@ -30,23 +32,57 @@ final class PermissionCheckMiddlewareTest extends TestCase
         $message = new class implements CommandInterface {};
         $envelope = new Envelope($message);
 
-        $nextMiddleware = $this->createStub(MiddlewareInterface::class);
-        $nextMiddleware->method('handle')->willReturn($envelope);
-
         $stack = $this->createStub(StackInterface::class);
-        $stack->method('next')->willReturn($nextMiddleware);
 
-        $result = $middleware->handle($envelope, $stack);
-        self::assertSame($envelope, $result);
+        $this->expectException(MissingPermissionDeclarationException::class);
+        $this->expectExceptionMessage('declares no authorization policy');
+
+        $middleware->handle($envelope, $stack);
     }
 
     #[Test]
-    public function passesThroughWhenMessageDoesNotImplementInterface(): void
+    public function throwsWhenRequiresPermissionWithoutAuthorizedMessageInterface(): void
     {
         $resolver = $this->createStub(PermissionResolverInterface::class);
         $middleware = new PermissionCheckMiddleware($resolver);
 
         $message = new #[RequiresPermission('test.permission')] class implements CommandInterface {};
+        $envelope = new Envelope($message);
+
+        $stack = $this->createStub(StackInterface::class);
+
+        $this->expectException(MissingPermissionDeclarationException::class);
+        $this->expectExceptionMessage('does not implement AuthorizedMessageInterface');
+
+        $middleware->handle($envelope, $stack);
+    }
+
+    #[Test]
+    public function throwsWhenBothAttributesArePresent(): void
+    {
+        $resolver = $this->createStub(PermissionResolverInterface::class);
+        $middleware = new PermissionCheckMiddleware($resolver);
+
+        $message = new #[RequiresPermission('test.permission')] #[NoPermissionRequired(reason: 'conflicting exemption')] class implements CommandInterface {};
+        $envelope = new Envelope($message);
+
+        $stack = $this->createStub(StackInterface::class);
+
+        $this->expectException(MissingPermissionDeclarationException::class);
+        $this->expectExceptionMessage('declares both');
+
+        $middleware->handle($envelope, $stack);
+    }
+
+    #[Test]
+    public function passesThroughWhenMessageIsExempt(): void
+    {
+        $resolver = $this->createMock(PermissionResolverInterface::class);
+        $resolver->expects(self::never())->method('hasPermission');
+
+        $middleware = new PermissionCheckMiddleware($resolver);
+
+        $message = new #[NoPermissionRequired(reason: 'test exemption')] class implements CommandInterface {};
         $envelope = new Envelope($message);
 
         $nextMiddleware = $this->createStub(MiddlewareInterface::class);
