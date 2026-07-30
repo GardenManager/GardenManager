@@ -45,7 +45,8 @@ final class SellerDoctrineRepository extends ServiceEntityRepository implements 
     public function findPaginated(int $page, int $perPage): PaginatedResult
     {
         $queryBuilder = $this->createQueryBuilder('seller')
-            ->orderBy('seller.createdAt', 'DESC');
+            ->orderBy('seller.createdAt', 'DESC')
+            ->addOrderBy('seller.id', 'DESC');
 
         /** @var PaginatedResult<Seller> */
         return $this->paginationFactory->createPaginatedResult(

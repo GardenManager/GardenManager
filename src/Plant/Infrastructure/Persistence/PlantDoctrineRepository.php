@@ -42,7 +42,8 @@ final class PlantDoctrineRepository extends ServiceEntityRepository implements P
     public function findPaginated(int $page, int $limit): PaginatedResult
     {
         $queryBuilder = $this->createQueryBuilder('plant')
-            ->orderBy('plant.createdAt', 'DESC');
+            ->orderBy('plant.createdAt', 'DESC')
+            ->addOrderBy('plant.id', 'DESC');
 
         /** @var PaginatedResult<Plant> */
         return $this->paginationFactory->createPaginatedResult(
